@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IEEE MACE SB — Empowering Innovation, Shaping Tomorrow</title>
+    <meta
+      name="description"
+      content="IEEE Student Branch of Mar Athanasius College of Engineering, Kothamangalam. Bridging the gap between engineering theory and professional impact since 1988."
+    />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  </head>
+  <body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader" aria-hidden="true">
+      <div class="preloader__inner">
+        <svg class="preloader__mark" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <circle class="preloader__circle" cx="32" cy="32" r="22" />
+          <path class="preloader__bolt" d="M36 14 24 34h8l-4 16 12-20h-8l4-16Z" />
+        </svg>
+        <p class="preloader__label"><span class="preloader__counter" id="preloader-counter">00</span> / 100</p>
+      </div>
+    </div>
+
+    <!-- Living blueprint backdrop -->
+    <canvas class="backdrop" id="backdrop" aria-hidden="true"></canvas>
+
+    <!-- Blueprint grid overlay -->
+    <div class="grid-overlay" aria-hidden="true"></div>
+
+    <!-- Crosshair cursor follower (desktop) -->
+    <div class="reticle" id="reticle" aria-hidden="true">
+      <span class="reticle__ring"></span>
+    </div>
+
+    <header class="navbar" id="navbar">
+      <div class="navbar__inner">
+        <a class="navbar__brand" href="#home" aria-label="IEEE MACE SB — home">
+          <img class="navbar__logo" src="/logo.svg" alt="IEEE MACE SB" width="40" height="40" />
+          <span class="navbar__wordmark">IEEE <em>MACE SB</em></span>
+        </a>
+        <nav class="navbar__nav" aria-label="Primary">
+          <ul class="navbar__links" id="nav-links">
+            <li><a href="#home" class="navbar__link is-active">Home</a></li>
+            <li><a href="#about" class="navbar__link">About Us</a></li>
+            <li><a href="#events" class="navbar__link">Events</a></li>
+            <li><a href="#gallery" class="navbar__link">Gallery</a></li>
+            <li><a href="#chapters" class="navbar__link">Chapters</a></li>
+            <li><a href="#contact" class="navbar__link">Contact</a></li>
+          </ul>
+        </nav>
+        <a class="btn btn--primary navbar__cta" href="https://www.ieee.org" target="_blank" rel="noopener">
+          Join IEEE
+        </a>
+        <button class="navbar__burger" id="nav-burger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile fullscreen menu -->
+    <div class="menu" id="mobile-menu" aria-hidden="true">
+      <nav aria-label="Mobile">
+        <ul class="menu__links">
+          <li><a href="#home" class="menu__link">Home</a></li>
+          <li><a href="#about" class="menu__link">About Us</a></li>
+          <li><a href="#events" class="menu__link">Events</a></li>
+          <li><a href="#gallery" class="menu__link">Gallery</a></li>
+          <li><a href="#chapters" class="menu__link">Chapters</a></li>
+          <li><a href="#contact" class="menu__link">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--primary menu__cta" href="https://www.ieee.org" target="_blank" rel="noopener">Join IEEE</a>
+    </div>
+
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+        <main>
+          <!-- 01 · Hero -->
+          <section class="hero section" id="home" data-scene="hero">
+            <p class="hero__margin-label" aria-hidden="true">EST. 1988 · KOTHAMANGALAM · 32041</p>
+            <div class="container hero__layout">
+              <p class="hero__badge eyebrow"><span class="eyebrow__index">01</span> IEEE MACE Student Branch</p>
+              <h1 class="hero__title">
+                Empowering Innovation, <span class="outline">Shaping&nbsp;Tomorrow.</span>
+              </h1>
+              <p class="hero__lead">
+                Bridging the gap between engineering theory and professional impact. We cultivate technical
+                expertise and build a vibrant community under Asia's first Christian-managed engineering college.
+              </p>
+              <div class="hero__ctas">
+                <a class="btn btn--primary" href="https://www.ieee.org" target="_blank" rel="noopener">Join Us Today</a>
+                <a class="btn btn--secondary" href="#about">Explore Branch</a>
+              </div>
+              <dl class="hero__facts">
+                <div class="hero__fact">
+                  <dt>Founded</dt>
+                  <dd>November 17, 1988</dd>
+                </div>
+                <div class="hero__fact">
+                  <dt>Branch Code</dt>
+                  <dd>32041</dd>
+                </div>
+                <div class="hero__fact">
+                  <dt>Location</dt>
+                  <dd>MACE Kothamangalam, Kerala</dd>
+                </div>
+              </dl>
+            </div>
+            <a class="hero__scrollcue" href="#about" aria-label="Scroll to About">
+              <span class="hero__scrollcue-label">Scroll</span>
+              <span class="hero__scrollcue-line" aria-hidden="true"></span>
+            </a>
+          </section>
+
+          <!-- 02 · IntroCards — schematic triptych -->
+          <section class="intro section" data-scene="intro" aria-labelledby="intro-heading">
+            <span class="section__num" aria-hidden="true">02</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">02</span> Foundation</p>
+                <h2 class="section__title" id="intro-heading">Global <span class="outline">Tech</span> Leadership</h2>
+                <p class="section__subtext">
+                  Understand the foundation of the world's largest technical professional organization dedicated
+                  to advancing technology.
+                </p>
+              </header>
+              <div class="intro__board">
+                <svg class="intro__traces" viewBox="0 0 1200 520" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="trace" d="M200 96 H384 V240 H400" />
+                  <path class="trace" d="M600 460 V336 H800 V240 H816" />
+                  <circle class="trace-pad" cx="200" cy="96" r="5" />
+                  <circle class="trace-pad" cx="600" cy="460" r="5" />
+                </svg>
+                <div class="intro__grid" id="intro-grid"><!-- panels from content.ts --></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 03 · WhyJoin — instrument readout -->
+          <section class="whyjoin section" data-scene="whyjoin" aria-labelledby="whyjoin-heading">
+            <span class="section__num section__num--right" aria-hidden="true">03</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">03</span> Membership Benefits</p>
+                <h2 class="section__title" id="whyjoin-heading">
+                  Unlock a World of <span class="outline">Technical Opportunity</span>
+                </h2>
+                <p class="section__subtext">
+                  Joining IEEE is not just about a membership card — it is an investment in your career, your
+                  network, and your future. Student members gain immediate access to global resources, funding,
+                  and leadership roles.
+                </p>
+              </header>
+              <div class="whyjoin__layout">
+                <aside class="whyjoin__stat">
+                  <svg class="whyjoin__ruler" viewBox="0 0 320 40" preserveAspectRatio="none" aria-hidden="true">
+                    <line x1="0" y1="38" x2="320" y2="38" />
+                    <g class="whyjoin__ruler-ticks"></g>
+                  </svg>
+                  <p class="whyjoin__stat-value">
+                    <span class="counter" data-counter="400000">0</span><span class="whyjoin__stat-plus">+</span>
+                  </p>
+                  <p class="whyjoin__stat-label">Members in Over 160 Countries</p>
+                  <p class="whyjoin__stat-note">Join the largest technical professional network in the world.</p>
+                </aside>
+                <div class="whyjoin__benefits" id="benefits-list"><!-- callouts from content.ts --></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 04 · AboutUs — drafting sheets -->
+          <section class="about section" id="about" data-scene="about" aria-labelledby="about-heading">
+            <span class="section__num" aria-hidden="true">04</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">04</span> Institutional Heritage</p>
+                <h2 class="section__title" id="about-heading">About <span class="outline">MACE</span> &amp; IEEE SB</h2>
+                <p class="section__subtext">
+                  Discover the legacy of engineering leadership and professional development that defines our
+                  institution.
+                </p>
+              </header>
+
+              <svg class="about__timeline" viewBox="0 0 1200 64" preserveAspectRatio="none" aria-hidden="true">
+                <line class="about__timeline-rail" x1="0" y1="40" x2="1200" y2="40" />
+                <line class="about__timeline-progress" x1="0" y1="40" x2="1200" y2="40" />
+                <g class="about__timeline-marks" font-size="13">
+                  <line x1="60" y1="28" x2="60" y2="52" /><text x="60" y="18">1961</text>
+                  <line x1="480" y1="28" x2="480" y2="52" /><text x="480" y="18">1988</text>
+                  <line x1="1140" y1="28" x2="1140" y2="52" /><text x="1140" y="18">TODAY</text>
+                </g>
+              </svg>
+
+              <div class="about__blocks">
+                <article class="sheet sheet--tilt-l" data-reveal>
+                  <p class="sheet__tag">MACE Legacy</p>
+                  <h3 class="sheet__title">Mar Athanasius College of Engineering</h3>
+                  <p>
+                    Mar Athanasius College of Engineering pioneered engineering education in central Kerala in
+                    1961. Managed by the Mar Athanasius College Association and aided by the Government of
+                    Kerala, the college was the first in Asia under Christian management.
+                  </p>
+                  <p>
+                    Affiliated to APJ Abdul Kalam Technological University, MACE has grown to host six
+                    full-fledged departments alongside auxiliary departments of Mathematics, and Science and
+                    Humanities.
+                  </p>
+                  <div class="sheet__titleblock" aria-hidden="true">
+                    <span><b>ESTD</b>1961</span>
+                    <span><b>LOC</b>KOTHAMANGALAM, KERALA</span>
+                    <span><b>SHEET</b>A-01</span>
+                  </div>
+                </article>
+                <article class="sheet sheet--tilt-r" data-reveal>
+                  <p class="sheet__tag">IEEE MACE SB</p>
+                  <h3 class="sheet__title">Pioneering Professional Excellence</h3>
+                  <p>
+                    Established on November 17th, 1988, the IEEE Student Branch MACE (Code: 32041) is one of the
+                    largest student branches globally. We are committed to meeting students' interests and
+                    guiding them to become responsible professionals.
+                  </p>
+                  <p>
+                    We offer a dedicated Hardware Laboratory for technical project development and regularly
+                    conduct training programs, talks, professional awareness sessions, hackathons, debates, and
+                    workshops.
+                  </p>
+                  <div class="sheet__titleblock" aria-hidden="true">
+                    <span><b>ESTD</b>1988</span>
+                    <span><b>CODE</b>32041</span>
+                    <span><b>SHEET</b>A-02</span>
+                  </div>
+                </article>
+              </div>
+
+              <div class="about__stats" id="about-stats"><!-- gauges + seal from content.ts --></div>
+            </div>
+          </section>
+
+          <!-- 05 · Events — index ledger -->
+          <section class="events section" id="events" data-scene="events" aria-labelledby="events-heading">
+            <span class="section__num section__num--right" aria-hidden="true">05</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">05</span> Annual Calendar</p>
+                <h2 class="section__title" id="events-heading">
+                  Major <span class="outline">Events</span> &amp; Initiatives
+                </h2>
+                <p class="section__subtext">
+                  Discover the flagship activities hosted by IEEE MACE SB that drive community collaboration,
+                  technical skill-building, and professional growth.
+                </p>
+              </header>
+              <ol class="events__list" id="events-grid"><!-- rows from content.ts --></ol>
+            </div>
+          </section>
+
+          <!-- 06 · Execom — drafting plates -->
+          <section class="execom section" data-scene="execom" aria-labelledby="execom-heading">
+            <span class="section__num" aria-hidden="true">06</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">06</span> Branch Leadership</p>
+                <h2 class="section__title" id="execom-heading">Executive <span class="outline">Committee</span></h2>
+                <p class="section__subtext">
+                  Meet the office bearers and technical advisors driving the strategy, operations, and vision of
+                  IEEE MACE SB.
+                </p>
+              </header>
+              <div class="execom__grid" id="execom-grid"><!-- plates from content.ts --></div>
+              <div class="execom__closing" data-reveal>
+                <p>Looking to join our committees or get involved?</p>
+                <a class="btn btn--secondary" href="#contact">Contact our team</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- 07 · Gallery — generative poster reel -->
+          <section class="gallery section section--full" id="gallery" data-scene="gallery" aria-labelledby="gallery-heading">
+            <span class="section__num" aria-hidden="true">07</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">07</span> Visual Highlights</p>
+                <h2 class="section__title" id="gallery-heading">Event <span class="outline">Gallery</span></h2>
+                <p class="section__subtext">
+                  A continuous reel of posters from our hackathons, workshops, conclaves, and outreach.
+                </p>
+              </header>
+            </div>
+            <div class="gallery__reel" id="gallery-reel" aria-label="Event posters">
+              <div class="gallery__track" id="gallery-track"><!-- posters from content.ts --></div>
+            </div>
+          </section>
+
+          <!-- 08 · Chapters — circuit board -->
+          <section class="chapters section" id="chapters" data-scene="chapters" aria-labelledby="chapters-heading">
+            <span class="section__num section__num--right" aria-hidden="true">08</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">08</span> Subdivisions</p>
+                <h2 class="section__title" id="chapters-heading">
+                  Societies &amp; <span class="outline">Affinity Groups</span>
+                </h2>
+                <p class="section__subtext">
+                  Our Student Branch consists of multiple IEEE Societies and Affinity Groups, providing
+                  specialized training and networking opportunities in various tech domains.
+                </p>
+              </header>
+              <div class="chapters__grid" id="chapters-grid"><!-- IC chips from content.ts --></div>
+            </div>
+          </section>
+
+          <!-- 09 · Contact — transmission console -->
+          <section class="contact section" id="contact" data-scene="contact" aria-labelledby="contact-heading">
+            <span class="section__num" aria-hidden="true">09</span>
+            <div class="container">
+              <header class="section__head">
+                <p class="eyebrow"><span class="eyebrow__index">09</span> Get In Touch</p>
+                <h2 class="section__title" id="contact-heading">
+                  Connect With <span class="outline">Our Team</span>
+                </h2>
+                <p class="section__subtext">
+                  Have questions about membership, events, or collaboration? Reach out to us through any of the
+                  channels below.
+                </p>
+              </header>
+              <div class="contact__layout">
+                <address class="console" data-reveal>
+                  <p class="console__head" aria-hidden="true">TRANSMISSION // IEEE-MACE-SB</p>
+                  <div class="console__line">
+                    <p class="console__label">Student Branch Headquarters</p>
+                    <p class="console__value">Mar Athanasius College of Engineering, Kothamangalam, Kerala - 686666, India</p>
+                  </div>
+                  <div class="console__line">
+                    <p class="console__label">Call Us</p>
+                    <p class="console__value"><a href="tel:+914852822363">+91 485 2822363</a></p>
+                  </div>
+                  <div class="console__line">
+                    <p class="console__label">Email Us</p>
+                    <p class="console__value"><a href="mailto:info@ieeemace.org">info@ieeemace.org</a><span class="console__cursor" aria-hidden="true"></span></p>
+                  </div>
+                </address>
+                <div class="radar" data-reveal>
+                  <div class="radar__dish">
+                    <iframe
+                      title="Map — Mar Athanasius College of Engineering (MACE)"
+                      src="https://www.google.com/maps?q=Mar%20Athanasius%20College%20of%20Engineering%20Kothamangalam&output=embed"
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                      allowfullscreen
+                    ></iframe>
+                    <svg class="radar__overlay" viewBox="0 0 100 100" aria-hidden="true">
+                      <circle cx="50" cy="50" r="49.4" />
+                      <circle cx="50" cy="50" r="36" />
+                      <circle cx="50" cy="50" r="20" />
+                      <line x1="50" y1="0" x2="50" y2="12" />
+                      <line x1="50" y1="88" x2="50" y2="100" />
+                      <line x1="0" y1="50" x2="12" y2="50" />
+                      <line x1="88" y1="50" x2="100" y2="50" />
+                    </svg>
+                  </div>
+                  <p class="radar__coords">10.0594° N &nbsp;/&nbsp; 76.6295° E &nbsp;—&nbsp; MACE CAMPUS</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+
+        <!-- ticker divider -->
+        <div class="ticker" aria-hidden="true">
+          <div class="ticker__track" id="ticker-track"></div>
+        </div>
+
+        <footer class="footer">
+          <p class="footer__giant" aria-hidden="true">IEEE&nbsp;MACE&nbsp;SB</p>
+          <div class="container footer__layout">
+            <div class="footer__brand">
+              <p class="footer__wordmark">IEEE <em>MACE SB</em></p>
+              <p class="footer__tagline">Student Branch</p>
+              <p class="footer__blurb">
+                Mar Athanasius College of Engineering Student Branch of IEEE. Promoting excellence and
+                engineering innovation for the benefit of humanity since 1988.
+              </p>
+            </div>
+            <div class="footer__col">
+              <p class="footer__col-title">Useful Links</p>
+              <ul>
+                <li><a href="https://www.ieee.org" target="_blank" rel="noopener">IEEE.org</a></li>
+              </ul>
+            </div>
+            <div class="footer__col">
+              <p class="footer__col-title">Connect Online</p>
+              <ul class="footer__social">
+                <li><a href="#" aria-label="Instagram">Instagram</a></li>
+                <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
+                <li><a href="#" aria-label="Twitter / X">Twitter / X</a></li>
+                <li><a href="#" aria-label="Facebook">Facebook</a></li>
+                <li><a href="#" aria-label="YouTube">YouTube</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="container footer__base">
+            <p>© <span id="footer-year"></span> IEEE MACE. All rights reserved.</p>
+            <p>Designed and Developed by IEEE MACE SB WebTeam</p>
+            <button class="footer__top" id="back-to-top">Back to top ↑</button>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
