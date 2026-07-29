@@ -71,6 +71,7 @@ async function start(): Promise<void> {
   await Promise.all([document.fonts.ready, runPreloader()])
 
   runHeroIntro()
+  backdrop.drawIn()
   initSectionReveals()
   initCounters()
   initLineDraws()

@@ -16,6 +16,8 @@ export class Blueprint {
   readonly ok: boolean
   /** 0..8 continuous section index; scrollSync scrubs this. */
   readonly morph = { value: 0 }
+  /** 0..1 draw-in for the hero sketch, which has no scroll range to scrub. */
+  readonly intro = { value: 1 }
 
   private ctx!: CanvasRenderingContext2D
   private canvas: HTMLCanvasElement
@@ -47,6 +49,8 @@ export class Blueprint {
     if (!opts.mobile) window.addEventListener('pointermove', this.onPointerMove)
 
     if (this.animate) {
+      // hold the hero sketch back until drawIn() drafts it
+      this.intro.value = 0
       gsap.ticker.add(this.tick)
     } else {
       this.render()
@@ -54,6 +58,12 @@ export class Blueprint {
       // canvas labels need IBM Plex Mono — repaint once fonts arrive
       document.fonts.ready.then(() => this.render())
     }
+  }
+
+  /** Draft the hero sketch in from nothing. Called once the preloader clears. */
+  drawIn(): void {
+    if (!this.ok || !this.animate) return
+    gsap.to(this.intro, { value: 1, duration: 2, ease: 'power2.inOut' })
   }
 
   private onResize = (): void => {
@@ -97,7 +107,9 @@ export class Blueprint {
       if (rect.bottom < -80 || rect.top > this.h + 80) continue
       // draw-in as the section arrives, un-draw as it leaves; anchored to the
       // section so the sketch scrolls with its own content
-      const p = this.animate ? smoothstep(clamp01(1 - Math.abs(v - i))) : 1
+      let p = this.animate ? smoothstep(clamp01(1 - Math.abs(v - i))) : 1
+      // the hero sits at morph 0, so scroll never drafts it — drawIn() does
+      if (i === 0) p *= this.intro.value
       if (p > 0) this.drawSketch(SKETCHES[i], p, rect.top)
     }
   }
