@@ -163,7 +163,9 @@ export function initReticle(): void {
   })
 
   document.addEventListener('mouseover', (e) => {
-    const interactive = (e.target as Element).closest('a, button')
-    reticle.classList.toggle('is-hover', !!interactive)
+    const target = e.target as Element
+    reticle.classList.toggle('is-hover', !!target.closest('a, button'))
+    // blue-filled surfaces would swallow the blue reticle
+    reticle.classList.toggle('is-inverted', !!target.closest('.event-row, .btn--primary'))
   })
 }
