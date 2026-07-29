@@ -49,34 +49,49 @@ export interface BranchEvent {
 
 export const events: BranchEvent[] = [
   {
-    title: 'MACEHACK 2026',
+    title: '>.hack();',
     tag: 'Flagship Hackathon',
-    body: 'Our premier 24-hour national hackathon, bringing together top student developers and designers to build innovative hardware and software solutions under intense timelines. Featuring mentorship, networking opportunities, and attractive cash prizes.',
+    body: 'The annual flagship event of IEEE MACE SB, a cornerstone of the branch for the past seven years. Each edition gives college students a platform to turn ideas into impactful projects, and every year has brought a larger crop of innovative solutions from our budding engineers.',
   },
   {
-    title: 'RoboVerse School',
-    tag: 'Robotics Workshop',
-    body: 'Hands-on robotics bootcamps introducing students to microcontrollers, embedded systems, and autonomous navigation architectures. Participants build and program their own functional robots from scratch.',
+    title: 'SPARC',
+    tag: 'Speaker Series',
+    body: 'Conducted for the past five years and designed primarily for first-year students. Accomplished speakers from diverse fields share their experiences, insights and guidance, giving students perspective on personal growth, career planning and the opportunities ahead.',
   },
   {
-    title: 'MACE Conclave',
-    tag: 'Conferences & Conclaves',
-    body: 'A premier technological conference featuring keynote panels from distinguished IEEE Fellows and industrial tech leaders. Discussing future tech domains, research breakthroughs, and professional growth.',
+    title: 'STEM Initiative',
+    tag: 'School Outreach',
+    body: 'Interactive workshops, demonstrations and hands-on sessions that take STEM to school students across IoT and embedded systems, mechatronics, software development, and cybersecurity and data analytics. Each year the initiative reaches nearly 500 students across five schools.',
   },
   {
-    title: 'V-Tour (Industrial Visit)',
-    tag: 'Industrial Visits',
-    body: 'Experiential industrial visits to national research laboratories, tech parks, and advanced smart factories to study automation, industrial assembly processes, and telemetry operations in real-world environments.',
+    title: 'Hack-Her',
+    tag: 'Women In Tech',
+    body: 'A 24-hour ideation and implementation challenge exclusively for women, answering the under-representation of women in engineering and technology. Beyond technical skill it builds confidence, leadership, networking and peer learning.',
   },
   {
-    title: 'SIGHT Clean Energy',
-    tag: 'Humanitarian Initiatives',
-    body: 'Community initiatives installing smart, solar-powered lighting systems and clean energy alternatives in local rural clinics, government schools, and underserved neighborhoods.',
+    title: 'HACK-A-DDIT',
+    tag: 'Social Impact Hackathon',
+    body: 'A hackathon organised with the Lions Club to raise awareness of drug abuse and its effects. Participants proposed technically feasible, socially relevant ideas for prevention, awareness and rehabilitation while learning the real consequences of substance abuse.',
   },
   {
-    title: 'SkillUp Bootcamp',
-    tag: 'Skill Development Programs',
-    body: 'Intensive training program covering fullstack software engineering, cloud architecture, technical writing, and professional interview preparation to help students secure global opportunities.',
+    title: 'Light the Lives (LTL)',
+    tag: 'Humanitarian Project',
+    body: 'Kuttampuzha Grama Panchayat lacked access to reliable energy resources. With approval from the local authorities, a team of volunteers stayed in the locality for a week and installed two solar power systems, giving the community a dependable and sustainable source of electricity.',
+  },
+  {
+    title: 'Connect the Lives (CTL)',
+    tag: 'Humanitarian Project',
+    body: 'After LTL, the tribal colony at Uriyampetty raised the problem of children with limited access to schooling. A detailed survey led to a communication module at the local school for online classes, run by a trained resident teacher. A year on, it still serves the community.',
+  },
+  {
+    title: 'Wild Elephant Tracker',
+    tag: 'Humanitarian Technology',
+    body: 'An early warning system developed under the leadership of Madhav K. Anil that detects elephant movement in forest fringe areas and alerts nearby communities in real time, cutting the risk of human–elephant encounters and supporting coexistence.',
+  },
+  {
+    title: 'Enhance their Lives (ETL)',
+    tag: 'Upcoming Initiative',
+    body: 'A planned programme to establish sanitary pad incinerators and proper waste disposal systems in remote schools and underserved localities, offering a safe and environmentally responsible option while promoting menstrual hygiene awareness.',
   },
 ]
 
@@ -99,14 +114,14 @@ export const execom: ExecomMember[] = [
 ]
 
 export const galleryPosters: string[] = [
-  'MACEHACK 2026',
-  'RoboVerse School',
-  'MACE Conclave',
-  'V-Tour Industrial Visit',
-  'SIGHT Clean Energy',
-  'SkillUp Bootcamp',
-  'Women In Tech Conclave',
-  'IEEE Standards Hackathon',
+  '>.hack();',
+  'SPARC',
+  'STEM Initiative',
+  'Hack-Her',
+  'HACK-A-DDIT',
+  'Light the Lives',
+  'Connect the Lives',
+  'Wild Elephant Tracker',
 ]
 
 export interface Chapter {
@@ -171,6 +186,6 @@ export interface Stat {
 
 export const aboutStats: Stat[] = [
   { value: 300, suffix: '+', label: 'Members' },
-  { value: 35, suffix: '+', label: 'Years legacy' },
+  { value: 38, suffix: '', label: 'Years legacy' },
   { value: 1988, suffix: '', label: 'Established' },
 ]

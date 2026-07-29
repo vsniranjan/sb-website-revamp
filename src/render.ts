@@ -272,7 +272,7 @@ export function renderContent(): void {
 
   // ticker
   const tickerPhrases =
-    'ADVANCING TECHNOLOGY FOR HUMANITY · SINCE 1988 · HACKATHONS · WORKSHOPS · CONCLAVES · STANDARDS · ROBOTICS · CLEAN ENERGY · '
+    'ADVANCING TECHNOLOGY FOR HUMANITY · SINCE 1988 · >.HACK(); · SPARC · STEM OUTREACH · HACK-HER · HACK-A-DDIT · LIGHT THE LIVES · CONNECT THE LIVES · '
   const tickerTrack = document.getElementById('ticker-track')
   if (tickerTrack) {
     tickerTrack.innerHTML = `<span>${tickerPhrases}</span><span aria-hidden="true">${tickerPhrases}</span>`
