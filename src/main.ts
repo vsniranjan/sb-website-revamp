@@ -30,9 +30,6 @@ import {
   initGauges,
   initLineDraws,
   initReticle,
-  initRotors,
-  initSectionNumbers,
-  initTicker,
 } from './animations/flourishes'
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, DrawSVGPlugin)
@@ -55,9 +52,16 @@ renderContent()
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const mobile = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches
+/**
+ * Phones aren't the only weak-GPU visitors — plenty of desktops and laptops run on
+ * integrated graphics that struggle with the same per-frame canvas cost. Low core
+ * count is a decent proxy for that tier, so it gets the same reduced-resolution
+ * backdrop even on a wide viewport.
+ */
+const lowPowerHardware = (navigator.hardwareConcurrency ?? 8) <= 4
 
 const canvas = document.getElementById('backdrop') as HTMLCanvasElement
-const backdrop = new WaveField(canvas, { mobile, animate: !reducedMotion })
+const backdrop = new WaveField(canvas, { lowPower: mobile || lowPowerHardware, animate: !reducedMotion })
 
 async function start(): Promise<void> {
   if (reducedMotion) {
@@ -98,10 +102,7 @@ async function start(): Promise<void> {
   initCounters()
   initLineDraws()
   initGauges()
-  initRotors()
   initCallouts()
-  initTicker()
-  initSectionNumbers()
   initReticle()
   ScrollTrigger.refresh()
 }

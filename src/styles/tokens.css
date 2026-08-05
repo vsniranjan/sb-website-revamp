@@ -1,27 +1,36 @@
-/* Design tokens — source of truth: MASTER.md */
+/* Design tokens — dark monochrome. One neutral ramp, white as the only accent. */
 :root {
-  /* color */
-  --paper: #f7f4ee;
-  --paper-raised: #ffffff;
-  --ink: #15181d;
-  --ink-muted: #49505a;
-  --ink-faint: #6e7681;
-  --blue: #00629b;
-  --blue-deep: #004a77;
-  --blue-wash: rgba(0, 98, 155, 0.07);
-  --paper-wash: rgba(255, 255, 255, 0.16);
-  --hairline: rgba(0, 98, 155, 0.22);
-  --gridline: rgba(0, 98, 155, 0.08);
-  --ink-hairline: rgba(21, 24, 29, 0.12);
+  color-scheme: dark;
+
+  /* surfaces, darkest first. Never pure black: it flattens depth and makes every
+     border look like a seam. */
+  --bg: #0d0e11;
+  --surface: #15171c;
+  --surface-raised: #1c1f26;
+  --surface-wash: rgba(255, 255, 255, 0.04);
+
+  /* text */
+  --text: #f2f3f5;
+  --text-muted: #a2a8b3;
+  --text-faint: #6d747f;
+
+  /* accent is plain white. Anything sitting on an accent fill takes --on-accent,
+     which is the page background, so filled surfaces read as a clean inversion. */
+  --accent: #ffffff;
+  --accent-dim: #d6d9de;
+  --accent-wash: rgba(255, 255, 255, 0.07);
+  --on-accent: #0d0e11;
+
+  /* borders, faint to strong */
+  --border-faint: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.18);
 
   /* type */
   --font-display: 'Space Grotesk Variable', 'Space Grotesk', sans-serif;
   --font-body: 'Inter Variable', 'Inter', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 
-  /* The 2.9rem floor held until 546px wide, so a 360px phone rendered the hero at
-     46px. "Shaping&nbsp;Tomorrow." is nbsp-joined and cannot wrap, so it ran past
-     the viewport and was only hidden by the `overflow-x` guard on body. */
   --text-display: clamp(2.1rem, 8.5vw, 7rem);
   --text-h2: clamp(2rem, 4.5vw, 3.6rem);
   --text-h3: clamp(1.15rem, 1.6vw, 1.4rem);
@@ -46,12 +55,16 @@
   --container: 1240px;
   --gutter: clamp(20px, 4vw, 48px);
 
-  /* radii */
-  --radius-0: 0;
-  --radius-1: 2px;
+  /* radii. One scale, applied consistently: pill for anything you press, md for
+     small tiles, lg for cards and panels. */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
 
-  /* shadow */
-  --shadow-lift: 0 2px 24px rgba(21, 24, 29, 0.07);
+  /* shadow. On a dark page a light-tinted shadow is invisible, so depth comes from
+     a near-black spread plus a hairline top edge on the surface itself. */
+  --shadow-lift: 0 10px 34px rgba(0, 0, 0, 0.55);
 
   /* motion */
   --dur-fast: 200ms;

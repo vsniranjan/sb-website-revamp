@@ -20,13 +20,57 @@ export function primeHero(): void {
  * is on screen when the triggers are finally created gets snapped to hidden and
  * played back in, which reads as the page glitching out and recovering.
  *
- * Priming here means nothing is ever painted in a state it has not been animated to.
- * The matching `y` offset is applied now too, so the reveal is a `to` rather than a
- * `from` and never has to snap anything.
+ * Priming here means nothing is ever painted in a state it has not been animated to,
+ * and the reveal becomes a `to` that never has to snap anything.
  */
 export function primeReveals(): void {
-  gsap.set('[data-reveal]', { autoAlpha: 0, y: 32 })
+  gsap.utils.toArray<HTMLElement>('[data-reveal]').forEach((el) => {
+    gsap.set(el, variantFor(el).from)
+  })
   gsap.set('.section__head', { autoAlpha: 0 })
+}
+
+interface RevealVariant {
+  selector: string
+  from: gsap.TweenVars
+  to: gsap.TweenVars
+}
+
+/**
+ * Entrance per element family. One 32px rise applied to every family reads as a
+ * single effect repeated rather than a page with any rhythm, so each family enters
+ * the way its own shape suggests.
+ *
+ * `from` and `to` are declared as a pair on purpose. A shared `to` driving every axis
+ * to zero would flatten CSS offsets that were never part of the entrance: the tilted
+ * sheet carries a 24px `translateY` of its own, and zeroing `y` would steal it.
+ *
+ * First match wins, so the catch-all sits last.
+ */
+const REVEAL_VARIANTS: RevealVariant[] = [
+  // a nine-row ledger fills in from the margin instead of floating up
+  { selector: '.event-row', from: { x: -32, autoAlpha: 0 }, to: { x: 0, autoAlpha: 1 } },
+  // chips seat down onto the board
+  { selector: '.chip', from: { scale: 0.9, autoAlpha: 0 }, to: { scale: 1, autoAlpha: 1 } },
+  // dials and the seal grow from their centre, which is where they are read from
+  { selector: '.gauge, .seal, .radar', from: { scale: 0.86, autoAlpha: 0 }, to: { scale: 1, autoAlpha: 1 } },
+  // the sheets are tilted, and sliding a tilted plane vertically looks broken
+  { selector: '.sheet', from: { scale: 0.97, autoAlpha: 0 }, to: { scale: 1, autoAlpha: 1 } },
+  // cards lift with a little depth behind them
+  {
+    selector: '.plate, .intro__panel',
+    from: { y: 28, scale: 0.97, autoAlpha: 0 },
+    to: { y: 0, scale: 1, autoAlpha: 1 },
+  },
+  // prose blocks keep the plain rise
+  { selector: '*', from: { y: 32, autoAlpha: 0 }, to: { y: 0, autoAlpha: 1 } },
+]
+
+function variantFor(el: Element): RevealVariant {
+  return (
+    REVEAL_VARIANTS.find((v) => el.matches(v.selector)) ??
+    REVEAL_VARIANTS[REVEAL_VARIANTS.length - 1]
+  )
 }
 
 /** Choreographed hero entrance, run once the preloader clears. */
@@ -90,14 +134,27 @@ export function initSectionReveals(): void {
       const fresh = batch.filter((el) => !revealed.has(el))
       if (!fresh.length) return
       fresh.forEach((el) => revealed.add(el))
-      // `to`, not `from`: primeReveals already put these at y 32 and hidden, so there
-      // is nothing to snap and no frame where the element is seen un-animated
-      gsap.to(fresh, {
-        y: 0,
-        autoAlpha: 1,
-        duration: 1.3,
-        ease: 'expo.out',
-        stagger: 0.13,
+      // `to`, not `from`: primeReveals already put these in their start state, so
+      // there is nothing to snap and no frame where an element is seen un-animated.
+      // One tween per variant, so each family animates only the axes it was primed on.
+      const groups = new Map<RevealVariant, Element[]>()
+      fresh.forEach((el) => {
+        const variant = variantFor(el)
+        const group = groups.get(variant)
+        if (group) group.push(el)
+        else groups.set(variant, [el])
+      })
+
+      groups.forEach((els, variant) => {
+        gsap.to(els, {
+          ...variant.to,
+          duration: 1.3,
+          ease: 'expo.out',
+          stagger: 0.13,
+          // hand the element back to CSS once it lands, or GSAP's inline transform
+          // outranks the `:hover` rules on plates, panels and sheets forever
+          clearProps: 'transform,opacity,visibility',
+        })
       })
     },
   })

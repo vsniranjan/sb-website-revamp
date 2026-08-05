@@ -13,8 +13,8 @@ html {
 }
 
 body {
-  background: var(--paper);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-body);
   font-size: var(--text-body);
   line-height: 1.65;
@@ -29,7 +29,7 @@ svg {
 }
 
 a {
-  color: var(--blue);
+  color: var(--accent);
   text-decoration: none;
 }
 
@@ -46,12 +46,12 @@ button {
 }
 
 ::selection {
-  background: var(--blue);
-  color: var(--paper);
+  background: var(--accent);
+  color: var(--bg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--blue);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -85,7 +85,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: var(--space-3);
@@ -95,11 +95,7 @@ button {
   content: '';
   flex: 0 0 var(--space-7);
   height: 1px;
-  background: var(--hairline);
-}
-
-.eyebrow__index {
-  color: var(--ink-faint);
+  background: var(--border-strong);
 }
 
 .section {
@@ -114,7 +110,7 @@ button {
   left: var(--gutter);
   right: var(--gutter);
   height: 1px;
-  background: var(--ink-hairline);
+  background: var(--border);
 }
 
 .section__head {
@@ -133,7 +129,7 @@ button {
 }
 
 .section__subtext {
-  color: var(--ink-muted);
+  color: var(--text-muted);
   max-width: 60ch;
 }
 
@@ -151,7 +147,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  border-radius: var(--radius-0);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
     background-color var(--dur-fast) var(--ease-out),
@@ -162,26 +158,26 @@ button {
 }
 
 .btn--primary {
-  background: var(--blue);
-  color: var(--paper-raised);
-  border: 1px solid var(--blue);
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 1px solid var(--accent);
 }
 
 .btn--primary:hover {
-  background: var(--blue-deep);
-  border-color: var(--blue-deep);
+  background: var(--accent-dim);
+  border-color: var(--accent-dim);
   transform: translateY(-1px);
   box-shadow: var(--shadow-lift);
 }
 
 .btn--secondary {
   background: transparent;
-  color: var(--blue);
-  border: 1px solid var(--blue);
+  color: var(--accent);
+  border: 1px solid var(--accent);
 }
 
 .btn--secondary:hover {
-  background: var(--blue-wash);
+  background: var(--accent-wash);
   transform: translateY(-1px);
 }
 
@@ -193,28 +189,7 @@ button {
 
 .outline {
   color: transparent;
-  -webkit-text-stroke: 1.5px var(--blue);
-}
-
-/* giant ghost section number in the margin */
-.section__num {
-  position: absolute;
-  top: calc(var(--section-pad) * 0.45);
-  left: calc(var(--gutter) * 0.4);
-  font-family: var(--font-display);
-  font-size: clamp(7rem, 18vw, 15rem);
-  font-weight: 600;
-  line-height: 1;
-  color: transparent;
-  -webkit-text-stroke: 1px var(--hairline);
-  pointer-events: none;
-  user-select: none;
-  z-index: -1;
-}
-
-.section__num--right {
-  left: auto;
-  right: calc(var(--gutter) * 0.4);
+  -webkit-text-stroke: 1.5px var(--accent);
 }
 
 /* ---------- underline line-draw links ---------- */
@@ -269,7 +244,7 @@ button {
   width: 34px;
   height: 34px;
   margin: -17px 0 0 -17px;
-  border: 1px solid var(--blue);
+  border: 1px solid var(--accent);
   border-radius: 50%;
   position: relative;
   transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out),
@@ -280,7 +255,7 @@ button {
 .reticle__ring::after {
   content: '';
   position: absolute;
-  background: var(--blue);
+  background: var(--accent);
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
@@ -302,23 +277,23 @@ button {
 
 .reticle.is-hover .reticle__ring {
   transform: scale(1.45);
-  background: var(--blue-wash);
+  background: var(--accent-wash);
 }
 
-/* A blue reticle vanishes on blue-filled surfaces — the event-row hover sweep
+/* A white reticle vanishes on accent-filled surfaces — the event-row hover sweep
    and primary buttons. Invert it there, the same way those surfaces invert
    their own text. */
 .reticle.is-inverted .reticle__ring {
-  border-color: var(--paper-raised);
+  border-color: var(--on-accent);
 }
 
 .reticle.is-inverted .reticle__ring::before,
 .reticle.is-inverted .reticle__ring::after {
-  background: var(--paper-raised);
+  background: var(--on-accent);
 }
 
 .reticle.is-inverted.is-hover .reticle__ring {
-  background: var(--paper-wash);
+  background: var(--surface-wash);
 }
 
 @media (max-width: 900px), (pointer: coarse) {
@@ -338,9 +313,9 @@ button {
 
 .ticker {
   overflow: hidden;
-  border-block: 1px solid var(--ink-hairline);
+  border-block: 1px solid var(--border);
   padding-block: var(--space-3);
-  background: var(--paper);
+  background: var(--bg);
 }
 
 .ticker__track {
@@ -350,8 +325,26 @@ button {
   font-family: var(--font-mono);
   font-size: var(--text-label);
   letter-spacing: 0.22em;
-  color: var(--blue);
+  color: var(--accent);
   will-change: transform;
+}
+
+/*
+ * Content is duplicated once in render.ts (two identical <span> runs), so sliding the
+ * track exactly -50% loops seamlessly. Used to be a GSAP tween ticking the main thread
+ * forever; a CSS animation gets the same loop from the compositor thread instead, for
+ * free the whole time the ticker is off-screen.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .ticker__track {
+    animation: ticker-scroll 28s linear infinite;
+  }
+}
+
+@keyframes ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .ticker__track span {
@@ -364,7 +357,7 @@ button {
   position: fixed;
   inset: 0;
   z-index: var(--z-preloader);
-  background: var(--paper);
+  background: var(--bg);
   display: grid;
   place-items: center;
 }
@@ -381,7 +374,7 @@ button {
 }
 
 .preloader__circle {
-  stroke: var(--blue);
+  stroke: var(--accent);
   stroke-width: 2;
   fill: none;
   stroke-dasharray: 139;
@@ -392,7 +385,7 @@ button {
 
 .preloader__bolt {
   fill: none;
-  stroke: var(--blue);
+  stroke: var(--accent);
   stroke-width: 1.5;
   stroke-dasharray: 120;
   stroke-dashoffset: 120;
@@ -402,11 +395,11 @@ button {
   font-family: var(--font-mono);
   font-size: var(--text-label);
   letter-spacing: 0.16em;
-  color: var(--ink-muted);
+  color: var(--text-muted);
 }
 
 .preloader__counter {
-  color: var(--blue);
+  color: var(--accent);
 }
 
 /* ---------- navbar ---------- */
@@ -421,9 +414,9 @@ button {
 }
 
 .navbar.is-scrolled {
-  background: color-mix(in srgb, var(--paper-raised) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
   backdrop-filter: blur(12px);
-  box-shadow: 0 1px 0 var(--hairline);
+  box-shadow: 0 1px 0 var(--border-strong);
 }
 
 .navbar__inner {
@@ -439,12 +432,16 @@ button {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  color: var(--ink);
+  color: var(--text);
 }
 
 .navbar__logo {
   width: 36px;
   height: 36px;
+  /* The asset is IEEE Blue, which all but disappears on a near-black page. IEEE
+     publishes a reversed white mark for dark backgrounds; this reproduces it without
+     touching the source file, since it is an <img> and cannot inherit currentColor. */
+  filter: brightness(0) invert(1);
 }
 
 .navbar__wordmark {
@@ -457,7 +454,7 @@ button {
 
 .navbar__wordmark em {
   font-style: normal;
-  color: var(--blue);
+  color: var(--accent);
 }
 
 .navbar__nav {
@@ -473,7 +470,7 @@ button {
   position: relative;
   font-size: var(--text-small);
   font-weight: 500;
-  color: var(--ink-muted);
+  color: var(--text-muted);
   padding-block: var(--space-2);
   transition: color var(--dur-fast) var(--ease-out);
 }
@@ -485,7 +482,7 @@ button {
   bottom: 0;
   width: 100%;
   height: 1px;
-  background: var(--blue);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform var(--dur-fast) var(--ease-out);
@@ -493,7 +490,7 @@ button {
 
 .navbar__link:hover,
 .navbar__link.is-active {
-  color: var(--ink);
+  color: var(--text);
 }
 
 .navbar__link:hover::after,
@@ -520,7 +517,7 @@ button {
   display: block;
   width: 22px;
   height: 1.5px;
-  background: var(--ink);
+  background: var(--text);
   transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
 }
 
@@ -538,7 +535,7 @@ button {
   position: fixed;
   inset: 0;
   z-index: var(--z-menu);
-  background: var(--paper);
+  background: var(--bg);
   display: grid;
   align-content: center;
   justify-items: start;
@@ -562,22 +559,22 @@ button {
   font-family: var(--font-display);
   font-size: clamp(2rem, 9vw, 3rem);
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
   line-height: 1.1;
   transition: color var(--dur-fast) var(--ease-out);
 }
 
 .menu__link:hover {
-  color: var(--blue);
+  color: var(--accent);
 }
 
 /* ---------- footer ---------- */
 
 .footer {
   position: relative;
-  border-top: 1px solid var(--ink-hairline);
+  border-top: 1px solid var(--border);
   padding-block: var(--space-9) var(--space-6);
-  background: var(--paper);
+  background: var(--bg);
 }
 
 .footer__layout {
@@ -595,7 +592,7 @@ button {
 
 .footer__wordmark em {
   font-style: normal;
-  color: var(--blue);
+  color: var(--accent);
 }
 
 .footer__tagline {
@@ -603,12 +600,12 @@ button {
   font-size: var(--text-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--text-faint);
   margin-block: var(--space-1) var(--space-4);
 }
 
 .footer__blurb {
-  color: var(--ink-muted);
+  color: var(--text-muted);
   font-size: var(--text-small);
   max-width: 42ch;
 }
@@ -618,7 +615,7 @@ button {
   font-size: var(--text-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink-faint);
+  color: var(--text-faint);
   margin-bottom: var(--space-4);
 }
 
@@ -633,10 +630,10 @@ button {
   gap: var(--space-4);
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid var(--ink-hairline);
+  border-top: 1px solid var(--border);
   padding-top: var(--space-5);
   font-size: var(--text-small);
-  color: var(--ink-muted);
+  color: var(--text-muted);
 }
 
 .footer__top {
@@ -644,7 +641,7 @@ button {
   font-size: var(--text-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--blue);
+  color: var(--accent);
 }
 
 /* ---------- responsive ---------- */
