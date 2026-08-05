@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>IEEE MACE Student Branch</title>
+<meta name="description" content="IEEE Student Branch at Model Engineering College, Kochi. Chartered 1988. Fieldwork, events, chapters and people, listed.">
+<link rel="icon" href="../../public/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------
+   The Index. One typeface, one accent, one radius, one theme.
+   Base CSS is written for a 360px viewport. Breakpoints add only.
+   --------------------------------------------------------------- */
+
+:root{
+  --paper:#F5F4F1;
+  --ink:#17181A;
+  --ink-2:#5B5F66;          /* 5.83:1 on paper */
+  --rule:rgba(23,24,26,.14);
+  --mark:rgba(23,24,26,.5);
+  --blue:#00629B;           /* IEEE Blue. The only accent. 6.07:1 on paper */
+  --radius:0px;             /* one corner-radius system for the page */
+  --mast:52px;
+  --font:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:17px;
+  line-height:1.5;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block;border-radius:var(--radius)}
+a{color:var(--blue);text-decoration-thickness:1px;text-underline-offset:3px}
+h1,h2,h3,p,ul{margin:0}
+ul{list-style:none;padding:0}
+
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:var(--radius)}
+
+.wrap{width:100%;max-width:68rem;margin:0 auto;padding:0 1rem}
+@media (min-width:768px){ .wrap{padding:0 2rem} }
+@media (min-width:1024px){ .wrap{padding:0 3rem} }
+
+/* ---------------- masthead ---------------- */
+
+.mast{
+  position:sticky;top:0;z-index:20;
+  background:var(--paper);
+  border-bottom:1px solid var(--rule);
+}
+.mast-in{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  min-height:var(--mast);
+}
+.brand{display:flex;align-items:center;gap:.55rem;color:inherit;text-decoration:none}
+.brand img{width:20px;height:20px}
+.brand b{font-weight:600;letter-spacing:-.015em;font-size:.9375rem}
+.brand span{display:none;color:var(--ink-2);font-size:.9375rem}
+@media (min-width:768px){ .brand span{display:inline} }
+
+.nav{display:none}
+@media (min-width:768px){
+  .nav{display:flex;gap:1.5rem}
+  .nav a{
+    color:var(--ink-2);text-decoration:none;font-size:.875rem;font-weight:500;
+    padding:.25rem 0;transition:color .18s ease;
+  }
+  .nav a:hover,.nav a[aria-current="true"]{color:var(--blue)}
+}
+
+/* ---------------- hero ---------------- */
+
+.hero{
+  min-height:calc(100dvh - var(--mast));
+  display:flex;flex-direction:column;justify-content:space-between;gap:2.5rem;
+  padding:2.75rem 0 1.75rem;
+}
+@media (min-width:768px){ .hero{padding:5rem 0 2.5rem} }
+
+.statement{
+  font-size:clamp(2.75rem,13vw,6.5rem);
+  line-height:.94;
+  letter-spacing:-.038em;
+  font-weight:500;
+  max-width:16ch;
+}
+.hl{display:block}
+.support{
+  margin-top:1.5rem;max-width:34rem;
+  color:var(--ink-2);font-size:1rem;line-height:1.55;
+}
+@media (min-width:768px){ .support{margin-top:2rem;font-size:1.0625rem} }
+
+/* ---------------- index rows ---------------- */
+
+.group{padding:.35rem 0}
+.group + .group{border-top:1px solid var(--rule)}   /* hairlines separate groups, never rows */
+
+.row{border:0}
+.row summary{display:block;list-style:none;cursor:pointer}
+.row summary::-webkit-details-marker{display:none}
+
+.line{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto 1.1rem;
+  align-items:baseline;
+  column-gap:1rem;
+  padding:.6rem 0;
+}
+@media (min-width:768px){ .line{column-gap:2rem;padding:.7rem 0} }
+
+.name{
+  min-width:0;overflow-wrap:break-word;
+  font-size:1.0625rem;font-weight:500;letter-spacing:-.012em;
+  transition:color .18s ease;
+}
+@media (min-width:768px){ .name{font-size:1.125rem} }
+
+.fig{
+  font-variant-numeric:tabular-nums lining-nums;
+  font-feature-settings:"tnum" 1;
+  font-size:.9375rem;font-weight:500;color:var(--ink-2);
+  white-space:nowrap;letter-spacing:.005em;
+  transition:color .18s ease;
+}
+
+.mark{
+  position:relative;width:10px;height:10px;align-self:center;justify-self:end;
+  color:var(--mark);transition:transform .25s ease,color .18s ease;
+}
+.mark::before,.mark::after{content:"";position:absolute;inset:0;margin:auto;background:currentColor}
+.mark::before{width:100%;height:1px}
+.mark::after{width:1px;height:100%}
+
+.row summary:hover .name,
+.row summary:hover .fig{color:var(--blue)}
+.row summary:hover .mark{color:var(--blue)}
+.row[open] .name{color:var(--blue)}
+.row[open] .mark{transform:rotate(45deg);color:var(--blue)}
+
+.body{padding:0 0 1.1rem}
+.body p{color:var(--ink-2);font-size:.9375rem;line-height:1.6;max-width:46ch}
+.body p + p{margin-top:.5rem}
+@media (min-width:768px){ .body{padding-bottom:1.35rem} }
+
+.body-media{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.9rem}
+.poster{width:118px;height:auto;border:1px solid var(--rule)}
+@media (min-width:768px){ .poster{width:148px} }
+
+/* ---------------- sections ---------------- */
+
+.sec{border-top:1px solid var(--ink);padding-top:1.35rem;margin-top:3.5rem}
+@media (min-width:768px){ .sec{margin-top:5rem;padding-top:1.75rem} }
+
+.sec-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  margin-bottom:1.1rem;
+}
+.sec-title{font-size:1.5rem;font-weight:600;letter-spacing:-.025em}
+.sec-count{
+  font-variant-numeric:tabular-nums lining-nums;
+  color:var(--ink-2);font-size:.9375rem;font-weight:500;
+}
+.sec-note{margin-top:.4rem;color:var(--ink-2);font-size:.9375rem;max-width:34rem}
+
+@media (min-width:1024px){
+  .sec{display:grid;grid-template-columns:12rem minmax(0,1fr);column-gap:3.5rem}
+  .sec-head{display:block;margin:0;align-self:start;position:sticky;top:calc(var(--mast) + 2.25rem)}
+  .sec-title{font-size:1.625rem}
+  .sec-count{display:block;margin-top:.35rem}
+  .sec-body{grid-column:2}
+}
+
+/* ---------------- people ---------------- */
+
+.p-row{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:.85rem;align-items:center;padding:.6rem 0}
+.p-row img{width:42px;height:42px;object-fit:cover;object-position:50% 22%;background:var(--rule)}
+.p-txt{display:flex;flex-direction:column}
+.p-name{font-size:1.0625rem;font-weight:500;letter-spacing:-.012em}
+.p-role{font-size:.9375rem;color:var(--ink-2)}
+@media (min-width:768px){
+  .p-row{column-gap:1.1rem;padding:.7rem 0}
+  .p-row img{width:52px;height:52px}
+  .p-txt{flex-direction:row;justify-content:space-between;align-items:baseline;gap:1rem}
+  .p-name{font-size:1.125rem}
+}
+
+/* ---------------- join ---------------- */
+
+.join-lede{font-size:1.25rem;line-height:1.35;letter-spacing:-.02em;max-width:26ch;font-weight:500}
+@media (min-width:768px){ .join-lede{font-size:1.5rem;max-width:30ch} }
+
+.benefits{margin-top:1.5rem;display:flex;flex-direction:column;gap:.55rem;max-width:42ch}
+.benefits li{color:var(--ink-2);font-size:.9375rem;line-height:1.5;padding-left:1rem;position:relative}
+.benefits li::before{content:"";position:absolute;left:0;top:.65em;width:6px;height:1px;background:var(--mark)}
+
+.cta{
+  display:inline-block;margin-top:2rem;
+  background:var(--blue);color:var(--paper);
+  font-size:1rem;font-weight:600;letter-spacing:-.01em;
+  padding:.8rem 1.4rem;border-radius:var(--radius);text-decoration:none;
+  transition:opacity .18s ease,transform .18s ease;
+}
+.cta:hover{opacity:.88}
+.cta:active{transform:translateY(1px)}
+.cta-note{margin-top:.85rem;color:var(--ink-2);font-size:.875rem;max-width:38ch}
+
+/* ---------------- footer ---------------- */
+
+.foot{border-top:1px solid var(--rule);margin-top:4.5rem;padding:1.75rem 0 3rem}
+.foot-in{display:flex;flex-direction:column;gap:.5rem}
+.foot img{width:18px;height:18px;margin-bottom:.35rem}
+.foot p{color:var(--ink-2);font-size:.875rem}
+.foot b{color:var(--ink);font-weight:600}
+@media (min-width:768px){
+  .foot-in{flex-direction:row;justify-content:space-between;align-items:flex-end;gap:2rem}
+}
+
+/* ---------------- motion ---------------- */
+/* Hero settles once on load; groups fade up as they are reached.
+   Both animate transform and opacity only. */
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.js .statement .hl,.js .support,.js .hero-index{animation:rise .7s cubic-bezier(.2,.7,.2,1) both}
+.js .statement .hl:nth-child(2){animation-delay:.07s}
+.js .statement .hl:nth-child(3){animation-delay:.14s}
+.js .support{animation-delay:.24s}
+.js .hero-index{animation-delay:.34s}
+
+.js .reveal{opacity:0;transform:translateY(10px)}
+.js .reveal.in{opacity:1;transform:none;transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}
+
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .reveal{opacity:1;transform:none}
+}
+
+[id]{scroll-margin-top:calc(var(--mast) + 1rem)}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <a class="brand" href="#top">
+      <img src="../../public/logo.svg" alt="">
+      <b>IEEE MACE</b> <span>Student Branch</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#fieldwork">Fieldwork</a>
+      <a href="#events">Events</a>
+      <a href="#chapters">Chapters</a>
+      <a href="#people">People</a>
+      <a href="#join">Join</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ statement ============ -->
+  <section class="wrap hero">
+    <div>
+      <h1 class="statement">
+        <span class="hl">Engineering</span>
+        <span class="hl">that leaves</span>
+        <span class="hl">the campus.</span>
+      </h1>
+      <p class="support">IEEE MACE Student Branch at Model Engineering College, Kochi. Chartered in 1988. What follows is the record: fieldwork, events, chapters, people.</p>
+    </div>
+
+    <div class="hero-index">
+      <div class="group" style="border-top:1px solid var(--rule)">
+        <div class="line"><span class="name">Years since charter</span><span class="fig">38</span><span></span></div>
+        <div class="line"><span class="name">Members</span><span class="fig">300+</span><span></span></div>
+        <div class="line"><span class="name">Technical chapters</span><span class="fig">9</span><span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ fieldwork ============ -->
+  <section class="wrap sec" id="fieldwork">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">Fieldwork</h2>
+      <p class="sec-count">4</p>
+    </div>
+    <div class="sec-body">
+      <div class="group reveal">
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Light the Lives</span><span class="fig">2019</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Volunteers lived a week in Kuttampuzha panchayat and installed two solar power systems.</p>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Connect the Lives</span><span class="fig">2021</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Online classes at a school in Uriyampetty tribal colony. A trained resident teacher still runs it.</p>
+            <div class="body-media">
+              <img class="poster" src="../../public/gallery/connect-the-lives.webp" alt="Poster for Connect the Lives" loading="lazy">
+            </div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Wild Elephant Tracker</span><span class="fig">Ongoing</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Detects elephant movement at forest fringes and warns nearby communities in real time.</p>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Enhance their Lives</span><span class="fig">Upcoming</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Sanitary pad incinerators and waste disposal for schools in remote areas.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ events ============ -->
+  <section class="wrap sec" id="events">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">Events</h2>
+      <p class="sec-count">25</p>
+    </div>
+    <div class="sec-body">
+
+      <!-- annual programmes: right column carries the real figure -->
+      <div class="group reveal">
+
+        <details class="row">
+          <summary><span class="line"><span class="name">&gt;.hack();</span><span class="fig">7 years</span><span class="mark"></span></span></summary>
+          <div class="body"><p>The branch hackathon. Held every year.</p></div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">SPARC</span><span class="fig">5 years</span><span class="mark"></span></span></summary>
+          <div class="body"><p>A speaker series aimed at first-year students.</p></div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">STEM Initiative</span><span class="fig">500 students</span><span class="mark"></span></span></summary>
+          <div class="body"><p>School outreach run by members, across five schools each year.</p></div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Hack-Her</span><span class="fig">24 hours</span><span class="mark"></span></span></summary>
+          <div class="body"><p>A women-only hackathon.</p></div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">HACK-A-DDIT</span><span class="fig">Lions Club</span><span class="mark"></span></span></summary>
+          <div class="body"><p>A hackathon on drug-abuse awareness, run with the Lions Club.</p></div>
+        </details>
+
+      </div>
+
+      <!-- individual events: right column is the position in this list -->
+      <div class="group reveal">
+
+        <details class="row">
+          <summary><span class="line"><span class="name">AKIASSC 2026</span><span class="fig">1</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Statewide IEEE student congress.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/akiassc-2026.webp" alt="Poster for AKIASSC 2026" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Error 404: Debugging</span><span class="fig">2</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A debugging contest. Find the fault, fix it, next question.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/error-404-debugging.webp" alt="Poster for Error 404: Debugging" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Morse Code Contest</span><span class="fig">3</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A decoding contest in Morse.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/morse-code-contest.webp" alt="Poster for the Morse Code Contest" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">AI, Robotics, Space and Sustainability</span><span class="fig">4</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A talk across four fields and the places they meet.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/ai-robotics-space-sustainability.webp" alt="Poster for AI, Robotics, Space and Sustainability" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">A Robo Roadmap</span><span class="fig">5</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Where to start with robotics, and what to learn first.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/a-robo-roadmap.webp" alt="Poster for A Robo Roadmap" loading="lazy"></div>
+          </div>
+        </details>
+
+      </div>
+
+      <div class="group reveal">
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Women in Tech: Beyond Stereotypes</span><span class="fig">6</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A session on women working in technical roles.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/women-in-tech-beyond-stereotypes.webp" alt="Poster for Women in Tech: Beyond Stereotypes" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Women Leading Innovation</span><span class="fig">7</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A talk on women leading technical work.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/women-leading-innovation.webp" alt="Poster for Women Leading Innovation" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Understanding Gender Reality</span><span class="fig">8</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>An open session on gender.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/understanding-gender-reality.webp" alt="Poster for Understanding Gender Reality" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Environment Day</span><span class="fig">9</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>The branch marked World Environment Day on campus.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/environment-day.webp" alt="Poster for Environment Day" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Farewell 2026</span><span class="fig">10</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A send-off for the outgoing batch.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/farewell-2026.webp" alt="Poster for Farewell 2026" loading="lazy"></div>
+          </div>
+        </details>
+
+      </div>
+
+      <div class="group reveal">
+
+        <details class="row">
+          <summary><span class="line"><span class="name">PES Day 2026</span><span class="fig">11</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Power and Energy Society day, run by the chapter.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/pes-day-2026.webp" alt="Poster for PES Day 2026" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">The Power Quest</span><span class="fig">12</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A contest on power systems.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/the-power-quest.webp" alt="Poster for The Power Quest" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Power Electronics Talk</span><span class="fig">13</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Converters, drives and where power electronics is going.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/power-electronics-talk.webp" alt="Poster for the power electronics talk" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">EV Career Pathways</span><span class="fig">14</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Careers in electric vehicles, and the skills they ask for.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/ev-career-pathways.webp" alt="Poster for EV Career Pathways" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">SPS: World of Opportunities</span><span class="fig">15</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>What the Signal Processing Society offers student members.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/sps-world-of-opportunities.webp" alt="Poster for SPS: World of Opportunities" loading="lazy"></div>
+          </div>
+        </details>
+
+      </div>
+
+      <div class="group reveal">
+
+        <details class="row">
+          <summary><span class="line"><span class="name">SPS Scholarship Guidance</span><span class="fig">16</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>How to apply for Signal Processing Society scholarships.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/sps-scholarship-guidance.webp" alt="Poster for SPS Scholarship Guidance" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Distinguished Lecture: Deep Learning</span><span class="fig">17</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>An IEEE Distinguished Lecture on deep learning.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/distinguished-lecture-deep-learning.webp" alt="Poster for the Distinguished Lecture on deep learning" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Informatyka: Agentic AI</span><span class="fig">18</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>A session on agentic AI systems.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/informatyka-agentic-ai.webp" alt="Poster for Informatyka: Agentic AI" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">Ethical AI, Session One</span><span class="fig">19</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>First session of a series on ethics in AI.</p>
+            <div class="body-media"><img class="poster" src="../../public/gallery/ethical-ai-session-1.webp" alt="Poster for Ethical AI, Session One" loading="lazy"></div>
+          </div>
+        </details>
+
+        <details class="row">
+          <summary><span class="line"><span class="name">LinkedIn and Industry Success</span><span class="fig">20</span><span class="mark"></span></span></summary>
+          <div class="body">
+            <p>Building a profile that industry reads. Announced once, then rescheduled.</p>
+            <div class="body-media">
+              <img class="poster" src="../../public/gallery/linkedin-industry-success.webp" alt="First poster for LinkedIn and Industry Success" loading="lazy">
+              <img class="poster" src="../../public/gallery/linkedin-industry-success-rescheduled.webp" alt="Revised poster for the rescheduled LinkedIn and Industry Success session" loading="lazy">
+            </div>
+          </div>
+        </details>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ chapters ============ -->
+  <section class="wrap sec" id="chapters">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">Chapters</h2>
+      <p class="sec-count">9</p>
+    </div>
+    <div class="sec-body">
+
+      <div class="group reveal">
+        <details class="row">
+          <summary><span class="line"><span class="name">Computer Society</span><span class="fig">CS</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Computing, software and systems.</p></div>
+        </details>
+        <details class="row">
+          <summary><span class="line"><span class="name">Robotics and Automation Society</span><span class="fig">RAS</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Robotics, control and automated systems.</p></div>
+        </details>
+        <details class="row">
+          <summary><span class="line"><span class="name">Signal Processing Society</span><span class="fig">SPS</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Signals, audio, images and the mathematics under them.</p></div>
+        </details>
+      </div>
+
+      <div class="group reveal">
+        <details class="row">
+          <summary><span class="line"><span class="name">Communications Society</span><span class="fig">ComSoc</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Networks, transmission and wireless systems.</p></div>
+        </details>
+        <details class="row">
+          <summary><span class="line"><span class="name">Industry Applications Society</span><span class="fig">IAS</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Industrial systems, drives and plant engineering.</p></div>
+        </details>
+        <details class="row">
+          <summary><span class="line"><span class="name">Power and Energy Society</span><span class="fig">PES</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Generation, transmission and the grid.</p></div>
+        </details>
+      </div>
+
+      <div class="group reveal">
+        <details class="row">
+          <summary><span class="line"><span class="name">IE/PELS Joint Chapter</span><span class="fig">IE/PELS</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Industrial electronics and power electronics, run as one chapter.</p></div>
+        </details>
+        <details class="row">
+          <summary><span class="line"><span class="name">Women in Engineering</span><span class="fig">WIE</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Programmes for women in engineering, on campus and outside it.</p></div>
+        </details>
+        <details class="row">
+          <summary><span class="line"><span class="name">SIGHT Group</span><span class="fig">SIGHT</span><span class="mark"></span></span></summary>
+          <div class="body"><p>Special Interest Group on Humanitarian Technology.</p></div>
+        </details>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ people ============ -->
+  <section class="wrap sec" id="people">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">People</h2>
+      <p class="sec-count">6</p>
+    </div>
+    <div class="sec-body">
+
+      <div class="group reveal">
+        <div class="p-row">
+          <img src="../../public/team/neethu-salim.webp" alt="Prof. Neethu Salim" loading="lazy" width="52" height="52">
+          <span class="p-txt"><span class="p-name">Prof. Neethu Salim</span><span class="p-role">Student Branch Counsellor</span></span>
+        </div>
+      </div>
+
+      <div class="group reveal">
+        <div class="p-row">
+          <img src="../../public/team/jes-gigo.webp" alt="Jes Gigo" loading="lazy" width="52" height="52">
+          <span class="p-txt"><span class="p-name">Jes Gigo</span><span class="p-role">Chair</span></span>
+        </div>
+        <div class="p-row">
+          <img src="../../public/team/jassim-mohammed-salim.webp" alt="Jassim Mohammed Salim" loading="lazy" width="52" height="52">
+          <span class="p-txt"><span class="p-name">Jassim Mohammed Salim</span><span class="p-role">Vice Chair</span></span>
+        </div>
+        <div class="p-row">
+          <img src="../../public/team/ryan-nelson.webp" alt="Ryan Nelson" loading="lazy" width="52" height="52">
+          <span class="p-txt"><span class="p-name">Ryan Nelson</span><span class="p-role">Secretary</span></span>
+        </div>
+        <div class="p-row">
+          <img src="../../public/team/navya-maria-vincent.webp" alt="Navya Maria Vincent" loading="lazy" width="52" height="52">
+          <span class="p-txt"><span class="p-name">Navya Maria Vincent</span><span class="p-role">Joint Secretary</span></span>
+        </div>
+        <div class="p-row">
+          <img src="../../public/team/joseph-hamlin.webp" alt="Joseph Hamlin" loading="lazy" width="52" height="52">
+          <span class="p-txt"><span class="p-name">Joseph Hamlin</span><span class="p-role">Treasurer</span></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ join ============ -->
+  <section class="wrap sec" id="join">
+    <div class="sec-head reveal">
+      <h2 class="sec-title">Join</h2>
+    </div>
+    <div class="sec-body reveal">
+      <p class="join-lede">Membership runs through IEEE. Once you are a member you are counted here, in any of the nine chapters.</p>
+      <ul class="benefits">
+        <li>Travel grants and scholarships for conferences and study.</li>
+        <li>Access to the IEEE eLearning Library.</li>
+        <li>Standards work and technical societies, the ones industry uses.</li>
+      </ul>
+      <a class="cta" href="https://www.ieee.org/membership/join/">Join IEEE</a>
+      <p class="cta-note">IEEE handles the membership. The branch handles everything else on this page.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <img src="../../public/logo.svg" alt="">
+      <p><b>IEEE MACE Student Branch</b></p>
+      <p>Model Engineering College, Thrikkakara, Kochi</p>
+    </div>
+    <div>
+      <p>Chartered 1988</p>
+      <p>&copy; 2026 IEEE MACE Student Branch</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var targets = document.querySelectorAll('.reveal');
+
+  if (reduce || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < targets.length; i++) targets[i].classList.add('in');
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
+    for (var j = 0; j < targets.length; j++) io.observe(targets[j]);
+  }
+
+  // Mark the section currently being read in the masthead nav.
+  var links = document.querySelectorAll('.nav a[href^="#"]');
+  var map = {};
+  var sections = [];
+  links.forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) { map[id] = a; sections.push(el); }
+  });
+  if (sections.length && 'IntersectionObserver' in window) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          links.forEach(function (a) { a.removeAttribute('aria-current'); });
+          map[e.target.id].setAttribute('aria-current', 'true');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(function (s) { spy.observe(s); });
+  }
+})();
+</script>
+
+</body>
+</html>

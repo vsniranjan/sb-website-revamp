@@ -19,7 +19,10 @@
   --font-body: 'Inter Variable', 'Inter', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 
-  --text-display: clamp(2.9rem, 8.5vw, 7rem);
+  /* The 2.9rem floor held until 546px wide, so a 360px phone rendered the hero at
+     46px. "Shaping&nbsp;Tomorrow." is nbsp-joined and cannot wrap, so it ran past
+     the viewport and was only hidden by the `overflow-x` guard on body. */
+  --text-display: clamp(2.1rem, 8.5vw, 7rem);
   --text-h2: clamp(2rem, 4.5vw, 3.6rem);
   --text-h3: clamp(1.15rem, 1.6vw, 1.4rem);
   --text-body: 1.0625rem;

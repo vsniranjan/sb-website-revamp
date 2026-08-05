@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smooth backdrop options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f7f4ee;
+    --ink: #15181d;
+    --ink-muted: #49505a;
+    --blue: #00629b;
+    --hairline: rgba(0, 98, 155, .22);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: Inter, system-ui, sans-serif;
+    line-height: 1.65;
+    min-height: 100dvh;
+  }
+
+  /* The backdrop sits behind everything, exactly as Blueprint's canvas does today. */
+  #bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 62ch;
+    margin-inline: auto;
+    padding: clamp(28px, 9vh, 88px) clamp(20px, 5vw, 40px) 260px;
+  }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .75rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin: 0 0 1rem;
+  }
+  h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.1rem, 8.5vw, 4rem);
+    font-weight: 600;
+    line-height: .98;
+    letter-spacing: -.03em;
+    margin: 0 0 1.25rem;
+  }
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    margin: 3.5rem 0 .75rem;
+  }
+  p { margin: 0 0 1.1rem; color: var(--ink-muted); }
+  p.lead { color: var(--ink); font-size: 1.0625rem; }
+
+  /* ---------- controls ---------- */
+  .panel {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    background: rgba(247, 244, 238, .93);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--hairline);
+    padding: 14px clamp(14px, 4vw, 28px) calc(14px + env(safe-area-inset-bottom));
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .72rem;
+    letter-spacing: .06em;
+  }
+  .modes { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  button {
+    font: inherit;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    padding: 9px 13px;
+    min-height: 40px;
+    color: var(--blue);
+    background: transparent;
+    border: 1px solid var(--hairline);
+    cursor: pointer;
+  }
+  button[aria-pressed="true"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+  .sliders { display: grid; gap: 10px; }
+  @media (min-width: 720px) { .sliders { grid-template-columns: 1fr 1fr; gap: 10px 28px; } }
+  label { display: grid; grid-template-columns: 8.5em 1fr auto; align-items: center; gap: 10px; color: var(--ink-muted); }
+  input[type="range"] { width: 100%; accent-color: var(--blue); min-height: 32px; }
+  .val { color: var(--blue); font-variant-numeric: tabular-nums; }
+  .note { margin: 10px 0 0; color: var(--ink-muted); line-height: 1.5; letter-spacing: 0; font-size: .74rem; }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<main>
+  <p class="eyebrow">IEEE MACE Student Branch</p>
+  <h1>Empowering Innovation, Shaping&nbsp;Tomorrow.</h1>
+  <p class="lead">
+    Real body copy sits here so you can judge the one thing that actually decides this:
+    whether the backdrop stays out of the way of reading.
+  </p>
+
+  <h2>Light the Lives</h2>
+  <p>
+    Volunteers lived a week in Kuttampuzha panchayat and installed two solar power systems
+    in a community that had no reliable electricity. Scroll and drag the morph slider
+    together, then watch what the field does underneath this paragraph.
+  </p>
+
+  <h2>Connect the Lives</h2>
+  <p>
+    A communication module at a tribal-colony school in Uriyampetty, so children could
+    attend online classes, run by a trained resident teacher. It is still running.
+  </p>
+
+  <h2>Wild Elephant Tracker</h2>
+  <p>
+    An early warning system that detects elephant movement at forest fringes and alerts
+    nearby communities in real time. If any mode makes this harder to read than the others,
+    that mode is wrong regardless of how it looks with no text over it.
+  </p>
+
+  <h2>What to look for</h2>
+  <p>
+    Legibility first. Then whether the morph slider produces a real change in structure,
+    or just drift. A backdrop that only drifts will feel identical in every section of the
+    real site, which is the failure mode worth catching now.
+  </p>
+</main>
+
+<div class="panel">
+  <div class="modes" id="modes"></div>
+  <div class="sliders">
+    <label>Morph <input id="morph" type="range" min="0" max="8" step=".01" value="0"><span class="val" id="morphV">0.0</span></label>
+    <label>Intensity <input id="alpha" type="range" min="2" max="20" step="1" value="9"><span class="val" id="alphaV">9%</span></label>
+  </div>
+  <p class="note" id="note"></p>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('bg');
+  const ctx = canvas.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Every mode renders into a small offscreen buffer that gets scaled up with
+  // smoothing on. That upscale is what makes these smooth, and it cuts the
+  // per-frame cost by the square of the scale factor.
+  const off = document.createElement('canvas');
+  const offCtx = off.getContext('2d');
+
+  let W = 0, H = 0, lw = 0, lh = 0, img = null, field = null;
+
+  const MODES = {
+    wave: {
+      label: 'Wave',
+      res: 220,
+      note: 'Four radial sources, amplitudes summed. Crests reinforce, crest against trough cancels to nothing. Morph moves the sources, so the interference reorganises rather than drifting.',
+    },
+    contour: {
+      label: 'Contour',
+      res: 200,
+      note: 'Noise field folded into soft repeating bands. Topographic, with no stroked isoline anywhere. Morph shifts and rescales the field.',
+    },
+    ink: {
+      label: 'Ink',
+      res: 150,
+      note: 'Blue bled into paper: repeated diffusion of a few seed points, with slow upward drift. Morph reseeds, so each section grows its own bloom.',
+    },
+    rd: {
+      label: 'Reaction',
+      res: 130,
+      note: 'Gray-Scott reaction diffusion. Structure emerges from two chemicals rather than being drawn. Morph shifts feed and kill rates, which moves it between regimes.',
+    },
+  };
+  let mode = 'wave';
+  let morph = 0;
+  let maxAlpha = 9;
+
+  function resize() {
+    W = innerWidth; H = innerHeight;
+    canvas.width = W; canvas.height = H;
+    const res = MODES[mode].res;
+    lw = res;
+    lh = Math.max(2, Math.round(res * H / W));
+    off.width = lw; off.height = lh;
+    img = offCtx.createImageData(lw, lh);
+    field = new Float32Array(lw * lh);
+    // ink and reaction carry state between frames, so they need a clean start
+    initState();
+  }
+
+  /* ---------- shared noise ---------- */
+  function hash(x, y) {
+    let n = (x | 0) * 374761393 + (y | 0) * 668265263;
+    n = (n ^ (n >> 13)) * 1274126177;
+    return ((n ^ (n >> 16)) >>> 0) / 4294967295;
+  }
+  function vnoise(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y);
+    const xf = x - xi, yf = y - yi;
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+  }
+  function fbm(x, y) {
+    let s = 0, amp = .5, f = 1;
+    for (let i = 0; i < 4; i++) { s += vnoise(x * f, y * f) * amp; amp *= .5; f *= 2; }
+    return s;
+  }
+
+  /* ---------- mode: wave superposition ---------- */
+  function wave(t) {
+    const n = 4, ar = lh / lw;
+    const sx = [], sy = [];
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2 + morph * .38 + t * .04;
+      sx.push(.5 + Math.cos(a) * (.30 + .07 * Math.sin(morph * .7 + i)));
+      sy.push(.5 + Math.sin(a) * (.26 + .06 * Math.cos(morph * .5 + i)));
+    }
+    const k = 34 + morph * 3.4;
+    for (let y = 0; y < lh; y++) {
+      const v = y / lh;
+      for (let x = 0; x < lw; x++) {
+        const u = x / lw;
+        let s = 0;
+        for (let i = 0; i < n; i++) {
+          const dx = u - sx[i], dy = (v - sy[i]) * ar;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          s += Math.sin(d * k - t * 1.7 + i * 1.1) / (1 + d * 4.5);
+        }
+        field[y * lw + x] = Math.min(1, Math.abs(s / n) * 2.05);
+      }
+    }
+  }
+
+  /* ---------- mode: soft contour bands ---------- */
+  function contour(t) {
+    const scale = 2.4 + morph * .18;
+    const ox = morph * .6, oy = t * .012;
+    const bands = 6;
+    for (let y = 0; y < lh; y++) {
+      for (let x = 0; x < lw; x++) {
+        const n = fbm(x / lw * scale + ox, y / lh * scale * (lh / lw) + oy);
+        const q = n * bands;
+        const f = q - Math.floor(q);
+        // triangle wave, cubed: a soft ridge at each threshold, no hard edge
+        const pulse = 1 - Math.abs(f * 2 - 1);
+        field[y * lw + x] = pulse * pulse * pulse;
+      }
+    }
+  }
+
+  /* ---------- mode: ink diffusion ---------- */
+  let inkA = null, inkB = null, inkSeed = -1, inkPts = [];
+  function ink(t) {
+    if (Math.floor(morph) !== inkSeed) {
+      inkSeed = Math.floor(morph);
+      inkPts = [];
+      for (let i = 0; i < 5; i++) {
+        inkPts.push([
+          ((hash(inkSeed * 7 + i, 11) * .7) + .15) * lw | 0,
+          ((hash(inkSeed * 13 + i, 29) * .7) + .15) * lh | 0,
+        ]);
+      }
+    }
+    // The nibs keep feeding every frame. Pure diffusion decays to nothing within
+    // seconds, so a one-shot seed leaves the page blank until morph next changes.
+    for (const [cx, cy] of inkPts) {
+      for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) {
+        const px = cx + dx, py = cy + dy;
+        if (px > 0 && px < lw && py > 0 && py < lh) inkA[py * lw + px] += .55;
+      }
+    }
+    // 5-point diffusion with a slow upward bias, so the bloom creeps like ink in fibre.
+    // Divisor above the weight sum sets the decay that balances the feed.
+    for (let y = 1; y < lh - 1; y++) {
+      for (let x = 1; x < lw - 1; x++) {
+        const i = y * lw + x;
+        const s = inkA[i] + inkA[i - 1] + inkA[i + 1] + inkA[i - lw] * 1.15 + inkA[i + lw] * .85;
+        inkB[i] = s / 5.11;
+      }
+    }
+    const tmp = inkA; inkA = inkB; inkB = tmp;
+    for (let i = 0; i < field.length; i++) field[i] = Math.min(1, inkA[i] * .9);
+  }
+
+  /* ---------- mode: reaction diffusion (Gray-Scott) ---------- */
+  let u = null, v = null, u2 = null, v2 = null;
+  function rd() {
+    const feed = .034 + (morph / 8) * .022;
+    const kill = .057 + (morph / 8) * .006;
+    const steps = 6;
+    for (let s = 0; s < steps; s++) {
+      for (let y = 1; y < lh - 1; y++) {
+        for (let x = 1; x < lw - 1; x++) {
+          const i = y * lw + x;
+          const lu = u[i - 1] + u[i + 1] + u[i - lw] + u[i + lw] - 4 * u[i];
+          const lv = v[i - 1] + v[i + 1] + v[i - lw] + v[i + lw] - 4 * v[i];
+          const uvv = u[i] * v[i] * v[i];
+          u2[i] = u[i] + (.16 * lu - uvv + feed * (1 - u[i]));
+          v2[i] = v[i] + (.08 * lv + uvv - (kill + feed) * v[i]);
+        }
+      }
+      let t1 = u; u = u2; u2 = t1;
+      let t2 = v; v = v2; v2 = t2;
+    }
+    for (let i = 0; i < field.length; i++) field[i] = Math.min(1, v[i] * 3.4);
+  }
+
+  function initState() {
+    inkA = new Float32Array(lw * lh);
+    inkB = new Float32Array(lw * lh);
+    inkSeed = -1;
+    u = new Float32Array(lw * lh).fill(1);
+    v = new Float32Array(lw * lh);
+    u2 = new Float32Array(lw * lh).fill(1);
+    v2 = new Float32Array(lw * lh);
+    for (let i = 0; i < 14; i++) {
+      const cx = 8 + Math.random() * (lw - 16) | 0;
+      const cy = 8 + Math.random() * (lh - 16) | 0;
+      for (let dy = -3; dy <= 3; dy++) for (let dx = -3; dx <= 3; dx++) {
+        const j = (cy + dy) * lw + (cx + dx);
+        if (j >= 0 && j < v.length) { v[j] = .5; u[j] = .2; }
+      }
+    }
+  }
+
+  /* ---------- paint ---------- */
+  function paint() {
+    const d = img.data;
+    const peak = maxAlpha / 100 * 255;
+    for (let i = 0, p = 0; i < field.length; i++, p += 4) {
+      d[p] = 0; d[p + 1] = 98; d[p + 2] = 155;
+      // the jitter is a dither: large soft gradients band visibly without it
+      d[p + 3] = Math.max(0, Math.min(255, field[i] * peak + (Math.random() - .5) * 5));
+    }
+    offCtx.putImageData(img, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(off, 0, 0, W, H);
+  }
+
+  let t0 = performance.now();
+  function frame(now) {
+    const t = (now - t0) / 1000;
+    if (mode === 'wave') wave(t);
+    else if (mode === 'contour') contour(t);
+    else if (mode === 'ink') ink(t);
+    else rd();
+    paint();
+    if (!reduce) requestAnimationFrame(frame);
+  }
+
+  /* ---------- controls ---------- */
+  const modesEl = document.getElementById('modes');
+  const noteEl = document.getElementById('note');
+  Object.entries(MODES).forEach(([key, m]) => {
+    const b = document.createElement('button');
+    b.textContent = m.label;
+    b.setAttribute('aria-pressed', String(key === mode));
+    b.onclick = () => {
+      mode = key;
+      [...modesEl.children].forEach((c, i) => c.setAttribute('aria-pressed', String(Object.keys(MODES)[i] === key)));
+      noteEl.textContent = m.note;
+      resize();
+      if (reduce) frame(performance.now());
+    };
+    modesEl.appendChild(b);
+  });
+  noteEl.textContent = MODES[mode].note;
+
+  const morphEl = document.getElementById('morph'), morphV = document.getElementById('morphV');
+  morphEl.oninput = () => {
+    morph = +morphEl.value;
+    morphV.textContent = morph.toFixed(1);
+    if (reduce) frame(performance.now());
+  };
+  const alphaEl = document.getElementById('alpha'), alphaV = document.getElementById('alphaV');
+  alphaEl.oninput = () => {
+    maxAlpha = +alphaEl.value;
+    alphaV.textContent = maxAlpha + '%';
+    if (reduce) frame(performance.now());
+  };
+
+  addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

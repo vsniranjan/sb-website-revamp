@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IEEE MACE Student Branch</title>
+<meta name="description" content="IEEE Student Branch at Model Engineering College, Kochi. Chartered 1988. 300+ members across 9 technical chapters.">
+<link rel="icon" href="../../public/logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ---------------------------------------------------------------
+   IEEE MACE Student Branch - direction "Instrument"
+   Mobile first. Base CSS targets a 360px viewport.
+   --------------------------------------------------------------- */
+
+:root{
+  --paper:#F7F8FA;
+  --surface:#FFFFFF;
+  --ink:#101418;
+  --ink-2:#333B45;
+  --muted:#565F6B;
+  --blue:#00629B;
+  --blue-deep:#004C79;
+  --blue-wash:#EDF2F6;
+  --line:#E3E7EC;
+
+  --radius:8px;
+  --hdr:58px;
+
+  --sans:'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono:'Geist Mono', ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+
+  --pad:20px;
+  --sect:64px;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:16px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{max-width:100%;display:block;}
+h1,h2,h3,p,ul,ol,figure{margin:0;}
+ul{list-style:none;padding:0;}
+a{color:inherit;}
+
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px;}
+
+.wrap{width:100%;max-width:1160px;margin-inline:auto;padding-inline:var(--pad);}
+
+/* numerals and dates only */
+.n{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.01em;}
+
+/* ---------- header ---------- */
+.hdr{
+  position:sticky;top:0;z-index:50;
+  height:var(--hdr);
+  background:rgba(247,248,250,.86);
+  backdrop-filter:saturate(1.6) blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.hdr-in{height:100%;display:flex;align-items:center;gap:16px;}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;margin-right:auto;}
+.brand img{width:26px;height:26px;}
+.brand span{font-weight:600;font-size:15px;letter-spacing:-.01em;}
+.nav{display:none;}
+.btn{
+  display:inline-block;
+  background:var(--blue);color:#fff;
+  font-family:var(--sans);font-size:14px;font-weight:500;line-height:1;
+  padding:11px 15px;border:0;border-radius:var(--radius);
+  text-decoration:none;white-space:nowrap;cursor:pointer;
+  transition:background .18s ease, transform .18s ease;
+}
+.btn:hover{background:var(--blue-deep);transform:translateY(-1px);}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+
+/* ---------- hero ---------- */
+.hero{
+  min-height:calc(100dvh - var(--hdr));
+  display:flex;flex-direction:column;justify-content:center;
+  padding-block:36px 40px;
+  border-bottom:1px solid var(--line);
+}
+.hero h1{
+  font-size:clamp(2rem,8.6vw,4.25rem);
+  font-weight:600;letter-spacing:-.035em;line-height:1.02;
+  max-width:14ch;
+}
+.lede{
+  margin-top:16px;
+  font-size:clamp(1rem,3.6vw,1.3rem);
+  line-height:1.45;color:var(--ink-2);
+  max-width:34ch;text-wrap:pretty;
+}
+.figs{
+  margin-top:auto;padding-top:30px;
+  display:grid;gap:14px;
+}
+.fig{
+  display:grid;grid-template-columns:minmax(0,auto) 1fr;align-items:baseline;
+  column-gap:14px;
+  padding-top:12px;border-top:1px solid var(--line);
+}
+.fig .num{
+  font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums;
+  font-size:clamp(3rem,17vw,4.5rem);
+  line-height:.95;letter-spacing:-.045em;
+  color:var(--ink);
+}
+.fig .num i{font-style:normal;color:var(--blue);}
+.fig .lbl{font-size:15px;color:var(--muted);letter-spacing:-.005em;}
+
+/* ---------- sections ---------- */
+section[id]{scroll-margin-top:calc(var(--hdr) + 10px);}
+.sect{padding-block:var(--sect);border-bottom:1px solid var(--line);}
+.sect h2{
+  font-size:clamp(1.5rem,5.6vw,2.35rem);
+  font-weight:600;letter-spacing:-.028em;line-height:1.1;
+}
+.sect-lede{margin-top:10px;color:var(--muted);max-width:52ch;font-size:16px;}
+
+/* ---------- timeline ---------- */
+.tl{margin-top:34px;}
+.tl-item{
+  display:grid;
+  grid-template-columns:60px 1fr;
+  column-gap:0;
+}
+.tl-when{
+  font-family:var(--mono);font-weight:500;font-size:13px;
+  color:var(--blue);letter-spacing:0;
+  padding-top:2px;padding-right:12px;text-align:right;
+  font-variant-numeric:tabular-nums;
+}
+.tl-body{
+  border-left:1px solid var(--line);
+  padding:0 0 32px 18px;
+}
+.tl-item:last-child .tl-body{padding-bottom:0;border-left-color:transparent;}
+.tl-item:last-child{position:relative;}
+.tl-item:last-child .tl-body::before{
+  content:"";position:absolute;left:60px;top:0;height:9px;width:1px;background:var(--line);
+}
+.tl-body h3{font-size:clamp(1.05rem,4.4vw,1.35rem);font-weight:600;letter-spacing:-.018em;line-height:1.25;}
+.tl-body p{margin-top:6px;color:var(--muted);font-size:15px;max-width:56ch;text-wrap:pretty;}
+
+/* ---------- events bento ---------- */
+.bento{
+  margin-top:34px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+.cell{
+  position:relative;overflow:hidden;
+  border-radius:var(--radius);
+  background:var(--surface);
+  border:1px solid var(--line);
+  padding:20px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  min-height:150px;
+  transition:transform .3s cubic-bezier(.22,.61,.36,1), box-shadow .3s ease;
+}
+.cell:hover{transform:translateY(-3px);box-shadow:0 10px 28px -18px rgba(16,20,24,.5);}
+.cell h3{font-size:1.15rem;font-weight:600;letter-spacing:-.02em;line-height:1.2;}
+.cell p{margin-top:6px;font-size:14.5px;color:var(--muted);text-wrap:pretty;}
+.metric{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
+.metric b{
+  font-family:var(--mono);font-weight:500;font-size:1.75rem;line-height:1;
+  letter-spacing:-.035em;color:var(--blue);font-variant-numeric:tabular-nums;
+}
+.metric span{font-size:13.5px;color:var(--muted);}
+
+.cell.shot{
+  border:0;padding:0;min-height:330px;
+  background-color:var(--ink);
+  background-size:cover;background-position:center top;
+}
+.cell.shot::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(12,16,20,.94) 0%,rgba(12,16,20,.80) 30%,rgba(12,16,20,.22) 68%,rgba(12,16,20,0) 100%);
+}
+.shot-in{position:relative;z-index:1;padding:20px;}
+.cell.shot h3{color:#fff;}
+.cell.shot p{color:#DCE2E8;}
+.cell.shot .metric b{color:#fff;}
+.cell.shot .metric span{color:#C6CED6;}
+.cell--hack{background-image:url("../../public/gallery/error-404-debugging.webp");}
+.cell--hackher{background-image:url("../../public/gallery/women-leading-innovation.webp");}
+
+/* ---------- chapters ---------- */
+.chapters{margin-top:30px;display:grid;grid-template-columns:1fr;gap:0;}
+.chapters li{
+  border-top:1px solid var(--line);
+  padding:14px 0 13px;
+  font-size:1.0625rem;font-weight:500;letter-spacing:-.012em;
+}
+.chapters li span{display:block;font-weight:400;font-size:14px;color:var(--muted);letter-spacing:0;margin-top:1px;}
+
+/* ---------- execom ---------- */
+.people{margin-top:32px;display:grid;grid-template-columns:repeat(2,1fr);gap:18px 14px;}
+.person img{
+  width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;
+  border-radius:var(--radius);background:var(--blue-wash);
+}
+.person h3{margin-top:10px;font-size:15px;font-weight:600;letter-spacing:-.012em;line-height:1.25;}
+.person p{font-size:13.5px;color:var(--muted);line-height:1.35;margin-top:2px;}
+
+/* ---------- membership ---------- */
+.join{display:grid;grid-template-columns:1fr;gap:30px;}
+.join .btn{margin-top:22px;font-size:15px;padding:13px 20px;}
+.benefits li{
+  border-top:1px solid var(--line);
+  padding:13px 0;
+  font-size:1rem;color:var(--ink-2);
+}
+.benefits li:first-child{border-top-color:var(--ink);}
+
+/* ---------- footer ---------- */
+.foot{padding-block:34px 40px;}
+.foot-in{display:flex;flex-direction:column;gap:18px;}
+.foot .brand{margin-right:0;}
+.foot address{font-style:normal;color:var(--muted);font-size:14.5px;line-height:1.5;}
+.foot-nav{display:flex;flex-wrap:wrap;gap:8px 20px;}
+.foot-nav a{font-size:14.5px;color:var(--muted);text-decoration:none;transition:color .16s ease;}
+.foot-nav a:hover{color:var(--blue);}
+.foot-meta{font-size:13px;color:var(--muted);}
+
+/* ---------- links ---------- */
+.nav a{
+  font-size:14.5px;color:var(--ink-2);text-decoration:none;
+  transition:color .16s ease;
+}
+.nav a:hover{color:var(--blue);}
+
+/* ---------- reveal ---------- */
+@media (prefers-reduced-motion:no-preference){
+  .reveal{opacity:0;transform:translate3d(0,14px,0);
+    transition:opacity .55s cubic-bezier(.22,.61,.36,1),transform .55s cubic-bezier(.22,.61,.36,1);}
+  .reveal.is-in{opacity:1;transform:translate3d(0,0,0);}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation:none!important;transition:none!important;}
+}
+
+/* =============== 768px =============== */
+@media (min-width:768px){
+  :root{--pad:32px;--hdr:66px;--sect:88px;}
+  .nav{display:flex;gap:26px;align-items:center;}
+  .brand span{font-size:16px;}
+
+  .hero{padding-block:52px 48px;}
+  .lede{max-width:46ch;margin-top:20px;}
+  .figs{
+    grid-template-columns:repeat(3,1fr);
+    gap:0;padding-top:38px;
+    border-top:1px solid var(--ink);
+    margin-top:auto;
+  }
+  .fig{
+    grid-template-columns:1fr;align-items:start;
+    border-top:0;padding-top:0;padding-right:20px;
+  }
+  .fig .num{font-size:clamp(4rem,10vw,8.5rem);}
+  .fig .lbl{margin-top:8px;font-size:16px;}
+
+  .tl-item{grid-template-columns:104px 1fr;}
+  .tl-when{font-size:14px;padding-right:20px;}
+  .tl-body{padding:0 0 42px 26px;}
+  .tl-item:last-child .tl-body::before{left:104px;}
+
+  .bento{
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+  .cell.cell--hack{grid-column:1 / -1;min-height:360px;}
+
+  .chapters{grid-template-columns:repeat(2,1fr);column-gap:36px;}
+
+  .people{grid-template-columns:repeat(3,1fr);gap:24px 20px;}
+  .person h3{font-size:16px;}
+
+  .join{grid-template-columns:1fr 1fr;gap:56px;align-items:start;}
+  .foot-in{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:40px;}
+  .foot-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:10px;}
+}
+
+/* =============== 1024px =============== */
+@media (min-width:1024px){
+  :root{--pad:44px;--sect:104px;}
+
+  .hero h1{max-width:16ch;}
+  .lede{font-size:1.3rem;max-width:52ch;}
+  .fig .num{font-size:clamp(6rem,9.4vw,9rem);}
+
+  .bento{
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:auto auto auto;
+    gap:16px;
+  }
+  .cell.cell--hack{grid-column:1 / 3;grid-row:1 / 3;min-height:420px;}
+  .cell.cell--hackher{grid-column:3 / 4;grid-row:1 / 3;min-height:420px;}
+  .cell--sparc{grid-column:1 / 2;grid-row:3 / 4;}
+  .cell--stem{grid-column:2 / 3;grid-row:3 / 4;}
+  .cell--haddit{grid-column:3 / 4;grid-row:3 / 4;}
+  .cell{min-height:190px;}
+
+  .chapters{grid-template-columns:repeat(3,1fr);column-gap:44px;}
+  .chapters li{font-size:1.125rem;padding:16px 0 15px;}
+
+  .people{grid-template-columns:repeat(6,1fr);gap:20px 16px;}
+
+  .join{grid-template-columns:1.05fr 1fr;gap:80px;}
+  .sect h2{max-width:20ch;}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="brand" href="#top">
+      <img src="../../public/logo.svg" alt="" width="26" height="26">
+      <span>IEEE MACE</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#work">Work</a>
+      <a href="#events">Events</a>
+      <a href="#chapters">Chapters</a>
+      <a href="#execom">Execom</a>
+    </nav>
+    <a class="btn" href="#join">Join IEEE MACE</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO: the three numerals are the image -->
+  <section class="hero">
+    <div class="wrap">
+      <h1>IEEE MACE Student Branch</h1>
+      <p class="lede">Model Engineering College, Kochi. We build things outside campus that stay running.</p>
+
+      <div class="figs">
+        <p class="fig">
+          <span class="num" data-count="38">38</span>
+          <span class="lbl">years</span>
+        </p>
+        <p class="fig">
+          <span class="num" data-count="300">300<i>+</i></span>
+          <span class="lbl">members</span>
+        </p>
+        <p class="fig">
+          <span class="num" data-count="9">9</span>
+          <span class="lbl">chapters</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="sect" id="work">
+    <div class="wrap">
+      <h2 class="reveal">Work in the field</h2>
+      <p class="sect-lede reveal">Projects that outlive the semester they were built in.</p>
+
+      <div class="tl">
+        <div class="tl-item reveal">
+          <div class="tl-when">1988</div>
+          <div class="tl-body">
+            <h3>Chartered</h3>
+            <p>The branch opens at Model Engineering College, Kochi.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-when">2019</div>
+          <div class="tl-body">
+            <h3>Light the Lives</h3>
+            <p>Volunteers lived a week in Kuttampuzha panchayat and installed two solar power systems.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-when">2021</div>
+          <div class="tl-body">
+            <h3>Connect the Lives</h3>
+            <p>Online classes at a tribal-colony school in Uriyampetty. A trained resident teacher still runs it.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-when">Now</div>
+          <div class="tl-body">
+            <h3>Wild Elephant Tracker</h3>
+            <p>Detects elephant movement at forest fringes and alerts nearby communities in real time.</p>
+          </div>
+        </div>
+
+        <div class="tl-item reveal">
+          <div class="tl-when">Next</div>
+          <div class="tl-body">
+            <h3>Enhance their Lives</h3>
+            <p>Sanitary pad incinerators and waste disposal for remote schools.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EVENTS: five events, five cells -->
+  <section class="sect" id="events">
+    <div class="wrap">
+      <h2 class="reveal">Flagship events</h2>
+      <p class="sect-lede reveal">Five that run every year, built and staffed by students.</p>
+
+      <div class="bento">
+
+        <article class="cell shot cell--hack reveal">
+          <div class="shot-in">
+            <p class="metric"><b>7</b><span>years running</span></p>
+            <h3>&gt;.hack();</h3>
+            <p>The annual hackathon. Open to every branch on campus.</p>
+          </div>
+        </article>
+
+        <article class="cell shot cell--hackher reveal">
+          <div class="shot-in">
+            <p class="metric"><b>24</b><span>hours, women only</span></p>
+            <h3>Hack-Her</h3>
+            <p>Teams form, build and ship inside a single night.</p>
+          </div>
+        </article>
+
+        <article class="cell cell--sparc reveal">
+          <p class="metric"><b>5</b><span>years of talks</span></p>
+          <h3>SPARC</h3>
+          <p>A speaker series that introduces first-year students to the branch.</p>
+        </article>
+
+        <article class="cell cell--stem reveal">
+          <p class="metric"><b>500</b><span>students a year</span></p>
+          <h3>STEM Initiative</h3>
+          <p>School outreach: workshops and demos across five schools.</p>
+        </article>
+
+        <article class="cell cell--haddit reveal">
+          <h3>HACK-A-DDIT</h3>
+          <p>A hackathon run with the Lions Club on drug-abuse awareness.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTERS -->
+  <section class="sect" id="chapters">
+    <div class="wrap">
+      <h2 class="reveal">Nine technical chapters</h2>
+      <p class="sect-lede reveal">Each one runs its own workshops, talks and competitions.</p>
+
+      <ul class="chapters">
+        <li class="reveal">Computer Society</li>
+        <li class="reveal">Robotics and Automation <span>RAS</span></li>
+        <li class="reveal">Signal Processing <span>SPS</span></li>
+        <li class="reveal">Communications <span>ComSoc</span></li>
+        <li class="reveal">Industry Applications <span>IAS</span></li>
+        <li class="reveal">Power and Energy <span>PES</span></li>
+        <li class="reveal">IE/PELS Joint Chapter</li>
+        <li class="reveal">Women in Engineering <span>WIE</span></li>
+        <li class="reveal">SIGHT Group</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- EXECOM -->
+  <section class="sect" id="execom">
+    <div class="wrap">
+      <h2 class="reveal">Execom</h2>
+      <p class="sect-lede reveal">Who to talk to.</p>
+
+      <div class="people">
+        <figure class="person reveal">
+          <img src="../../public/team/neethu-salim.webp" alt="Prof. Neethu Salim" width="533" height="800" loading="lazy">
+          <h3>Prof. Neethu Salim</h3>
+          <p>Student Branch Counsellor</p>
+        </figure>
+        <figure class="person reveal">
+          <img src="../../public/team/jes-gigo.webp" alt="Jes Gigo" width="533" height="800" loading="lazy">
+          <h3>Jes Gigo</h3>
+          <p>Chair</p>
+        </figure>
+        <figure class="person reveal">
+          <img src="../../public/team/jassim-mohammed-salim.webp" alt="Jassim Mohammed Salim" width="533" height="800" loading="lazy">
+          <h3>Jassim Mohammed Salim</h3>
+          <p>Vice Chair</p>
+        </figure>
+        <figure class="person reveal">
+          <img src="../../public/team/ryan-nelson.webp" alt="Ryan Nelson" width="533" height="800" loading="lazy">
+          <h3>Ryan Nelson</h3>
+          <p>Secretary</p>
+        </figure>
+        <figure class="person reveal">
+          <img src="../../public/team/navya-maria-vincent.webp" alt="Navya Maria Vincent" width="533" height="800" loading="lazy">
+          <h3>Navya Maria Vincent</h3>
+          <p>Joint Secretary</p>
+        </figure>
+        <figure class="person reveal">
+          <img src="../../public/team/joseph-hamlin.webp" alt="Joseph Hamlin" width="533" height="800" loading="lazy">
+          <h3>Joseph Hamlin</h3>
+          <p>Treasurer</p>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERSHIP -->
+  <section class="sect" id="join">
+    <div class="wrap join">
+      <div>
+        <h2 class="reveal">Membership</h2>
+        <p class="sect-lede reveal">Open to every student at Model Engineering College.</p>
+        <a class="btn reveal" href="#join">Join IEEE MACE</a>
+      </div>
+      <ul class="benefits">
+        <li class="reveal">Travel grants and scholarships</li>
+        <li class="reveal">IEEE eLearning Library access</li>
+        <li class="reveal">Global standards exposure</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <div>
+      <a class="brand" href="#top">
+        <img src="../../public/logo.svg" alt="" width="26" height="26">
+        <span>IEEE MACE Student Branch</span>
+      </a>
+      <address>Model Engineering College, Kochi, Kerala</address>
+    </div>
+    <div class="foot-right">
+      <nav class="foot-nav" aria-label="Footer">
+        <a href="#work">Work</a>
+        <a href="#events">Events</a>
+        <a href="#chapters">Chapters</a>
+        <a href="#execom">Execom</a>
+        <a href="#join">Membership</a>
+      </nav>
+      <p class="foot-meta">Chartered <span class="n">1988</span></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* scroll reveal */
+  var items = document.querySelectorAll('.reveal');
+  if (still || !('IntersectionObserver' in window)) {
+    items.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+
+    document.querySelectorAll('.sect, .foot').forEach(function (group) {
+      group.querySelectorAll('.reveal').forEach(function (el, i) {
+        el.style.transitionDelay = Math.min(i, 7) * 55 + 'ms';
+        io.observe(el);
+      });
+    });
+  }
+
+  /* hero count-up: the numerals are the page's primary content */
+  if (!still) {
+    var nums = document.querySelectorAll('.hero .num[data-count]');
+    nums.forEach(function (el) {
+      var target = parseInt(el.getAttribute('data-count'), 10);
+      var plus = el.querySelector('i');
+      var suffix = plus ? plus.outerHTML : '';
+      var dur = 1100;
+      var t0 = null;
+      function frame(t) {
+        if (t0 === null) t0 = t;
+        var p = Math.min((t - t0) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        el.innerHTML = Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(frame);
+      }
+      el.innerHTML = '0' + suffix;
+      requestAnimationFrame(frame);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>

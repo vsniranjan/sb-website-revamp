@@ -125,7 +125,15 @@ function preloadOnApproach(reel: HTMLElement, track: HTMLElement): void {
 const REEL_SPEED = 64
 
 /** Seamless auto-scrolling poster reel; eases to a stop on hover. */
-export function initGalleryMarquee(reducedMotion: boolean): void {
+/**
+ * `staticReel` hands the strip to native scrolling instead of the marquee. Reserved
+ * for reduced motion: touch devices run the marquee too, so the reel reads as alive
+ * on a phone rather than as a strip that happens to be cut off.
+ *
+ * The hover pause is mouse-only by nature, so on touch `hovered` stays false and the
+ * scroll-velocity boost drives the reel on its own.
+ */
+export function initGalleryMarquee(staticReel: boolean): void {
   const reel = document.getElementById('gallery-reel')
   const track = document.getElementById('gallery-track')
   if (!reel || !track) return
@@ -133,7 +141,7 @@ export function initGalleryMarquee(reducedMotion: boolean): void {
   trackImageLoads(track)
   preloadOnApproach(reel, track)
 
-  if (reducedMotion) {
+  if (staticReel) {
     // no marquee to carry posters past — hand the strip over to native scrolling
     reel.classList.add('is-static')
     return

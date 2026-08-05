@@ -3,7 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { SplitText } from 'gsap/SplitText'
 
 const HERO_BITS =
-  '.hero__badge, .hero__title, .hero__lead, .hero__ctas .btn, .hero__fact, .hero__scrollcue, .navbar__inner'
+  '.hero__badge, .hero__title, .hero__ctas .btn, .hero__scrollcue, .navbar__inner'
 
 /** Hide hero chrome before the preloader lifts so there is no un-animated flash. */
 export function primeHero(): void {
@@ -22,10 +22,8 @@ export function runHeroIntro(): void {
       { yPercent: 110, duration: 1.5, stagger: 0.12 },
       0.15,
     )
-    .from('.hero__lead', { y: 24, autoAlpha: 0, duration: 1.2 }, 0.75)
-    .from('.hero__ctas .btn', { y: 20, autoAlpha: 0, duration: 1, stagger: 0.14 }, 1)
-    .from('.hero__fact', { y: 16, autoAlpha: 0, duration: 0.9, stagger: 0.12 }, 1.25)
-    .from('.hero__scrollcue', { autoAlpha: 0, duration: 1, ease: 'power1.out' }, 1.7)
+    .from('.hero__ctas .btn', { y: 20, autoAlpha: 0, duration: 1, stagger: 0.14 }, 0.75)
+    .from('.hero__scrollcue', { autoAlpha: 0, duration: 1, ease: 'power1.out' }, 1.15)
     .from('.navbar__inner', { y: -16, autoAlpha: 0, duration: 1 }, 0.35)
 }
 

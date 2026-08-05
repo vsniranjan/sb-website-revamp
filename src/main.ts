@@ -13,7 +13,7 @@ import { SplitText } from 'gsap/SplitText'
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 
 import { renderContent } from './render'
-import { Blueprint } from './backdrop/Blueprint'
+import { WaveField } from './backdrop/WaveField'
 import { initScrollSync } from './backdrop/scrollSync'
 import { runPreloader, skipPreloader } from './animations/preloader'
 import {
@@ -57,7 +57,7 @@ const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matc
 const mobile = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches
 
 const canvas = document.getElementById('backdrop') as HTMLCanvasElement
-const backdrop = new Blueprint(canvas, { mobile, animate: !reducedMotion })
+const backdrop = new WaveField(canvas, { mobile, animate: !reducedMotion })
 
 async function start(): Promise<void> {
   if (reducedMotion) {
@@ -71,11 +71,19 @@ async function start(): Promise<void> {
 
   primeHero()
 
-  const smoother = ScrollSmoother.create({
-    smooth: 1.1,
-    effects: false,
-    normalizeScroll: false,
-  })
+  /**
+   * ScrollSmoother drives the page through a transformed wrapper, which fights the
+   * browser's own momentum and address-bar behaviour on touch devices — the scroll
+   * ends up feeling heavy and lagging a finger behind. Phones keep native scrolling;
+   * `initNavigation` already falls back to `scrollIntoView` when there is no smoother.
+   */
+  const smoother = mobile
+    ? null
+    : ScrollSmoother.create({
+        smooth: 1.1,
+        effects: false,
+        normalizeScroll: false,
+      })
 
   initNavigation(smoother)
   initGalleryMarquee(false)

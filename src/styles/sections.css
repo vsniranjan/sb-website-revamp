@@ -40,39 +40,11 @@
   -webkit-text-stroke-width: 2px;
 }
 
-.hero__lead {
-  color: var(--ink-muted);
-  max-width: 48ch;
-  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
-}
-
 .hero__ctas {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-4);
-}
-
-.hero__facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-7);
-  border-top: 1px solid var(--ink-hairline);
-  padding-top: var(--space-5);
-  margin-top: var(--space-4);
-}
-
-.hero__fact dt {
-  font-family: var(--font-mono);
-  font-size: var(--text-label);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  margin-bottom: var(--space-1);
-}
-
-.hero__fact dd {
-  font-weight: 600;
-  font-size: var(--text-small);
+  margin-top: var(--space-2);
 }
 
 .hero__scrollcue {
@@ -1287,6 +1259,22 @@
 
   .section__num {
     font-size: 6rem;
+  }
+
+  /* `1fr auto auto` sizes the middle cell to "KOTHAMANGALAM, KERALA", which is wider
+     than a third of a phone screen. Even columns let the long value wrap instead. */
+  .sheet__titleblock {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* The leader is a decorative dimension line. The 40px it reserves is better spent
+     on the benefit copy at this width. */
+  .callout {
+    grid-template-columns: auto 1fr;
+  }
+
+  .callout__leader {
+    display: none;
   }
 
   .gallery__reel {

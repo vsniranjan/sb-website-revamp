@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IEEE MACE Student Branch</title>
+<meta name="description" content="IEEE MACE Student Branch, Model Engineering College, Kochi. Solar power, school connectivity and elephant early warning, built in the field since 1988.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------------------------------------------------------------
+   IEEE MACE Student Branch - "Fieldwork" prototype
+   Theme: locked dark. Accent: IEEE Blue #00629B (lightened to
+   #4C9FD6 for text on dark so it clears WCAG AA).
+   Corner radius system: 0 everywhere. Sharp, documentary.
+   ---------------------------------------------------------------*/
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --bg:        #101215;
+  --bg-deep:   #0B0D10;
+  --fg:        #ECEEF1;   /* 15.9:1 on --bg */
+  --fg-muted:  #9BA4AE;   /*  7.5:1 on --bg */
+  --fg-dim:    #7A838E;   /*  4.9:1 on --bg */
+  --ieee:      #00629B;   /* brand, used as a fill under white text (6.5:1) */
+  --ieee-lift: #4C9FD6;   /* same blue, lightened for text on dark (6.5:1) */
+  --hair:      rgba(236,238,241,.14);
+  --gutter:    20px;
+  --radius:    0px;
+  --pace:      cubic-bezier(.16,1,.3,1);
+  --display: 'Bricolage Grotesque', 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --body:    'Archivo', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+@media (min-width: 768px)  { :root { --gutter: 40px; } }
+@media (min-width: 1024px) { :root { --gutter: clamp(48px, 5vw, 88px); } }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+
+h1, h2, h3, .display {
+  font-family: var(--display);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p { margin: 0; }
+
+:focus-visible {
+  outline: 2px solid var(--ieee-lift);
+  outline-offset: 3px;
+}
+
+.wrap { padding-inline: var(--gutter); }
+
+section { position: relative; }
+
+.band { padding-block: clamp(4.5rem, 12vw, 9.5rem); }
+.band--deep { background: var(--bg-deep); }
+.projects { margin-top: clamp(2.5rem, 8vw, 5rem); }
+
+/* ---------- buttons ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: var(--body);
+  font-size: .95rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+  text-decoration: none;
+  padding: .85rem 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  transition: background-color .25s var(--pace), transform .18s var(--pace), border-color .25s var(--pace);
+}
+/* Feedback: the control acknowledges the press. */
+.btn:active { transform: translateY(1px); }
+
+.btn--solid { background: var(--ieee); color: #fff; }
+.btn--solid:hover { background: #0076BA; }
+
+.btn--ghost {
+  background: rgba(11,13,16,.28);
+  color: var(--fg);
+  border-color: rgba(236,238,241,.45);
+}
+.btn--ghost:hover { background: rgba(236,238,241,.12); }
+
+.btn--sm { padding: .58rem 1rem; font-size: .85rem; }
+
+/* ---------- header ---------- */
+
+.head {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 62px;
+  padding-inline: var(--gutter);
+  /* Always-on top scrim so the nav reads over the hero photograph. */
+  background: linear-gradient(to bottom, rgba(11,13,16,.88), rgba(11,13,16,0));
+  transition: background-color .3s var(--pace);
+}
+@media (min-width: 768px) { .head { height: 74px; } }
+
+.head.is-stuck {
+  background: rgba(11,13,16,.94);
+  border-bottom: 1px solid var(--hair);
+  backdrop-filter: blur(10px);
+}
+
+.head__brand { display: flex; align-items: center; gap: .6rem; text-decoration: none; }
+.head__brand img { width: 30px; height: 30px; }
+.head__brand span {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: .95rem;
+  letter-spacing: -0.015em;
+}
+
+.head__nav { display: none; }
+@media (min-width: 768px) {
+  .head__nav { display: flex; align-items: center; gap: clamp(1.1rem, 2.4vw, 2rem); }
+  .head__nav a {
+    text-decoration: none;
+    font-size: .9rem;
+    color: var(--fg-muted);
+    transition: color .2s var(--pace);
+  }
+  .head__nav a:hover { color: var(--fg); }
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+  /* Storytelling: the photograph settles into place on first paint
+     instead of cutting in hard. */
+  animation: settle 1400ms var(--pace) both;
+}
+@keyframes settle { from { transform: scale(1.06); } to { transform: scale(1); } }
+
+/* Mandatory scrim. Flat tint plus a bottom ramp; the text zone sits
+   under roughly 90% coverage, so #ECEEF1 clears AA on any photo. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top,
+      rgba(9,11,13,.94) 0%,
+      rgba(9,11,13,.86) 26%,
+      rgba(9,11,13,.52) 58%,
+      rgba(9,11,13,.34) 78%,
+      rgba(9,11,13,.62) 100%),
+    rgba(9,11,13,.30);
+}
+
+.hero__body {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding-inline: var(--gutter);
+  padding-bottom: clamp(3rem, 9vw, 6rem);
+  padding-top: 6rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.3rem, 10.5vw, 5.6rem);
+  max-width: 15ch;
+  letter-spacing: -0.035em;
+}
+
+.hero__sub {
+  margin-top: 1.1rem;
+  max-width: 46ch;
+  color: var(--fg);
+  font-size: clamp(1rem, 2.6vw, 1.2rem);
+  line-height: 1.5;
+}
+
+.hero__cta, .cta-row {
+  margin-top: 1.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+}
+
+/* Marks the point where the header swaps to a solid background. */
+.hero__sentinel {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1px;
+  height: 72%;
+  pointer-events: none;
+}
+
+/* Hierarchy: the three hero elements arrive in reading order. */
+.hero__body > * { animation: rise 800ms var(--pace) both; }
+.hero__body > *:nth-child(1) { animation-delay: 180ms; }
+.hero__body > *:nth-child(2) { animation-delay: 320ms; }
+.hero__body > *:nth-child(3) { animation-delay: 440ms; }
+@keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+/* ---------- section lead type ---------- */
+
+.lead {
+  font-size: clamp(1.9rem, 6.4vw, 3.6rem);
+  max-width: 18ch;
+  letter-spacing: -0.032em;
+}
+
+.lead--wide { max-width: 24ch; }
+
+.sub {
+  color: var(--fg-muted);
+  max-width: 52ch;
+  margin-top: 1.1rem;
+  font-size: 1.02rem;
+}
+
+/* ---------- field project: split ---------- */
+
+.split { display: grid; gap: clamp(1.4rem, 4vw, 2.2rem); }
+.split + .split { margin-top: clamp(3.5rem, 10vw, 7rem); }
+
+.split__media img {
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
+}
+
+.split__text { padding-inline: var(--gutter); }
+
+@media (min-width: 1024px) {
+  .split {
+    grid-template-columns: 1.02fr 0.98fr;
+    align-items: center;
+    gap: clamp(2.5rem, 5vw, 5.5rem);
+  }
+  .split__media img { aspect-ratio: 5 / 6; max-height: 660px; }
+  .split--flip .split__media { order: 2; }
+  .split--flip .split__text { order: 1; }
+}
+
+.pname {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--ieee-lift);
+  margin-bottom: .9rem;
+}
+
+.claim {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.45rem, 5.4vw, 2.3rem);
+  line-height: 1.12;
+  letter-spacing: -0.028em;
+  max-width: 20ch;
+}
+
+.body-note {
+  margin-top: 1rem;
+  color: var(--fg-muted);
+  max-width: 42ch;
+  font-size: 1.02rem;
+}
+
+/* ---------- field project: full-bleed statement ---------- */
+
+.statement {
+  position: relative;
+  min-height: 82dvh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.statement img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Same mandatory scrim treatment as the hero. */
+.statement__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top,
+      rgba(9,11,13,.95) 0%,
+      rgba(9,11,13,.84) 34%,
+      rgba(9,11,13,.46) 70%,
+      rgba(9,11,13,.40) 100%),
+    rgba(9,11,13,.34);
+}
+
+.statement__body {
+  position: relative;
+  z-index: 2;
+  padding-inline: var(--gutter);
+  padding-bottom: clamp(3rem, 8vw, 5.5rem);
+  padding-top: clamp(6rem, 20vw, 10rem);
+}
+
+.statement .claim { font-size: clamp(1.7rem, 6.4vw, 3.1rem); max-width: 17ch; }
+.statement .body-note { color: #D3D8DE; }
+
+/* ---------- field project: vertical stack ---------- */
+
+.stack__head { max-width: 30ch; }
+.stack img {
+  margin-top: clamp(2rem, 6vw, 3.5rem);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+@media (min-width: 1024px) { .stack img { aspect-ratio: 21 / 7; } }
+
+/* ---------- figures band ---------- */
+
+.figures {
+  display: grid;
+  gap: clamp(1.6rem, 5vw, 2.5rem);
+  margin-top: clamp(2.5rem, 7vw, 4rem);
+}
+@media (min-width: 768px) {
+  .figures { grid-template-columns: 1.35fr 1fr .9fr; gap: clamp(1.5rem, 4vw, 3.5rem); }
+}
+
+.fig__n {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(2.6rem, 9vw, 4.2rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.fig__l { color: var(--fg-muted); font-size: .95rem; margin-top: .4rem; }
+
+/* ---------- events ---------- */
+
+.events { display: grid; gap: clamp(2rem, 5.5vw, 3rem); margin-top: clamp(2.5rem, 7vw, 4rem); }
+@media (min-width: 768px) {
+  .events { grid-template-columns: 1fr 1fr; column-gap: clamp(2rem, 5vw, 5rem); }
+  .events > li:first-child { grid-column: 1 / -1; }
+}
+.events { list-style: none; padding: 0; margin-inline: 0; }
+
+.ev__n {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.3rem, 4.6vw, 1.9rem);
+  letter-spacing: -0.025em;
+}
+.events > li:first-child .ev__n { font-size: clamp(1.7rem, 7vw, 3rem); }
+.ev__d { color: var(--fg-muted); margin-top: .45rem; max-width: 40ch; font-size: .98rem; }
+
+/* ---------- poster reel (the only scrolling strip on the page) ---------- */
+
+.reel {
+  display: flex;
+  gap: 14px;
+  margin-top: clamp(2.5rem, 7vw, 3.5rem);
+  padding-inline: var(--gutter);
+  padding-block: 4px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--gutter);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(236,238,241,.28) transparent;
+}
+.reel::-webkit-scrollbar { height: 6px; }
+.reel::-webkit-scrollbar-thumb { background: rgba(236,238,241,.28); }
+
+.reel img {
+  flex: 0 0 auto;
+  height: 300px;
+  width: auto;
+  min-width: 190px;
+  object-fit: cover;
+  scroll-snap-align: start;
+  border-radius: var(--radius);
+}
+@media (min-width: 768px)  { .reel img { height: 380px; } }
+@media (min-width: 1024px) { .reel { gap: 18px; } .reel img { height: 460px; } }
+
+/* ---------- chapters ---------- */
+
+.chapters {
+  list-style: none;
+  padding: 0;
+  margin: clamp(2.2rem, 6vw, 3.5rem) 0 0;
+  display: grid;
+  gap: 1.15rem 2rem;
+  max-width: 72rem;
+}
+@media (min-width: 768px)  { .chapters { grid-template-columns: 1fr 1fr; gap: 1.5rem 3rem; } }
+@media (min-width: 1024px) { .chapters { grid-template-columns: repeat(3, 1fr); gap: 2rem 3.5rem; } }
+
+.chapters li {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.05rem, 3.4vw, 1.28rem);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.chapters span { color: var(--fg-dim); font-family: var(--body); font-weight: 400; font-size: .85em; }
+
+/* ---------- people ---------- */
+
+.people {
+  list-style: none;
+  padding: 0;
+  margin: clamp(2.2rem, 6vw, 3.5rem) 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem 1rem;
+}
+@media (min-width: 560px)  { .people { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1024px) { .people { grid-template-columns: repeat(6, 1fr); gap: 1.4rem; } }
+
+.people img { width: 100%; aspect-ratio: 1; object-fit: cover; filter: saturate(.82); }
+.people b { display: block; margin-top: .6rem; font-weight: 600; font-size: .92rem; }
+.people small { display: block; color: var(--fg-dim); font-size: .82rem; }
+
+/* ---------- join ---------- */
+
+.join { background: var(--bg-deep); }
+.join__grid { display: grid; gap: clamp(2rem, 6vw, 3rem); }
+@media (min-width: 1024px) {
+  .join__grid { grid-template-columns: 1.25fr .75fr; align-items: end; gap: clamp(3rem, 7vw, 6rem); }
+}
+.benefits { list-style: none; padding: 0; margin: 0; display: grid; gap: .9rem; }
+.benefits li { color: var(--fg-muted); padding-top: .9rem; border-top: 1px solid var(--hair); font-size: 1rem; }
+
+/* ---------- footer ---------- */
+
+.foot {
+  border-top: 1px solid var(--hair);
+  padding-block: clamp(2.5rem, 6vw, 3.5rem);
+  display: grid;
+  gap: 1.6rem;
+  color: var(--fg-dim);
+  font-size: .88rem;
+}
+@media (min-width: 768px) { .foot { grid-template-columns: 1.4fr 1fr; align-items: start; } }
+.foot__links { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
+.foot__links a { color: var(--fg-muted); text-decoration: none; }
+.foot__links a:hover { color: var(--fg); }
+.foot strong { display: block; color: var(--fg); font-family: var(--display); font-weight: 700; font-size: 1rem; margin-bottom: .3rem; }
+
+/* ---------- scroll reveal ---------- */
+
+/* Storytelling: each field project lands on its own as you reach it. */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity .75s var(--pace), transform .75s var(--pace);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal.is-in { opacity: 1; transform: none; transition: none; }
+  .hero__img, .hero__body > * { animation: none; opacity: 1; transform: none; }
+  .btn, .head, .head__nav a, .foot__links a { transition: none; }
+  .btn:active { transform: none; }
+  .reel { scroll-behavior: auto; }
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="head" id="site-head">
+  <a class="head__brand" href="#top">
+    <img src="../../public/logo.svg" alt="" width="30" height="30">
+    <span>IEEE MACE</span>
+  </a>
+  <nav class="head__nav" aria-label="Primary">
+    <a href="#field">Field work</a>
+    <a href="#events">Events</a>
+    <a href="#chapters">Chapters</a>
+    <a href="#team">Team</a>
+  </nav>
+  <a class="btn btn--solid btn--sm" href="https://www.ieee.org/membership/join/" target="_blank" rel="noreferrer">Join the branch</a>
+</header>
+
+<div id="top"></div>
+
+<!-- =============== HERO =============== -->
+<!-- PLACEHOLDER PHOTO. Replace with: the branch's own field photograph from
+     Kuttampuzha, 2019 - volunteers carrying or mounting a solar panel on a
+     house roof, hills behind. Landscape, shot late afternoon. -->
+<section class="hero">
+  <span id="sentinel" class="hero__sentinel" aria-hidden="true"></span>
+  <img class="hero__img"
+       src="https://picsum.photos/seed/kuttampuzha-volunteers-carrying-solar-panel-hillside/1800/1200"
+       alt="Student volunteers installing a solar panel on a house in a hill panchayat">
+  <div class="hero__scrim"></div>
+  <div class="hero__body">
+    <h1>We build where the grid ends.</h1>
+    <p class="hero__sub">Solar power for a panchayat, a classroom back online, an early warning before the elephants reach the fence.</p>
+    <div class="hero__cta">
+      <a class="btn btn--solid" href="https://www.ieee.org/membership/join/" target="_blank" rel="noreferrer">Join the branch</a>
+      <a class="btn btn--ghost" href="#field">See the field work</a>
+    </div>
+  </div>
+</section>
+
+<!-- =============== FIELD WORK =============== -->
+<section id="field" class="band">
+  <div class="wrap reveal">
+    <h2 class="lead">Three projects, none of them on campus.</h2>
+  </div>
+
+  <div class="projects">
+
+    <!-- Split 1 of 2 -->
+    <article class="split reveal">
+      <div class="split__media">
+        <!-- PLACEHOLDER PHOTO. Replace with: the two solar power systems
+             installed in Kuttampuzha panchayat, 2019 - panel array or the
+             lit interior of a house at night after the install. -->
+        <img src="https://picsum.photos/seed/kuttampuzha-panchayat-solar-array-rooftop-kerala/1200/1440"
+             alt="Solar panels installed on a home in Kuttampuzha panchayat" loading="lazy">
+      </div>
+      <div class="split__text">
+        <p class="pname">Light the Lives, 2019</p>
+        <p class="claim">A week living in Kuttampuzha, and two solar systems left behind.</p>
+        <p class="body-note">Volunteers stayed in the panchayat, surveyed what the grid had never reached, then installed two working solar power systems.</p>
+      </div>
+    </article>
+
+    <!-- Split 2 of 2. Rhythm breaks after this one. -->
+    <article class="split split--flip reveal">
+      <div class="split__media">
+        <!-- PLACEHOLDER PHOTO. Replace with: the classroom at the tribal
+             colony school in Uriyampetty, 2021 - children at the screen
+             during an online class, or the communication module on its mount. -->
+        <img src="https://picsum.photos/seed/uriyampetty-tribal-colony-school-online-class-children/1200/1440"
+             alt="Children attending an online class at the tribal colony school in Uriyampetty" loading="lazy">
+      </div>
+      <div class="split__text">
+        <p class="pname">Connect the Lives, 2021</p>
+        <p class="claim">A tribal colony school in Uriyampetty got its classes back online.</p>
+        <p class="body-note">We built and fitted the communication module. A resident teacher, trained by the branch, still runs it today.</p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- Rhythm break: full-bleed statement instead of a third split. -->
+<!-- PLACEHOLDER PHOTO. Replace with: the forest fringe where the tracker is
+     deployed - treeline at dusk against farmland, or the sensor unit mounted
+     on a post at the boundary. Wide landscape. -->
+<section class="statement">
+  <img src="https://picsum.photos/seed/kerala-forest-fringe-treeline-dusk-elephant-boundary/1800/1300"
+       alt="Forest fringe at dusk where the elephant tracker is deployed" loading="lazy">
+  <div class="statement__scrim"></div>
+  <div class="statement__body reveal">
+    <p class="pname">Wild Elephant Tracker</p>
+    <p class="claim">An early warning system watching the fringe where the forest meets the fields.</p>
+    <p class="body-note">Movement at the treeline triggers a real time alert, so the village knows long before the herd arrives.</p>
+  </div>
+</section>
+
+<!-- Vertical stack: fourth layout family in this run. -->
+<section class="band stack">
+  <div class="wrap reveal">
+    <div class="stack__head">
+      <p class="pname">Enhance their Lives, upcoming</p>
+      <p class="claim">Sanitary pad incinerators and waste disposal for remote schools.</p>
+      <p class="body-note">The next one on the list. Same approach as the last three: go there, build it, leave it working.</p>
+    </div>
+    <!-- PLACEHOLDER PHOTO. Replace with: a remote government school building
+         in Ernakulam district that the incinerator project will serve, or the
+         site survey visit. Wide crop, works at 21:7. -->
+    <img src="https://picsum.photos/seed/remote-kerala-government-school-building-survey-visit/1800/700"
+         alt="A remote school building surveyed for the waste disposal project" loading="lazy">
+  </div>
+</section>
+
+<!-- =============== BRANCH FIGURES =============== -->
+<section class="band band--deep">
+  <div class="wrap reveal">
+    <h2 class="lead lead--wide">Thirty eight years of this, run entirely by students.</h2>
+    <p class="sub">Chartered in 1988 at Model Engineering College, Kochi. The field projects are volunteer work, planned and paid for from inside the branch.</p>
+    <div class="figures">
+      <div>
+        <p class="fig__n">1988</p>
+        <p class="fig__l">Chartered</p>
+      </div>
+      <div>
+        <p class="fig__n">300+</p>
+        <p class="fig__l">Members</p>
+      </div>
+      <div>
+        <p class="fig__n">9</p>
+        <p class="fig__l">Technical chapters</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============== EVENTS =============== -->
+<section id="events" class="band">
+  <div class="wrap reveal">
+    <h2 class="lead">The rest of the year happens on campus.</h2>
+    <ul class="events">
+      <li>
+        <p class="ev__n">&gt;.hack();</p>
+        <p class="ev__d">The annual hackathon, seven years running.</p>
+      </li>
+      <li>
+        <p class="ev__n">SPARC</p>
+        <p class="ev__d">Speaker series for first year students, five years running.</p>
+      </li>
+      <li>
+        <p class="ev__n">STEM Initiative</p>
+        <p class="ev__d">School outreach reaching about 500 students across five schools a year.</p>
+      </li>
+      <li>
+        <p class="ev__n">Hack-Her</p>
+        <p class="ev__d">A 24 hour hackathon, women only.</p>
+      </li>
+      <li>
+        <p class="ev__n">HACK-A-DDIT</p>
+        <p class="ev__d">Hackathon with the Lions Club on drug abuse awareness.</p>
+      </li>
+    </ul>
+  </div>
+
+  <!-- The one and only scrolling strip on this page. -->
+  <div class="reel reveal" tabindex="0" role="group" aria-label="Event posters, scroll sideways to browse">
+    <img src="../../public/gallery/akiassc-2026.webp" alt="Poster for AKIASSC 2026" loading="lazy">
+    <img src="../../public/gallery/error-404-debugging.webp" alt="Poster for Error 404 debugging event" loading="lazy">
+    <img src="../../public/gallery/connect-the-lives.webp" alt="Poster for Connect the Lives" loading="lazy">
+    <img src="../../public/gallery/morse-code-contest.webp" alt="Poster for the Morse code contest" loading="lazy">
+    <img src="../../public/gallery/ai-robotics-space-sustainability.webp" alt="Poster for AI, robotics, space and sustainability" loading="lazy">
+    <img src="../../public/gallery/women-in-tech-beyond-stereotypes.webp" alt="Poster for Women in Tech, beyond stereotypes" loading="lazy">
+    <img src="../../public/gallery/environment-day.webp" alt="Poster for Environment Day" loading="lazy">
+    <img src="../../public/gallery/pes-day-2026.webp" alt="Poster for PES Day 2026" loading="lazy">
+    <img src="../../public/gallery/sps-world-of-opportunities.webp" alt="Poster for SPS World of Opportunities" loading="lazy">
+    <img src="../../public/gallery/a-robo-roadmap.webp" alt="Poster for A Robo Roadmap" loading="lazy">
+    <img src="../../public/gallery/women-leading-innovation.webp" alt="Poster for Women Leading Innovation" loading="lazy">
+    <img src="../../public/gallery/linkedin-industry-success.webp" alt="Poster for the LinkedIn and industry success session" loading="lazy">
+    <img src="../../public/gallery/power-electronics-talk.webp" alt="Poster for the power electronics talk" loading="lazy">
+    <img src="../../public/gallery/farewell-2026.webp" alt="Poster for Farewell 2026" loading="lazy">
+    <img src="../../public/gallery/informatyka-agentic-ai.webp" alt="Poster for Informatyka, agentic AI" loading="lazy">
+    <img src="../../public/gallery/understanding-gender-reality.webp" alt="Poster for Understanding Gender Reality" loading="lazy">
+    <img src="../../public/gallery/distinguished-lecture-deep-learning.webp" alt="Poster for the distinguished lecture on deep learning" loading="lazy">
+    <img src="../../public/gallery/sps-scholarship-guidance.webp" alt="Poster for SPS scholarship guidance" loading="lazy">
+    <img src="../../public/gallery/ethical-ai-session-1.webp" alt="Poster for Ethical AI, session one" loading="lazy">
+    <img src="../../public/gallery/the-power-quest.webp" alt="Poster for The Power Quest" loading="lazy">
+    <img src="../../public/gallery/linkedin-industry-success-rescheduled.webp" alt="Poster for the rescheduled LinkedIn and industry success session" loading="lazy">
+    <img src="../../public/gallery/ev-career-pathways.webp" alt="Poster for EV career pathways" loading="lazy">
+  </div>
+</section>
+
+<!-- =============== CHAPTERS =============== -->
+<section id="chapters" class="band band--deep">
+  <div class="wrap reveal">
+    <h2 class="lead lead--wide">Nine chapters, each running its own calendar.</h2>
+    <ul class="chapters">
+      <li>Computer Society</li>
+      <li>Robotics and Automation <span>RAS</span></li>
+      <li>Signal Processing <span>SPS</span></li>
+      <li>Communications <span>ComSoc</span></li>
+      <li>Industry Applications <span>IAS</span></li>
+      <li>Power and Energy <span>PES</span></li>
+      <li>IE/PELS Joint Chapter</li>
+      <li>Women in Engineering <span>WIE</span></li>
+      <li>SIGHT Group</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =============== PEOPLE =============== -->
+<section id="team" class="band">
+  <div class="wrap reveal">
+    <h2 class="lead">Who signs off on all of it.</h2>
+    <ul class="people">
+      <li>
+        <img src="../../public/team/neethu-salim.webp" alt="Prof. Neethu Salim" loading="lazy">
+        <b>Prof. Neethu Salim</b><small>Student Branch Counsellor</small>
+      </li>
+      <li>
+        <img src="../../public/team/jes-gigo.webp" alt="Jes Gigo" loading="lazy">
+        <b>Jes Gigo</b><small>Chair</small>
+      </li>
+      <li>
+        <img src="../../public/team/jassim-mohammed-salim.webp" alt="Jassim Mohammed Salim" loading="lazy">
+        <b>Jassim Mohammed Salim</b><small>Vice Chair</small>
+      </li>
+      <li>
+        <img src="../../public/team/ryan-nelson.webp" alt="Ryan Nelson" loading="lazy">
+        <b>Ryan Nelson</b><small>Secretary</small>
+      </li>
+      <li>
+        <img src="../../public/team/navya-maria-vincent.webp" alt="Navya Maria Vincent" loading="lazy">
+        <b>Navya Maria Vincent</b><small>Joint Secretary</small>
+      </li>
+      <li>
+        <img src="../../public/team/joseph-hamlin.webp" alt="Joseph Hamlin" loading="lazy">
+        <b>Joseph Hamlin</b><small>Treasurer</small>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- =============== JOIN =============== -->
+<section id="join" class="band join">
+  <div class="wrap reveal">
+    <div class="join__grid">
+      <div>
+        <h2 class="lead">Join the 300+ students already in the branch.</h2>
+        <div class="cta-row">
+          <a class="btn btn--solid" href="https://www.ieee.org/membership/join/" target="_blank" rel="noreferrer">Join the branch</a>
+        </div>
+      </div>
+      <ul class="benefits">
+        <li>Travel grants and scholarships.</li>
+        <li>Full access to the IEEE eLearning Library.</li>
+        <li>A seat close to global standards work.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div class="foot">
+    <div>
+      <strong>IEEE MACE Student Branch</strong>
+      Model Engineering College, Thrikkakara, Kochi 682021, Kerala.
+    </div>
+    <div>
+      <nav class="foot__links" aria-label="Footer">
+        <a href="#field">Field work</a>
+        <a href="#events">Events</a>
+        <a href="#chapters">Chapters</a>
+        <a href="#team">Team</a>
+        <a href="https://www.ieee.org/membership/join/" target="_blank" rel="noreferrer">Join the branch</a>
+      </nav>
+      <p style="margin-top:1rem">Chartered 1988.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var head = document.getElementById('site-head');
+  var sentinel = document.getElementById('sentinel');
+
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('is-in'); });
+    return;
+  }
+
+  // Reveal: brings each block in as it is reached, so the field projects
+  // read one at a time rather than all at once.
+  var revealer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-in');
+      revealer.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(function (el) { revealer.observe(el); });
+
+  // Header: gains a solid background once the page has left the hero,
+  // so the nav stays legible over content. No scroll listener.
+  if (sentinel) {
+    new IntersectionObserver(function (entries) {
+      head.classList.toggle('is-stuck', !entries[0].isIntersecting);
+    }, { threshold: 0 }).observe(sentinel);
+  }
+})();
+</script>
+
+</body>
+</html>

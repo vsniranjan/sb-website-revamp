@@ -1,12 +1,12 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import type { Blueprint } from './Blueprint'
+import type { WaveField } from './WaveField'
 
 /**
- * Scrubs the sketch morph index (0..8) as each data-scene section
+ * Scrubs the field morph index (0..8) as each data-scene section
  * approaches the viewport. Free-flowing scroll — no pinning.
  */
-export function initScrollSync(backdrop: Blueprint): void {
+export function initScrollSync(backdrop: WaveField): void {
   if (!backdrop.ok) return
   const sections = gsap.utils.toArray<HTMLElement>('[data-scene]')
   sections.forEach((section, i) => {
