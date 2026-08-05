@@ -37,6 +37,20 @@ import {
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother, SplitText, DrawSVGPlugin)
 
+/**
+ * Refreshing part-way down the page restores the native scroll offset while
+ * ScrollSmoother is still measuring the page, which lands the reader mid-site
+ * with the preloader over it and the hero intro playing out of sight. The site is
+ * built to open from the top, so drop the restore.
+ *
+ * Through ScrollTrigger rather than `history.scrollRestoration` directly: it
+ * caches the restoration mode when it initialises — during the import above, so
+ * before any of this module's own code — and writes that cached value back later,
+ * undoing a plain assignment.
+ */
+ScrollTrigger.clearScrollMemory('manual')
+window.scrollTo(0, 0)
+
 renderContent()
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches

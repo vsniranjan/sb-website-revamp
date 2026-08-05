@@ -94,16 +94,55 @@ export function initNavigation(smoother: Smoother): void {
   })
 }
 
+/** Posters fade in as they decode; nothing pops into a half-drawn frame. */
+function trackImageLoads(track: HTMLElement): void {
+  track.querySelectorAll<HTMLImageElement>('.poster__img').forEach((img) => {
+    if (img.complete) img.classList.add('is-loaded')
+    else img.addEventListener('load', () => img.classList.add('is-loaded'), { once: true })
+  })
+}
+
+/**
+ * Posters sit off to the right of the viewport, so lazy loading would only fetch
+ * them as the marquee dragged each one in — a visible blank. Once the reel itself
+ * is near, fetch the whole strip.
+ */
+function preloadOnApproach(reel: HTMLElement, track: HTMLElement): void {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return
+      track.querySelectorAll<HTMLImageElement>('.poster__img').forEach((img) => {
+        img.loading = 'eager'
+      })
+      observer.disconnect()
+    },
+    { rootMargin: '600px 0px' },
+  )
+  observer.observe(reel)
+}
+
+/** Poster travel speed, in CSS pixels per second — independent of how many posters there are. */
+const REEL_SPEED = 64
+
 /** Seamless auto-scrolling poster reel; eases to a stop on hover. */
 export function initGalleryMarquee(reducedMotion: boolean): void {
   const reel = document.getElementById('gallery-reel')
   const track = document.getElementById('gallery-track')
   if (!reel || !track) return
-  if (reducedMotion) return
 
+  trackImageLoads(track)
+  preloadOnApproach(reel, track)
+
+  if (reducedMotion) {
+    // no marquee to carry posters past — hand the strip over to native scrolling
+    reel.classList.add('is-static')
+    return
+  }
+
+  const set = track.querySelector<HTMLElement>('.gallery__set')
   const loop = gsap.to(track, {
     xPercent: -50,
-    duration: 36,
+    duration: set ? set.offsetWidth / REEL_SPEED : 36,
     ease: 'none',
     repeat: -1,
   })

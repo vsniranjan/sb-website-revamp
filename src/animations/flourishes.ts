@@ -23,7 +23,7 @@ export function initLineDraws(): void {
         ease: 'expo.out',
         stagger: 0.35,
         duration: 1,
-        scrollTrigger: { trigger: board, start: 'top 88%', once: true },
+        scrollTrigger: { trigger: board, start: 'top 88%' },
       },
     )
   }
@@ -42,16 +42,22 @@ export function initLineDraws(): void {
   }
 }
 
-/** Gauge dials sweep in once when the stats scroll into view. */
+/**
+ * Gauge dials sweep in once when the stats scroll into view. Guarded by a flag
+ * rather than `once: true` — see the note in reveals.ts for why that option
+ * breaks any load that starts part-way down the page.
+ */
 export function initGauges(): void {
   gsap.utils.toArray<SVGCircleElement>('.gauge__fill').forEach((fill) => {
     const frac = Number(fill.dataset.fill ?? '0')
     const ARC = 226.2
+    let swept = false
     ScrollTrigger.create({
       trigger: fill,
       start: 'top 85%',
-      once: true,
       onEnter: () => {
+        if (swept) return
+        swept = true
         gsap.to(fill, { strokeDashoffset: ARC * (1 - frac), duration: 2.8, ease: 'expo.out' })
       },
     })
@@ -60,11 +66,13 @@ export function initGauges(): void {
   gsap.utils.toArray<SVGLineElement>('.gauge__needle').forEach((needle) => {
     const frac = Number(needle.dataset.fill ?? '0')
     gsap.set(needle, { rotation: -135, svgOrigin: '60 60' })
+    let swung = false
     ScrollTrigger.create({
       trigger: needle,
       start: 'top 85%',
-      once: true,
       onEnter: () => {
+        if (swung) return
+        swung = true
         gsap.to(needle, {
           rotation: -135 + 270 * frac,
           svgOrigin: '60 60',
@@ -101,7 +109,7 @@ export function initCallouts(): void {
         scaleX: 1,
         duration: 1.5,
         ease: 'expo.out',
-        scrollTrigger: { trigger: row, start: 'top 90%', once: true },
+        scrollTrigger: { trigger: row, start: 'top 90%' },
       },
     )
   })

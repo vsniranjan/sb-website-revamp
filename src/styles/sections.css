@@ -749,8 +749,11 @@
 .plate__photo {
   position: relative;
   width: 60%;
+  height: auto;
   aspect-ratio: 1;
+  /* Headshots ship uncropped, so bias the circle towards the face, not the chest. */
   object-fit: cover;
+  object-position: center 30%;
   border-radius: 50%;
 }
 
@@ -807,9 +810,13 @@
   font-size: var(--text-h3);
 }
 
-/* ---------- 07 · generative poster reel ---------- */
+/* ---------- 07 · event poster reel ----------
+   Posters are pinned to one shared height and take their width from each
+   image's own ratio (--poster-ar), so square and portrait plates hang from the
+   same rail without cropping. */
 
 .gallery__reel {
+  --poster-h: clamp(280px, 40vh, 420px);
   overflow: hidden;
   padding-block: var(--space-6);
   border-block: 1px solid var(--ink-hairline);
@@ -831,114 +838,123 @@
 
 .poster {
   flex: none;
+  width: calc(var(--poster-h) * var(--poster-ar));
   transition: transform var(--dur-base) var(--ease-out);
 }
 
 .poster--v1 {
-  width: clamp(210px, 24vw, 280px);
   transform: rotate(-1.1deg);
 }
 
 .poster--v2 {
-  width: clamp(180px, 20vw, 236px);
-  transform: rotate(0.9deg) translateY(var(--space-6));
+  transform: rotate(0.9deg) translateY(var(--space-5));
 }
 
 .poster--v3 {
-  width: clamp(230px, 26vw, 300px);
   transform: rotate(0.4deg) translateY(var(--space-3));
 }
 
 .poster--v4 {
-  width: clamp(190px, 21vw, 250px);
-  transform: rotate(-0.7deg) translateY(var(--space-7));
+  transform: rotate(-0.7deg) translateY(var(--space-6));
 }
 
 .poster:hover {
   transform: rotate(0deg) translateY(0);
 }
 
-.poster__art {
+.poster__frame {
   position: relative;
-  aspect-ratio: 10 / 13;
+  aspect-ratio: var(--poster-ar);
   background: var(--paper-raised);
   border: 1px solid var(--hairline);
   overflow: hidden;
-  transition: border-color var(--dur-fast) var(--ease-out);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
 }
 
-.poster--v2 .poster__art {
-  aspect-ratio: 10 / 14.5;
-}
-
-.poster--v4 .poster__art {
-  aspect-ratio: 10 / 12;
-}
-
-.poster:hover .poster__art {
-  border-color: var(--blue);
-}
-
-.poster__num {
+/* drafting-paper hatch shows through until the poster decodes */
+.poster__frame::before {
+  content: '';
   position: absolute;
-  top: var(--space-3);
-  left: var(--space-3);
+  inset: 0;
+  background:
+    linear-gradient(var(--gridline) 1px, transparent 1px) 0 0 / 100% 24px,
+    linear-gradient(90deg, var(--gridline) 1px, transparent 1px) 0 0 / 24px 100%;
+}
+
+.poster:hover .poster__frame {
+  border-color: var(--blue);
+  box-shadow: var(--shadow-lift);
+}
+
+.poster__img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+}
+
+.poster__img.is-loaded {
+  opacity: 1;
+}
+
+.poster__caption {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.poster__index {
   font-family: var(--font-mono);
   font-size: var(--text-label);
   letter-spacing: 0.16em;
-  color: var(--ink-faint);
-}
-
-.poster__stamp {
-  position: absolute;
-  bottom: var(--space-3);
-  right: var(--space-3);
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
   color: var(--blue);
-  border: 1px solid var(--hairline);
-  padding: 2px 6px;
-  transform: rotate(-2deg);
-}
-
-.poster__lines {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.motif-line {
-  stroke: var(--blue);
-  stroke-width: 1.8;
-  fill: none;
-  opacity: 0.7;
-}
-
-.motif-faint {
-  stroke: var(--hairline);
-  stroke-width: 1;
-  fill: none;
-}
-
-.motif-pad {
-  fill: var(--blue);
-  opacity: 0.8;
-}
-
-.motif-dot {
-  fill: var(--ink-faint);
-  opacity: 0.5;
+  line-height: 1.5;
 }
 
 .poster__title {
   font-family: var(--font-mono);
   font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.poster__tag {
+  grid-column: 2;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-muted);
-  margin-top: var(--space-3);
+  color: var(--ink-faint);
+}
+
+/* reduced motion: no marquee to carry posters past, so let the reel be swiped */
+.gallery__reel.is-static {
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-inline: var(--gutter);
+}
+
+.gallery__reel.is-static .gallery__track {
+  will-change: auto;
+}
+
+.gallery__reel.is-static .gallery__set[aria-hidden] {
+  display: none;
+}
+
+.gallery__reel.is-static .poster {
+  scroll-snap-align: center;
 }
 
 /* ---------- 08 · IC-chip board ---------- */
@@ -1271,5 +1287,14 @@
 
   .section__num {
     font-size: 6rem;
+  }
+
+  .gallery__reel {
+    --poster-h: 260px;
+  }
+
+  .gallery__set {
+    gap: var(--space-5);
+    padding-right: var(--space-5);
   }
 }

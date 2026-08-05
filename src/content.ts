@@ -98,30 +98,221 @@ export const events: BranchEvent[] = [
 export interface ExecomMember {
   name: string
   role: string
+  /** Blank when the member publishes no address — the plate then shows `unit`. */
   email: string
-  linkedin: string
-  /** Path to a headshot; empty string renders the initials monogram. */
+  /** Blank when the member publishes no number — the plate then shows `unit`. */
+  phone: string
+  /** Shown in the third spec row when neither email nor phone is published. */
+  unit: string
+  /** File name inside /public/team, served as-is; empty renders the monogram. */
   photo: string
 }
 
 export const execom: ExecomMember[] = [
-  { name: 'Dr. Bos Mathew Jos', role: 'Branch Counselor', email: 'bosmathew@mace.ac.in', linkedin: '#', photo: '' },
-  { name: 'Eldho P. John', role: 'Student Branch Chair', email: 'chair@ieeemace.org', linkedin: '#', photo: '' },
-  { name: 'Maria Theresa', role: 'Vice Chair', email: 'vicechair@ieeemace.org', linkedin: '#', photo: '' },
-  { name: 'Albin George', role: 'Secretary', email: 'secretary@ieeemace.org', linkedin: '#', photo: '' },
-  { name: 'Anjali Krishna', role: 'Treasurer', email: 'treasurer@ieeemace.org', linkedin: '#', photo: '' },
-  { name: 'Nevin Joseph', role: 'Joint Secretary', email: 'jointsecretary@ieeemace.org', linkedin: '#', photo: '' },
+  {
+    name: 'Prof. Neethu Salim',
+    role: 'Student Branch Counsellor',
+    email: '',
+    phone: '',
+    unit: 'IEEE MACE SB',
+    photo: 'neethu-salim.webp',
+  },
+  {
+    name: 'Jes Gigo',
+    role: 'Student Branch Chair',
+    email: 'jesgigo10@ieee.org',
+    phone: '+91 88486 68497',
+    unit: 'IEEE MACE SB',
+    photo: 'jes-gigo.webp',
+  },
+  {
+    name: 'Jassim Mohammed Salim',
+    role: 'Vice Chair',
+    email: 'jassimmohdsalim@ieee.org',
+    phone: '+91 70341 47924',
+    unit: 'IEEE MACE SB',
+    photo: 'jassim-mohammed-salim.webp',
+  },
+  {
+    name: 'Ryan Nelson',
+    role: 'Secretary',
+    email: 'ryannelson@ieee.org',
+    phone: '+91 94461 08674',
+    unit: 'IEEE MACE SB',
+    photo: 'ryan-nelson.webp',
+  },
+  {
+    name: 'Navya Maria Vincent',
+    role: 'Joint Secretary',
+    email: 'navyamariavincent@ieee.org',
+    phone: '+91 62382 85215',
+    unit: 'IEEE MACE SB',
+    photo: 'navya-maria-vincent.webp',
+  },
+  {
+    name: 'Joseph Hamlin',
+    role: 'Treasurer',
+    email: 'jhamlim@ieee.org',
+    phone: '+91 85901 46947',
+    unit: 'IEEE MACE SB',
+    photo: 'joseph-hamlin.webp',
+  },
 ]
 
-export const galleryPosters: string[] = [
-  '>.hack();',
-  'SPARC',
-  'STEM Initiative',
-  'Hack-Her',
-  'HACK-A-DDIT',
-  'Light the Lives',
-  'Connect the Lives',
-  'Wild Elephant Tracker',
+/**
+ * The one width every poster is encoded at. A poster renders ~300 CSS px wide at
+ * most, so 720 covers a 2x desktop plate and a 3x phone from a single file; the
+ * repo keeps one image per poster and nothing else.
+ */
+export const POSTER_WIDTH = 720
+
+export interface GalleryPoster {
+  /** Source file inside /images — the optimizer's input. */
+  source: string
+  /** Output basename under /public/gallery, also the manifest key. */
+  slug: string
+  title: string
+  tag: string
+}
+
+/**
+ * Event posters, ordered for the reel — mixed portrait/square on purpose so the
+ * strip never reads as a uniform grid. Rendered sizes come from the generated
+ * manifest (`npm run gallery`), never from this list.
+ */
+export const galleryPosters: GalleryPoster[] = [
+  {
+    source: 'akiassc-2026.jpeg',
+    slug: 'akiassc-2026',
+    title: 'AKIASSC 2026 — Industry & Entrepreneurship',
+    tag: 'IAS · Student Conclave',
+  },
+  {
+    source: 'error-404-debugging.jpeg',
+    slug: 'error-404-debugging',
+    title: 'Error 404 — Debugging Competition',
+    tag: 'Computer Society · Contest',
+  },
+  {
+    source: 'connect-the-lives.jpeg',
+    slug: 'connect-the-lives',
+    title: 'Connect the Lives — Uriyampetty',
+    tag: 'SIGHT · Humanitarian Project',
+  },
+  {
+    source: 'morse-code-contest.jpeg',
+    slug: 'morse-code-contest',
+    title: 'Morse Code Contest',
+    tag: 'IE/PELS · Technical Contest',
+  },
+  {
+    source: 'ai-robotics-space-sustainability.jpeg',
+    slug: 'ai-robotics-space-sustainability',
+    title: 'AI Robotics for Space Sustainability',
+    tag: 'RAS · Distinguished Lecture',
+  },
+  {
+    source: 'women-in-tech-beyond-stereotypes.jpeg',
+    slug: 'women-in-tech-beyond-stereotypes',
+    title: 'Women in Tech — Beyond the Stereotypes',
+    tag: 'ComSoc · Talk Session',
+  },
+  {
+    source: 'environment-day.jpeg',
+    slug: 'environment-day',
+    title: 'Environment Day',
+    tag: 'SIGHT · Community Outreach',
+  },
+  {
+    source: 'pes-day-2026.jpeg',
+    slug: 'pes-day-2026',
+    title: 'IEEE PES Day 2026',
+    tag: 'PES · Online Session',
+  },
+  {
+    source: 'sps-world-of-opportunities.jpeg',
+    slug: 'sps-world-of-opportunities',
+    title: 'IEEE SPS World of Opportunities',
+    tag: 'SPS · Interactive Talk',
+  },
+  {
+    source: 'a-robo-roadmap.jpeg',
+    slug: 'a-robo-roadmap',
+    title: 'A Robo Roadmap — Passion to Profession',
+    tag: 'RAS · Talk Session',
+  },
+  {
+    source: 'women-leading-innovation.jpeg',
+    slug: 'women-leading-innovation',
+    title: 'Women Leading Innovation for Sustainable Development',
+    tag: 'WIE · Panel Discussion',
+  },
+  {
+    source: 'linkedin-industry-success.jpeg',
+    slug: 'linkedin-industry-success',
+    title: 'Engineering Your Professional Identity',
+    tag: 'IAS · Career Session',
+  },
+  {
+    source: 'power-electronics-talk.jpeg',
+    slug: 'power-electronics-talk',
+    title: 'The Technology Behind Modern Grid Systems',
+    tag: 'IE/PELS · Talk Session',
+  },
+  {
+    source: 'farewell-2026.jpeg',
+    slug: 'farewell-2026',
+    title: 'Farewell — >.hack(); Team',
+    tag: 'Student Branch · Community',
+  },
+  {
+    source: 'informatyka-agentic-ai.jpeg',
+    slug: 'informatyka-agentic-ai',
+    title: "Beginner's Guide to Agentic AI & n8n",
+    tag: 'Informatyka 6.0 · Talk Session',
+  },
+  {
+    source: 'understanding-gender-reality.jpeg',
+    slug: 'understanding-gender-reality',
+    title: 'Understanding Gender Reality',
+    tag: 'WIE · Awareness Session',
+  },
+  {
+    source: 'distinguished-lecture-deep-learning.jpeg',
+    slug: 'distinguished-lecture-deep-learning',
+    title: 'From Pixels to Decisions — Deep Learning',
+    tag: 'SPS · Distinguished Lecture',
+  },
+  {
+    source: 'sps-scholarship-guidance.jpeg',
+    slug: 'sps-scholarship-guidance',
+    title: 'Unlocking Opportunities — SPS Scholarships',
+    tag: 'SPS · Guidance Session',
+  },
+  {
+    source: 'ethical-ai-session-1.jpeg',
+    slug: 'ethical-ai-session-1',
+    title: 'Session 1 — Ethical AI',
+    tag: 'WIE Profept · Session Series',
+  },
+  {
+    source: 'the-power-quest.jpeg',
+    slug: 'the-power-quest',
+    title: 'The Power Quest',
+    tag: 'PES Day · Quiz',
+  },
+  {
+    source: 'linkedin-industry-success-rescheduled.jpeg',
+    slug: 'linkedin-industry-success-rescheduled',
+    title: 'Engineering Your Professional Identity — Rescheduled',
+    tag: 'IAS · Career Session',
+  },
+  {
+    source: 'ev-career-pathways.jpeg',
+    slug: 'ev-career-pathways',
+    title: 'Career Pathways in EV & Automotive Industry',
+    tag: 'VTS · Talk Session',
+  },
 ]
 
 export interface Chapter {

@@ -4,6 +4,10 @@ node_modules/
 # Build output
 dist/
 
+
+images/
+docs/
+
 # Local tooling and working notes (not part of the published site)
 .claude/
 MASTER.md

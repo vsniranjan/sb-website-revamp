@@ -7,7 +7,10 @@ import {
   execom,
   galleryPosters,
   introCards,
+  type ExecomMember,
+  type GalleryPoster,
 } from './content'
+import { posterSizes } from './gallery-manifest.generated'
 
 function mount(id: string): HTMLElement {
   const el = document.getElementById(id)
@@ -25,66 +28,65 @@ function initials(name: string): string {
 
 const pad = (n: number) => String(n).padStart(2, '0')
 
-/* ---------- generative poster motifs (blueprint schematics) ---------- */
+/**
+ * Third spec row of an execom plate. Members who publish contact details get the
+ * links; the ones who publish none — the counsellor — get their unit instead, so
+ * every plate keeps the same three-row rhythm without a dead link or a blank.
+ */
+function contactRow(m: ExecomMember): string {
+  const links = [
+    m.email && `<a href="mailto:${m.email}" aria-label="Email ${m.name}">Email</a>`,
+    m.phone &&
+      `<a href="tel:${m.phone.replace(/\s+/g, '')}" aria-label="Call ${m.name}">Call</a>`,
+  ].filter(Boolean)
 
-function motifWaveform(): string {
-  const pts: string[] = []
-  for (let x = 0; x <= 200; x += 4) {
-    const y = 130 + Math.sin(x / 14) * 34 * Math.sin(x / 90)
-    pts.push(`${x},${y.toFixed(1)}`)
+  if (!links.length) {
+    return `<p class="plate__row"><b>UNIT</b><i></i><span>${m.unit}</span></p>`
   }
-  const dots = [30, 70, 110, 150, 190]
-    .map((x) => {
-      const y = 130 + Math.sin(x / 14) * 34 * Math.sin(x / 90)
-      return `<circle cx="${x}" cy="${y.toFixed(1)}" r="2.6" class="motif-pad"/>`
-    })
-    .join('')
-  return `<polyline points="${pts.join(' ')}" class="motif-line"/>
-    <line x1="0" y1="130" x2="200" y2="130" class="motif-faint"/>${dots}`
+  return `<p class="plate__row plate__row--links"><b>LINK</b><i></i><span>
+            ${links.join('\n            ')}
+          </span></p>`
 }
 
-function motifCircuit(): string {
+/* ---------- poster reel ---------- */
+
+const escapeHtml = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+
+/**
+ * One poster plate. `--poster-ar` carries the image's own ratio so CSS can size the
+ * frame from the reel's shared height — square and portrait posters, no crop.
+ * `decorative` marks the duplicated set that only exists to close the marquee loop.
+ */
+function posterFigure(poster: GalleryPoster, i: number, decorative: boolean): string {
+  const size = posterSizes[poster.slug]
+  if (!size) {
+    throw new Error(`No optimized image for "${poster.slug}" — run \`npm run gallery\``)
+  }
+
+  const ratio = (size.width / size.height).toFixed(4)
+  const title = escapeHtml(poster.title)
+
   return `
-    <rect x="72" y="96" width="56" height="56" class="motif-line"/>
-    <path d="M72 110 H28 V54 H10" class="motif-line"/>
-    <path d="M72 138 H44 V206 H10" class="motif-line"/>
-    <path d="M128 110 H164 V60 H190" class="motif-line"/>
-    <path d="M128 138 H156 V196 H190" class="motif-line"/>
-    <path d="M100 96 V40" class="motif-line"/>
-    <path d="M100 152 V220" class="motif-line"/>
-    <circle cx="10" cy="54" r="3.4" class="motif-pad"/>
-    <circle cx="10" cy="206" r="3.4" class="motif-pad"/>
-    <circle cx="190" cy="60" r="3.4" class="motif-pad"/>
-    <circle cx="190" cy="196" r="3.4" class="motif-pad"/>
-    <circle cx="100" cy="40" r="3.4" class="motif-pad"/>
-    <circle cx="100" cy="220" r="3.4" class="motif-pad"/>`
+    <figure class="poster poster--v${(i % 4) + 1}" style="--poster-ar:${ratio}">
+      <div class="poster__frame">
+        <img
+          class="poster__img"
+          src="/gallery/${poster.slug}.webp"
+          width="${size.width}"
+          height="${size.height}"
+          loading="lazy"
+          decoding="async"
+          alt="${decorative ? '' : `Event poster — ${title}`}"
+        />
+      </div>
+      <figcaption class="poster__caption">
+        <span class="poster__index" aria-hidden="true">${pad(i + 1)}</span>
+        <span class="poster__title">${title}</span>
+        <span class="poster__tag">${escapeHtml(poster.tag)}</span>
+      </figcaption>
+    </figure>`
 }
-
-function motifRadial(): string {
-  const arcs = [26, 44, 62, 80]
-    .map(
-      (r) =>
-        `<path d="M ${100 - r} 130 A ${r} ${r} 0 0 1 ${100 + r} 130" class="motif-line"/>`,
-    )
-    .join('')
-  return `${arcs}
-    <line x1="100" y1="130" x2="100" y2="52" class="motif-line"/>
-    <circle cx="100" cy="130" r="4" class="motif-pad"/>
-    <line x1="20" y1="130" x2="180" y2="130" class="motif-faint"/>`
-}
-
-function motifMatrix(): string {
-  let dots = ''
-  for (let r = 0; r < 7; r++) {
-    for (let c = 0; c < 6; c++) {
-      const on = (r * 6 + c) % 4 === 0
-      dots += `<circle cx="${40 + c * 24}" cy="${70 + r * 20}" r="${on ? 3.2 : 1.4}" class="${on ? 'motif-pad' : 'motif-dot'}"/>`
-    }
-  }
-  return `${dots}<line x1="24" y1="216" x2="176" y2="56" class="motif-faint"/>`
-}
-
-const MOTIFS = [motifWaveform, motifCircuit, motifRadial, motifMatrix]
 
 /* ---------- chapter chip abbreviations ---------- */
 
@@ -218,40 +220,25 @@ export function renderContent(): void {
           </svg>
           ${
             m.photo
-              ? `<img class="plate__photo" src="${m.photo}" alt="" loading="lazy" />`
+              ? `<img class="plate__photo" src="/team/${m.photo}" decoding="async" alt="" />`
               : `<span class="plate__monogram">${initials(m.name)}</span>`
           }
         </div>
         <div class="plate__spec">
           <p class="plate__row"><b>NAME</b><i></i><span>${m.name}</span></p>
           <p class="plate__row"><b>ROLE</b><i></i><span>${m.role}</span></p>
-          <p class="plate__row plate__row--links"><b>LINK</b><i></i><span>
-            <a href="mailto:${m.email}">Email</a>
-            <a href="${m.linkedin}" aria-label="LinkedIn profile of ${m.name}">LinkedIn</a>
-          </span></p>
+          ${contactRow(m)}
         </div>
       </article>`,
     )
     .join('')
 
-  // 07 · generative poster reel (track duplicated for seamless loop)
-  const posterCards = (hidden: boolean) =>
-    `<div class="gallery__set" ${hidden ? 'aria-hidden="true"' : ''}>${galleryPosters
-      .map(
-        (title, i) => `
-        <figure class="poster poster--v${(i % 4) + 1}">
-          <div class="poster__art" aria-hidden="true">
-            <span class="poster__num">${pad(i + 1)}</span>
-            <svg class="poster__lines" viewBox="0 0 200 260" preserveAspectRatio="xMidYMid meet">
-              ${MOTIFS[i % MOTIFS.length]()}
-            </svg>
-            <span class="poster__stamp">IEEE-SB-${pad(i + 1)}</span>
-          </div>
-          <figcaption class="poster__title">${title}</figcaption>
-        </figure>`,
-      )
+  // 07 · event poster reel (set duplicated for a seamless loop)
+  const posterSet = (duplicate: boolean) =>
+    `<div class="gallery__set"${duplicate ? ' aria-hidden="true"' : ''}>${galleryPosters
+      .map((poster, i) => posterFigure(poster, i, duplicate))
       .join('')}</div>`
-  mount('gallery-track').innerHTML = posterCards(false) + posterCards(true)
+  mount('gallery-track').innerHTML = posterSet(false) + posterSet(true)
 
   // 08 · IC-chip tiles
   mount('chapters-grid').innerHTML = chapters
