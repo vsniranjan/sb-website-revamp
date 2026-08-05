@@ -511,6 +511,10 @@ button {
   width: 44px;
   height: 44px;
   align-items: center;
+  /* .navbar__nav carries the auto margin that pushes chrome to the right edge, but
+     it's display:none below 900px, so the burger needs its own to land on the right
+     instead of sitting right after the wordmark. */
+  margin-left: auto;
 }
 
 .navbar__burger span {

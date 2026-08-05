@@ -53,7 +53,7 @@ const REVEAL_VARIANTS: RevealVariant[] = [
   // chips seat down onto the board
   { selector: '.chip', from: { scale: 0.9, autoAlpha: 0 }, to: { scale: 1, autoAlpha: 1 } },
   // dials and the seal grow from their centre, which is where they are read from
-  { selector: '.gauge, .seal, .radar', from: { scale: 0.86, autoAlpha: 0 }, to: { scale: 1, autoAlpha: 1 } },
+  { selector: '.gauge, .seal', from: { scale: 0.86, autoAlpha: 0 }, to: { scale: 1, autoAlpha: 1 } },
   // the sheets are tilted, and sliding a tilted plane vertically looks broken
   { selector: '.sheet', from: { scale: 0.97, autoAlpha: 0 }, to: { scale: 1, autoAlpha: 1 } },
   // cards lift with a little depth behind them
