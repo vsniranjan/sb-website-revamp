@@ -1,43 +1,73 @@
 import gsap from 'gsap'
 
-const BLUE_R = 0
-const BLUE_G = 98
-const BLUE_B = 155
+/** The field paints white light onto the dark page, matching the accent. */
+const TINT_R = 255
+const TINT_G = 255
+const TINT_B = 255
 
-/** Peak alpha, reached only at the brightest crests. Body copy sits over this. */
-const PEAK_ALPHA = 0.16
 /**
- * Gamma on the amplitude. Above 1 it pushes the mid-range down while leaving the
- * crests alone, so the bands read as bands against clean paper instead of the whole
- * field reading as an even wash. This is what raises contrast; PEAK_ALPHA alone just
- * makes everything uniformly darker.
+ * Peak alpha, reached only at the brightest crests. Far lower than the light theme
+ * needed: white lifting a near-black background is a much stronger visual move than
+ * blue darkening paper, so the same number would blow out the page.
  */
-const CONTRAST = 1.6
+const PEAK_ALPHA = 0.07
+/**
+ * Gamma on the normalised amplitude. Above 1 it pushes the mid-range down while
+ * leaving crests alone, so bands read as bands against clean paper rather than as an
+ * even wash.
+ */
+const CONTRAST = 1.3
+/**
+ * Summed amplitude rarely approaches the theoretical maximum, because the emitters
+ * are out of phase with each other and cancel as often as they reinforce. Measured
+ * across a run, the 98th percentile sits near 0.6, so this lifts that to 1 and the
+ * top couple of percent clip into solid crests.
+ *
+ * Without it the field peaks around a third of PEAK_ALPHA and reads as blank paper.
+ */
+const FIELD_GAIN = 1.7
+/**
+ * How fast amplitude decays with distance from an emitter. Steep values confine the
+ * pattern to tight halos and leave most of the screen empty.
+ */
+const FALLOFF = 1.5
 
 /** Offscreen buffer width in pixels; height follows the viewport ratio. */
 const RES_DESKTOP = 220
-const RES_MOBILE = 150
+/**
+ * Phones — and any desktop-sized device that reports weak hardware — run the same
+ * animation, so the buffer drops further to pay for it. The upscale is a blur either
+ * way, and at this softness the difference is invisible.
+ */
+const RES_LOW_POWER = 110
 
-/** Emitters whose wavefronts are summed. */
-const SOURCES = 4
+/**
+ * Emitters whose wavefronts are summed. Three interfere cleanly; a fourth mostly
+ * cancels the other three and flattens the result toward the mean.
+ */
+const SOURCES = 3
 
 /*
  * Motion budget. The field runs on its own clock and ignores scroll completely, so
  * the page has one continuous state rather than a per-section one.
  */
 
-/** Spatial frequency of the wavefronts. Higher packs the bands tighter. */
-const WAVE_K = 38
+/**
+ * Spatial frequency of the wavefronts. At 38 the rings packed tight enough to read
+ * as a fingerprint or a moire artefact. Low single digits give a handful of broad
+ * pools of light across the whole viewport, which is what reads as minimal.
+ */
+const WAVE_K = 9
 /** Radians per second the wavefronts travel outward. */
 const DRIFT_SPEED = 0.55
 /** Radians per second the emitter ring turns. */
 const RING_DRIFT = 0.015
 
 /**
- * Wave superposition backdrop: four radial emitters, their amplitudes summed per
- * pixel. Crests reinforce into soft bands, a crest meeting a trough cancels back to
- * bare paper — so the structure is interference rather than anything drawn, and it
- * has no edges to read as linework.
+ * Wave superposition backdrop: three radial emitters, their amplitudes summed per
+ * pixel. Crests reinforce into soft bands of light, a crest meeting a trough cancels
+ * back to the bare background, so the structure is interference rather than anything
+ * drawn and it has no edges to read as linework.
  *
  * The field is rendered into a small buffer and scaled up with smoothing on. That
  * upscale is what makes it smooth, and it cuts the per-frame cost by the square of
@@ -62,17 +92,28 @@ export class WaveField {
   private lh = 0
   private res: number
   private time = 0
-  /**
-   * Phones and reduced-motion visitors get one static frame rather than a ticker.
-   * A permanent rAF loop is a battery cost that decoration has not earned, and a
-   * still interference pattern reads as intentional.
-   */
+  /** Only reduced-motion visitors get a single static frame instead of a ticker. */
   private live: boolean
+  /**
+   * Phones and other weak-hardware devices render on every other tick. The
+   * wavefronts travel slowly enough that 30fps is indistinguishable from 60, and it
+   * halves the cost of the per-pixel loop.
+   */
+  private halfRate: boolean
+  private skipFrame = false
+  /**
+   * The bicubic-quality upscale in drawImage is the single most expensive line in
+   * render() on weak GPUs — dropping to 'medium' is a much smaller quality loss than
+   * the frame it buys back, at this buffer size.
+   */
+  private smoothingQuality: ImageSmoothingQuality
 
-  constructor(canvas: HTMLCanvasElement, opts: { mobile: boolean; animate: boolean }) {
+  constructor(canvas: HTMLCanvasElement, opts: { lowPower: boolean; animate: boolean }) {
     this.canvas = canvas
-    this.res = opts.mobile ? RES_MOBILE : RES_DESKTOP
-    this.live = opts.animate && !opts.mobile
+    this.res = opts.lowPower ? RES_LOW_POWER : RES_DESKTOP
+    this.live = opts.animate
+    this.halfRate = opts.lowPower
+    this.smoothingQuality = opts.lowPower ? 'medium' : 'high'
 
     const ctx = canvas.getContext('2d')
     const buf = document.createElement('canvas')
@@ -125,7 +166,13 @@ export class WaveField {
   }
 
   private tick = (_time: number, deltaTime: number): void => {
+    // time keeps accumulating on skipped frames, so the field advances at the same
+    // rate regardless of how often it is actually drawn
     this.time += deltaTime / 1000
+    if (this.halfRate) {
+      this.skipFrame = !this.skipFrame
+      if (this.skipFrame) return
+    }
     this.render()
   }
 
@@ -155,15 +202,16 @@ export class WaveField {
           const dy = (v - sy[i]) * aspect
           const d = Math.sqrt(dx * dx + dy * dy)
           // amplitude falls off with distance, so near sources stay legible as sources
-          s += Math.sin(d * WAVE_K - time * DRIFT_SPEED + i * 1.1) / (1 + d * 4.5)
+          s += Math.sin(d * WAVE_K - time * DRIFT_SPEED + i * 1.1) / (1 + d * FALLOFF)
         }
-        const amp = Math.pow(Math.min(1, Math.abs(s / SOURCES) * 2.05), CONTRAST)
-        data[p] = BLUE_R
-        data[p + 1] = BLUE_G
-        data[p + 2] = BLUE_B
-        // a gradient this large and this soft bands visibly on 8-bit displays, so
-        // every sample gets a sub-step of jitter to break the contours up
-        data[p + 3] = amp * peak + (Math.random() - 0.5) * 5
+        const amp = Math.pow(Math.min(1, Math.abs(s / SOURCES) * FIELD_GAIN), CONTRAST)
+        data[p] = TINT_R
+        data[p + 1] = TINT_G
+        data[p + 2] = TINT_B
+        // No dither. Re-rolling noise every frame on a buffer this small reads as
+        // television static once it is upscaled, and at this peak alpha there are too
+        // few alpha steps for banding to show anyway.
+        data[p + 3] = amp * peak
       }
     }
 
@@ -171,7 +219,7 @@ export class WaveField {
     const ctx = this.ctx
     ctx.clearRect(0, 0, this.w, this.h)
     ctx.imageSmoothingEnabled = true
-    ctx.imageSmoothingQuality = 'high'
+    ctx.imageSmoothingQuality = this.smoothingQuality
     ctx.drawImage(this.buf, 0, 0, this.w, this.h)
   }
 }

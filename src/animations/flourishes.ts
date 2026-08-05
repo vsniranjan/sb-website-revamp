@@ -84,19 +84,6 @@ export function initGauges(): void {
   })
 }
 
-/** Rotating ring text: the 1988 seal and each execom badge. */
-export function initRotors(): void {
-  gsap.utils.toArray<SVGGElement>('.seal__rotor, .plate__rotor').forEach((rotor, i) => {
-    gsap.to(rotor, {
-      rotation: i % 2 ? -360 : 360,
-      svgOrigin: '60 60',
-      duration: 40,
-      ease: 'none',
-      repeat: -1,
-    })
-  })
-}
-
 /** Benefit callout leader lines draw when each row reveals. */
 export function initCallouts(): void {
   gsap.utils.toArray<HTMLElement>('.callout').forEach((row) => {
@@ -110,28 +97,6 @@ export function initCallouts(): void {
         duration: 1.5,
         ease: 'expo.out',
         scrollTrigger: { trigger: row, start: 'top 90%' },
-      },
-    )
-  })
-}
-
-/** Mono ticker strip above the footer. */
-export function initTicker(): void {
-  const track = document.getElementById('ticker-track')
-  if (!track) return
-  gsap.to(track, { xPercent: -50, duration: 28, ease: 'none', repeat: -1 })
-}
-
-/** Ghost section numbers drift slowly against scroll. */
-export function initSectionNumbers(): void {
-  gsap.utils.toArray<HTMLElement>('.section__num').forEach((num) => {
-    gsap.fromTo(
-      num,
-      { yPercent: 18 },
-      {
-        yPercent: -18,
-        ease: 'none',
-        scrollTrigger: { trigger: num.parentElement, start: 'top bottom', end: 'bottom top', scrub: 0.8 },
       },
     )
   })
