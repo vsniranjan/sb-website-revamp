@@ -4,8 +4,15 @@ const BLUE_R = 0
 const BLUE_G = 98
 const BLUE_B = 155
 
-/** Peak alpha of the field. Body copy sits directly over this, so it stays low. */
-const PEAK_ALPHA = 0.085
+/** Peak alpha, reached only at the brightest crests. Body copy sits over this. */
+const PEAK_ALPHA = 0.16
+/**
+ * Gamma on the amplitude. Above 1 it pushes the mid-range down while leaving the
+ * crests alone, so the bands read as bands against clean paper instead of the whole
+ * field reading as an even wash. This is what raises contrast; PEAK_ALPHA alone just
+ * makes everything uniformly darker.
+ */
+const CONTRAST = 1.6
 
 /** Offscreen buffer width in pixels; height follows the viewport ratio. */
 const RES_DESKTOP = 220
@@ -15,21 +22,15 @@ const RES_MOBILE = 150
 const SOURCES = 4
 
 /*
- * Motion budget. Everything here is deliberately small: the field is meant to be
- * noticed only if you look for it. Two independent sources of movement, kept apart
- * so either can be tuned without disturbing the other.
+ * Motion budget. The field runs on its own clock and ignores scroll completely, so
+ * the page has one continuous state rather than a per-section one.
  */
 
-/** Radians the emitter ring rotates across the whole page, over morph 0..8. */
-const MORPH_SWEEP = 0.1
-/** How much the ring radius breathes as morph advances. */
-const MORPH_BREATHE = 0.025
-/** Spatial frequency of the wavefronts, and how far morph shifts it. */
+/** Spatial frequency of the wavefronts. Higher packs the bands tighter. */
 const WAVE_K = 38
-const WAVE_K_SWEEP = 0.9
 /** Radians per second the wavefronts travel outward. */
 const DRIFT_SPEED = 0.55
-/** Radians per second the emitter ring turns on its own, independent of scroll. */
+/** Radians per second the emitter ring turns. */
 const RING_DRIFT = 0.015
 
 /**
@@ -42,13 +43,11 @@ const RING_DRIFT = 0.015
  * upscale is what makes it smooth, and it cuts the per-frame cost by the square of
  * the scale factor.
  *
- * Keeps the { ok, morph, intro, drawIn } API of the linework backdrop it replaced,
- * so scrollSync scrubs it unchanged.
+ * Runs entirely on its own clock. Nothing about it responds to scroll position, so
+ * the page carries one continuous field from top to bottom.
  */
 export class WaveField {
   readonly ok: boolean
-  /** 0..8 continuous section index; scrollSync scrubs this. */
-  readonly morph = { value: 0 }
   /** 0..1 fade-in, held back until drawIn() runs. */
   readonly intro = { value: 1 }
 
@@ -134,20 +133,16 @@ export class WaveField {
     const { lw, lh, time } = this
     const data = this.img.data
     const aspect = lh / lw
-    const m = this.morph.value
 
-    // The emitters ring the centre. Morph turns the ring and breathes its radius, so
-    // sections differ, but only just — a reader moving down the page should register
-    // a change in the light rather than a change in the pattern.
+    // The emitters ring the centre and turn slowly on their own clock.
     const sx: number[] = []
     const sy: number[] = []
     for (let i = 0; i < SOURCES; i++) {
-      const a = (i / SOURCES) * Math.PI * 2 + m * MORPH_SWEEP + time * RING_DRIFT
-      sx.push(0.5 + Math.cos(a) * (0.3 + MORPH_BREATHE * Math.sin(m * 0.35 + i)))
-      sy.push(0.5 + Math.sin(a) * (0.26 + MORPH_BREATHE * Math.cos(m * 0.25 + i)))
+      const a = (i / SOURCES) * Math.PI * 2 + time * RING_DRIFT
+      sx.push(0.5 + Math.cos(a) * 0.3)
+      sy.push(0.5 + Math.sin(a) * 0.26)
     }
 
-    const k = WAVE_K + m * WAVE_K_SWEEP
     const peak = PEAK_ALPHA * 255 * this.intro.value
 
     for (let y = 0, p = 0; y < lh; y++) {
@@ -160,14 +155,15 @@ export class WaveField {
           const dy = (v - sy[i]) * aspect
           const d = Math.sqrt(dx * dx + dy * dy)
           // amplitude falls off with distance, so near sources stay legible as sources
-          s += Math.sin(d * k - time * DRIFT_SPEED + i * 1.1) / (1 + d * 4.5)
+          s += Math.sin(d * WAVE_K - time * DRIFT_SPEED + i * 1.1) / (1 + d * 4.5)
         }
+        const amp = Math.pow(Math.min(1, Math.abs(s / SOURCES) * 2.05), CONTRAST)
         data[p] = BLUE_R
         data[p + 1] = BLUE_G
         data[p + 2] = BLUE_B
         // a gradient this large and this soft bands visibly on 8-bit displays, so
         // every sample gets a sub-step of jitter to break the contours up
-        data[p + 3] = Math.min(1, Math.abs(s / SOURCES) * 2.05) * peak + (Math.random() - 0.5) * 5
+        data[p + 3] = amp * peak + (Math.random() - 0.5) * 5
       }
     }
 

@@ -14,12 +14,12 @@ import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin'
 
 import { renderContent } from './render'
 import { WaveField } from './backdrop/WaveField'
-import { initScrollSync } from './backdrop/scrollSync'
 import { runPreloader, skipPreloader } from './animations/preloader'
 import {
   initCounters,
   initSectionReveals,
   primeHero,
+  primeReveals,
   runHeroIntro,
   showEverythingInstantly,
 } from './animations/reveals'
@@ -70,6 +70,7 @@ async function start(): Promise<void> {
   }
 
   primeHero()
+  primeReveals()
 
   /**
    * ScrollSmoother drives the page through a transformed wrapper, which fights the
@@ -87,7 +88,6 @@ async function start(): Promise<void> {
 
   initNavigation(smoother)
   initGalleryMarquee(false)
-  initScrollSync(backdrop)
 
   // SplitText needs final metrics — wait for fonts while the preloader plays.
   await Promise.all([document.fonts.ready, runPreloader()])
