@@ -111,11 +111,9 @@ export function renderContent(): void {
     .map(
       (c, i) => `
       <article class="intro__panel" data-reveal>
-        <span class="intro__panel-ghost" aria-hidden="true">${pad(i + 1)}</span>
         <p class="intro__panel-side" aria-hidden="true">MODULE-${pad(i + 1)} // IEEE</p>
         <h3 class="intro__panel-title">${c.title}</h3>
         <p class="intro__panel-body">${c.body}</p>
-        <span class="intro__panel-pin" aria-hidden="true"></span>
       </article>`,
     )
     .join('')

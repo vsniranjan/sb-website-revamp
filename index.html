@@ -158,15 +158,22 @@
                 </p>
               </header>
 
-              <svg class="about__timeline" viewBox="0 0 1200 64" preserveAspectRatio="none" aria-hidden="true">
-                <line class="about__timeline-rail" x1="0" y1="40" x2="1200" y2="40" />
-                <line class="about__timeline-progress" x1="0" y1="40" x2="1200" y2="40" />
-                <g class="about__timeline-marks" font-size="13">
-                  <line x1="60" y1="28" x2="60" y2="52" /><text x="60" y="18">1961</text>
-                  <line x1="480" y1="28" x2="480" y2="52" /><text x="480" y="18">1988</text>
-                  <line x1="1140" y1="28" x2="1140" y2="52" /><text x="1140" y="18">TODAY</text>
-                </g>
-              </svg>
+              <div class="about__timeline-wrap">
+                <svg class="about__timeline" viewBox="0 0 1200 64" preserveAspectRatio="none" aria-hidden="true">
+                  <line class="about__timeline-rail" x1="0" y1="40" x2="1200" y2="40" />
+                  <line class="about__timeline-progress" x1="0" y1="40" x2="1200" y2="40" />
+                  <g class="about__timeline-marks">
+                    <line x1="60" y1="28" x2="60" y2="52" />
+                    <line x1="480" y1="28" x2="480" y2="52" />
+                    <line x1="1140" y1="28" x2="1140" y2="52" />
+                  </g>
+                </svg>
+                <div class="about__timeline-labels" aria-hidden="true">
+                  <span style="left: 5%">1961</span>
+                  <span style="left: 40%">1988</span>
+                  <span style="left: 95%">TODAY</span>
+                </div>
+              </div>
 
               <div class="about__blocks">
                 <article class="sheet sheet--tilt-l" data-reveal>
