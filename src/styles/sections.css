@@ -1113,9 +1113,8 @@
   position: relative;
   width: min(420px, 100%);
   aspect-ratio: 1;
-  border-radius: 50%;
+  border-radius: 28px;
   overflow: hidden;
-  clip-path: circle(50% at 50% 50%);
   border: 1px solid var(--hairline);
 }
 
