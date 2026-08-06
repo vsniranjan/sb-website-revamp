@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import { execom } from '@/lib/content'
-import { initials, pad, ContactRow } from '@/lib/content-helpers'
+import { accentForName, initials, pad, ContactRow } from '@/lib/content-helpers'
 
 export function TeamGrid() {
   return (
     <div className="execom__grid" id="execom-grid">
       {execom.map((m, i) => (
-        <article className="plate" data-reveal key={m.name}>
+        <article className="plate" data-reveal data-circuit data-accent={accentForName(m.name)} key={m.name}>
           <div className="plate__badge" aria-hidden="true">
             <svg viewBox="0 0 120 120">
               <defs>

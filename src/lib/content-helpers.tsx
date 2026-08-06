@@ -10,6 +10,25 @@ export function initials(name: string): string {
 
 export const pad = (n: number) => String(n).padStart(2, '0')
 
+/** Cycled section-accent hues for content that wants per-item color variety
+ * within a single page (card grids, list rows) rather than one flat page
+ * accent — components set data-accent={accentByIndex(i)} and a matching
+ * [data-accent="…"] rule in sections.css overrides --accent-section locally. */
+const ACCENT_CYCLE = ['blue', 'violet', 'coral', 'amber'] as const
+export type AccentHue = (typeof ACCENT_CYCLE)[number]
+
+export function accentByIndex(i: number): AccentHue {
+  return ACCENT_CYCLE[i % ACCENT_CYCLE.length]
+}
+
+/** Deterministic per-name variant of the same cycle, for content without a
+ * stable index (e.g. execom members without photos). */
+export function accentForName(name: string): AccentHue {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0
+  return ACCENT_CYCLE[hash % ACCENT_CYCLE.length]
+}
+
 /**
  * Third spec row of a team plate. Members who publish contact details get the
  * links; the ones who publish none — the counsellor — get their unit instead, so

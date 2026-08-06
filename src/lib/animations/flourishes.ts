@@ -39,7 +39,30 @@ export function initLineDraws(): void {
         scrollTrigger: { trigger: '.about', start: 'top 85%', end: 'bottom 75%', scrub: 1.2 },
       },
     )
+    initTimelineNodes()
   }
+}
+
+/**
+ * The three timeline nodes "power on" as the scrub-drawn progress line reaches
+ * them — same scroll range as the line itself, so a second ScrollTrigger over
+ * that range just toggles .is-lit past each node's proportional x position
+ * (viewBox is 1200 wide; node positions are 60/480/1140, see CircuitTimeline).
+ */
+function initTimelineNodes(): void {
+  const nodes = gsap.utils.toArray<SVGCircleElement>('.about__timeline-node')
+  const thresholds = [60 / 1200, 480 / 1200, 1140 / 1200]
+  ScrollTrigger.create({
+    trigger: '.about',
+    start: 'top 85%',
+    end: 'bottom 75%',
+    scrub: 1.2,
+    onUpdate: (self) => {
+      nodes.forEach((node, i) => {
+        node.classList.toggle('is-lit', self.progress >= thresholds[i])
+      })
+    },
+  })
 }
 
 /**
@@ -111,36 +134,7 @@ export function applyStaticFlourishes(): void {
   gsap.utils.toArray<SVGLineElement>('.gauge__needle').forEach((needle) => {
     gsap.set(needle, { rotation: -135 + 270 * Number(needle.dataset.fill ?? '0'), svgOrigin: '60 60' })
   })
-}
-
-/**
- * Crosshair cursor follower (fine pointers only). Positioned with a direct
- * style write on every pointermove, not a tween — any eased/duration-based
- * follow reads as lag behind the real cursor, which is the opposite of what
- * a cursor replacement should feel like.
- */
-export function initReticle(): void {
-  const reticle = document.getElementById('reticle')
-  if (!reticle) return
-  if (!window.matchMedia('(pointer: fine)').matches) return
-
-  // reticle is live — hide the native cursor site-wide
-  document.body.classList.add('has-reticle')
-
-  let shown = false
-
-  window.addEventListener('pointermove', (e) => {
-    if (!shown) {
-      shown = true
-      gsap.to(reticle, { opacity: 1, duration: 0.4 })
-    }
-    reticle.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
-  })
-
-  document.addEventListener('mouseover', (e) => {
-    const target = e.target as Element
-    reticle.classList.toggle('is-hover', !!target.closest('a, button'))
-    // blue-filled surfaces would swallow the blue reticle
-    reticle.classList.toggle('is-inverted', !!target.closest('.event-row, .btn--primary'))
+  gsap.utils.toArray<SVGCircleElement>('.about__timeline-node').forEach((node) => {
+    node.classList.add('is-lit')
   })
 }

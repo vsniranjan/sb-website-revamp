@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { ScrollTrigger } from '@/lib/gsap-setup'
 import { runPreloader, skipPreloader } from '@/lib/animations/preloader'
-import { initReticle } from '@/lib/animations/flourishes'
+import { initCursor } from '@/lib/animations/cursor'
 import { useSetPreloaderReady } from './PreloaderContext'
 
 const KEY = 'ieee-booted'
@@ -30,9 +30,9 @@ export function BootController() {
       return
     }
 
-    // Cursor reticle is permanent chrome, independent of the once-per-session
+    // Cursor is permanent chrome, independent of the once-per-session
     // preloader/hero choreography — enable it whenever motion isn't reduced.
-    initReticle()
+    initCursor()
 
     if (alreadyBooted) {
       skipPreloader()

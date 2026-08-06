@@ -1,11 +1,11 @@
 import { chapters } from '@/lib/content'
-import { pad, chipAbbrev } from '@/lib/content-helpers'
+import { accentByIndex, pad, chipAbbrev } from '@/lib/content-helpers'
 
 export function SocietiesGrid() {
   return (
     <div className="chapters__grid" id="chapters-grid">
       {chapters.map((c, i) => (
-        <article className="chip" data-reveal key={c.name}>
+        <article className="chip" data-reveal data-circuit data-accent={accentByIndex(i)} key={c.name}>
           <span className="chip__notch" aria-hidden="true" />
           <span className="chip__pins chip__pins--l" aria-hidden="true" />
           <span className="chip__pins chip__pins--r" aria-hidden="true" />

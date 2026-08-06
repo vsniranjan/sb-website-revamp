@@ -11,7 +11,9 @@ import { PreloaderProvider } from '@/components/chrome/PreloaderContext'
 import { PreloaderOverlay } from '@/components/chrome/PreloaderOverlay'
 import { BootController } from '@/components/chrome/BootController'
 import { Backdrop } from '@/components/chrome/Backdrop'
-import { Reticle } from '@/components/chrome/Reticle'
+import { CircuitCursor } from '@/components/chrome/CircuitCursor'
+import { SectionAccentSync } from '@/components/chrome/SectionAccentSync'
+import { EasterEgg } from '@/components/chrome/EasterEgg'
 import { Navbar } from '@/components/chrome/Navbar'
 import { NavbarChrome } from '@/components/chrome/NavbarChrome'
 import { MobileMenu } from '@/components/chrome/MobileMenu'
@@ -32,7 +34,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <PreloaderProvider>
           <PreloaderOverlay />
           <Backdrop />
-          <Reticle />
+          <CircuitCursor />
+          <SectionAccentSync />
+          <EasterEgg />
           <Navbar />
           <MobileMenu />
           <BootController />
