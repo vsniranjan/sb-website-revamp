@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { CaretDown } from '@phosphor-icons/react'
 import { execomFull } from '@/lib/content'
-import { initials, pad } from '@/lib/content-helpers'
+import { accentForName, initials, pad } from '@/lib/content-helpers'
 
 /** Display order for the collapsible groups — independent of `execomFull`'s data order. */
 const GROUP_ORDER = [
@@ -64,7 +65,7 @@ export function ExecomGroups() {
               <span>{group}</span>
               <span className="execom-group__meta">
                 <span className="execom-group__count">{members.length}</span>
-                <span className="execom-group__chevron" aria-hidden="true" />
+                <CaretDown className="execom-group__chevron" size={14} weight="bold" aria-hidden="true" />
               </span>
             </button>
             <div className="execom-group__body">
@@ -73,7 +74,7 @@ export function ExecomGroups() {
                   {members.map((m, i) => {
                     const orbitId = `execom-orbit-${slugify(group)}-${i}`
                     return (
-                      <article className="plate" key={m.name}>
+                      <article className="plate" data-circuit data-accent={accentForName(m.name)} key={m.name}>
                         <div className="plate__badge" aria-hidden="true">
                           <svg viewBox="0 0 120 120">
                             <defs>

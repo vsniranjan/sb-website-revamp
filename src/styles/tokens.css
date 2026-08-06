@@ -1,30 +1,71 @@
-/* Design tokens — dark monochrome. One neutral ramp, white as the only accent. */
+/* Design tokens — "Spark". Warm paper-white base, section-coded accent hues. */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* surfaces, darkest first. Never pure black: it flattens depth and makes every
-     border look like a seam. */
-  --bg: #0d0e11;
-  --surface: #15171c;
-  --surface-raised: #1c1f26;
-  --surface-wash: rgba(255, 255, 255, 0.04);
+  /* surfaces, warmest/darkest first (the page itself), climbing toward white as
+     things lift off the page — cards and raised chrome read as sheets of paper
+     stacked on top of the base. */
+  --bg: #f7f2e7;
+  --surface: #ffffff;
+  --surface-raised: #fffcf5;
+  --surface-wash: rgba(24, 20, 14, 0.035);
 
-  /* text */
-  --text: #f2f3f5;
-  --text-muted: #a2a8b3;
-  --text-faint: #6d747f;
+  /* text: warm ink, never pure black — it reads harsh against warm paper. */
+  --text: #1c1a16;
+  --text-muted: #6b6558;
+  --text-faint: #a39c8c;
 
-  /* accent is plain white. Anything sitting on an accent fill takes --on-accent,
-     which is the page background, so filled surfaces read as a clean inversion. */
-  --accent: #ffffff;
-  --accent-dim: #d6d9de;
-  --accent-wash: rgba(255, 255, 255, 0.07);
-  --on-accent: #0d0e11;
+  /* Raw hues. Saturated and high-contrast by design — this is the deliberate
+     departure from the old single-white-accent system. Each one carries its own
+     contrast token because they don't all take the same text color: blue/violet
+     are dark enough for white text, amber/coral are light enough that white text
+     on them fails contrast and they need ink instead. */
+  --hue-blue: #2f5fff;
+  --hue-blue-contrast: #ffffff;
+  --hue-amber: #ffb020;
+  --hue-amber-contrast: #1c1a16;
+  --hue-coral: #ff4757;
+  --hue-coral-contrast: #ffffff;
+  --hue-violet: #8b5cf6;
+  --hue-violet-contrast: #ffffff;
 
-  /* borders, faint to strong */
-  --border-faint: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.1);
-  --border-strong: rgba(255, 255, 255, 0.18);
+  /* Section-coded accent slots — one hue per page, used for wayfinding as well as
+     decoration. Gallery deliberately has no slot: its posters already carry their
+     own uncoordinated color, so that page stays on the neutral global accent
+     rather than competing with them. */
+  --accent-home: var(--hue-blue);
+  --accent-about: var(--hue-violet);
+  --accent-events: var(--hue-coral);
+  --accent-team: var(--hue-amber);
+  --accent-contact: var(--hue-blue);
+  --accent-playground: var(--hue-violet);
+
+  /* Cascading indirection: components read --accent-section / --on-accent-section,
+     never a hue directly. Each top-level page section overrides this pair once;
+     everything inside inherits it for free through the normal CSS cascade. Root
+     fallback keeps chrome (navbar, footer, buttons — nothing with page context)
+     on the brand hue. */
+  --accent-section: var(--hue-blue);
+  --on-accent-section: var(--hue-blue-contrast);
+
+  /* Global chrome default, used wherever there's no section context. */
+  --accent: var(--hue-blue);
+  --accent-dim: #2347d6;
+  --accent-wash: rgba(47, 95, 255, 0.08);
+  --on-accent: var(--hue-blue-contrast);
+
+  /* Gradient tokens for headline fills, button surfaces, cursor/particle coloring —
+     a duotone blend of each hue with a lighter tint of itself. */
+  --gradient-blue: linear-gradient(135deg, #2f5fff, #7c9bff);
+  --gradient-amber: linear-gradient(135deg, #ffb020, #ffd876);
+  --gradient-coral: linear-gradient(135deg, #ff4757, #ff9270);
+  --gradient-violet: linear-gradient(135deg, #8b5cf6, #c7b6fb);
+  --gradient-section: var(--gradient-blue);
+
+  /* borders, faint to strong — ink at low alpha, replacing the old white-based scale */
+  --border-faint: rgba(24, 20, 14, 0.08);
+  --border: rgba(24, 20, 14, 0.14);
+  --border-strong: rgba(24, 20, 14, 0.22);
 
   /* type */
   --font-display: 'Space Grotesk Variable', 'Space Grotesk', sans-serif;
@@ -62,9 +103,14 @@
   --radius-lg: 18px;
   --radius-pill: 999px;
 
-  /* shadow. On a dark page a light-tinted shadow is invisible, so depth comes from
-     a near-black spread plus a hairline top edge on the surface itself. */
-  --shadow-lift: 0 10px 34px rgba(0, 0, 0, 0.55);
+  /* shadow. Re-derived for ink-on-paper, not a value flip of the dark theme: white
+     lifting near-black needed a heavy near-black spread to read at all, but ink
+     shadows on warm paper need far less alpha before they look like smudges
+     instead of depth. --shadow-glow tints itself to whatever section is active. */
+  --shadow-sm: 0 2px 8px rgba(28, 24, 18, 0.06);
+  --shadow-md: 0 8px 24px rgba(28, 24, 18, 0.09);
+  --shadow-lift: 0 10px 34px rgba(28, 24, 18, 0.14);
+  --shadow-glow: 0 16px 40px -10px color-mix(in srgb, var(--accent-section) 45%, transparent);
 
   /* motion */
   --dur-fast: 200ms;

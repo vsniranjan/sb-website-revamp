@@ -24,7 +24,7 @@ const PORT = 8477
 /** Long enough for the preloader to clear and the hero intro to finish. */
 const SETTLE_MS = 4200
 
-const ROUTES = ['/', '/about', '/events', '/team', '/gallery', '/contact'] as const
+const ROUTES = ['/', '/about', '/events', '/team', '/gallery', '/playground', '/contact'] as const
 
 const SHOTS = [
   { name: 'phone', width: 390, height: 844, scale: 2 },

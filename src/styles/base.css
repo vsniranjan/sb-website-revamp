@@ -195,7 +195,9 @@ main section[id] {
 
 .outline {
   color: transparent;
-  -webkit-text-stroke: 1.5px var(--accent);
+  background: var(--gradient-section, var(--gradient-blue));
+  background-clip: text;
+  -webkit-background-clip: text;
 }
 
 /* ---------- underline line-draw links ---------- */
@@ -234,7 +236,7 @@ main section[id] {
   transform: scaleX(1);
 }
 
-/* ---------- crosshair cursor follower ---------- */
+/* ---------- circuit cursor: ring, spark trail, hover-circuit trace ---------- */
 
 .reticle {
   position: fixed;
@@ -250,7 +252,7 @@ main section[id] {
   width: 34px;
   height: 34px;
   margin: -17px 0 0 -17px;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--accent-section);
   border-radius: 50%;
   position: relative;
   transition: transform var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out),
@@ -261,7 +263,7 @@ main section[id] {
 .reticle__ring::after {
   content: '';
   position: absolute;
-  background: var(--accent);
+  background: var(--accent-section);
   transition: background-color var(--dur-fast) var(--ease-out);
 }
 
@@ -283,36 +285,146 @@ main section[id] {
 
 .reticle.is-hover .reticle__ring {
   transform: scale(1.45);
-  background: var(--accent-wash);
+  background: color-mix(in srgb, var(--accent-section) 14%, transparent);
 }
 
-/* A white reticle vanishes on accent-filled surfaces — the event-row hover sweep
-   and primary buttons. Invert it there, the same way those surfaces invert
-   their own text. */
+/* A cursor in the section accent can vanish on a surface already filled with
+   that same accent (the event-row hover sweep, primary buttons). Invert it
+   there, the same way those surfaces invert their own text. */
 .reticle.is-inverted .reticle__ring {
-  border-color: var(--on-accent);
+  border-color: var(--on-accent-section);
 }
 
 .reticle.is-inverted .reticle__ring::before,
 .reticle.is-inverted .reticle__ring::after {
-  background: var(--on-accent);
+  background: var(--on-accent-section);
 }
 
 .reticle.is-inverted.is-hover .reticle__ring {
-  background: var(--surface-wash);
+  background: color-mix(in srgb, var(--on-accent-section) 18%, transparent);
+}
+
+/* Pooled spark dots, cycled by cursor.ts on pointermove — never created/destroyed,
+   just repositioned and re-faded, so the trail costs nothing beyond a transform +
+   opacity write per dot. */
+.reticle__trail {
+  position: fixed;
+  inset: 0;
+}
+
+.reticle__spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--accent-section);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Hover-circuit trace: one fixed full-viewport SVG, a single path drawn from the
+   cursor to whatever's under it via DrawSVGPlugin — same technique as the
+   intro/about circuit traces, so the motif reads as one system sitewide. */
+.circuit-trace {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.circuit-trace__path {
+  fill: none;
+  stroke: var(--accent-section);
+  stroke-width: 1.5;
+  opacity: 0.55;
 }
 
 @media (max-width: 900px), (pointer: coarse) {
-  .reticle {
+  .reticle,
+  .circuit-trace {
     display: none;
   }
 }
 
-/* hide the native cursor only when the custom reticle is actually running
-   (class added by initReticle on fine pointers) */
+/* hide the native cursor only when the custom cursor is actually running
+   (class added by initCursor on fine pointers) */
 .has-reticle,
 .has-reticle * {
   cursor: none !important;
+}
+
+/* Touch/coarse-pointer equivalent of the hover-circuit trace: no cursor to draw
+   a line from, so interactive elements pulse in the section accent on tap
+   instead. Scoped to touch so mouse users don't get both effects at once. */
+@media (hover: none), (pointer: coarse) {
+  a:active,
+  button:active,
+  [data-circuit]:active {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-section) 45%, transparent);
+    transition: box-shadow 120ms var(--ease-out);
+  }
+}
+
+/* ---------- spark collect mini-game ---------- */
+
+.spark-game {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  pointer-events: none;
+}
+
+.spark-game__orb {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  border-radius: 50%;
+  background: var(--accent-section);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent-section) 25%, transparent);
+  animation: spark-orb-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes spark-orb-pulse {
+  0%,
+  100% {
+    transform: scale(0.85);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark-game__orb {
+    animation: none;
+  }
+}
+
+/* ---------- easter egg toast ---------- */
+
+.easter-toast {
+  position: fixed;
+  bottom: var(--space-7);
+  left: 50%;
+  translate: -50% 0;
+  z-index: var(--z-preloader);
+  background: var(--accent-section);
+  color: var(--on-accent-section);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-lift);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 /* ---------- mono ticker strip ---------- */
@@ -444,10 +556,6 @@ main section[id] {
 .navbar__logo {
   width: 36px;
   height: 36px;
-  /* The asset is IEEE Blue, which all but disappears on a near-black page. IEEE
-     publishes a reversed white mark for dark backgrounds; this reproduces it without
-     touching the source file, since it is an <img> and cannot inherit currentColor. */
-  filter: brightness(0) invert(1);
 }
 
 .navbar__wordmark {
@@ -602,9 +710,6 @@ main section[id] {
   width: 44px;
   height: 44px;
   margin-bottom: var(--space-3);
-  /* Same reversed-white treatment as .navbar__logo — the source asset is IEEE
-     Blue, which all but disappears on this near-black background. */
-  filter: brightness(0) invert(1);
 }
 
 .footer__wordmark {

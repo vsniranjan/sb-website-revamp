@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SectionAnimations } from "@/components/animation/SectionAnimations";
+import { ContactConsole } from "@/components/contact/ContactConsole";
 
 export const metadata: Metadata = {
   description:
@@ -26,32 +27,7 @@ export default function ContactPage() {
             </p>
           </header>
           <div className='contact__layout'>
-            <address className='console' data-reveal>
-              <p className='console__head' aria-hidden='true'>
-                TRANSMISSION // IEEE-MACE-SB
-              </p>
-              <div className='console__line'>
-                <p className='console__label'>Student Branch Headquarters</p>
-                <p className='console__value'>
-                  Mar Athanasius College of Engineering, Kothamangalam, Kerala -
-                  686666, India
-                </p>
-              </div>
-              <div className='console__line'>
-                <p className='console__label'>Call Us</p>
-                <p className='console__value'>
-                  <a href='tel:+918921931121'>+91 8921931121</a>
-                </p>
-              </div>
-              <div className='console__line'>
-                <p className='console__label'>Email Us</p>
-                <p className='console__value'>
-                  <a href='mailto:ieeemacesbofficial@gmail.com'>
-                    ieeemacesbofficial@gmail.com
-                  </a>
-                </p>
-              </div>
-            </address>
+            <ContactConsole />
           </div>
         </div>
       </section>

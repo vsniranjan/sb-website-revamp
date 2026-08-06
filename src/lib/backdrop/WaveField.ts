@@ -1,16 +1,19 @@
 import gsap from 'gsap'
 
-/** The field paints white light onto the dark page, matching the accent. */
-const TINT_R = 255
-const TINT_G = 255
+/** The field paints brand-blue ink onto the paper-white page — a single fixed
+ * tint rather than the per-page section accent, since this runs full-bleed
+ * behind every route and a color shift between pages here would read as a
+ * flicker, not a feature. */
+const TINT_R = 47
+const TINT_G = 95
 const TINT_B = 255
 
 /**
- * Peak alpha, reached only at the brightest crests. Far lower than the light theme
- * needed: white lifting a near-black background is a much stronger visual move than
- * blue darkening paper, so the same number would blow out the page.
+ * Peak alpha, reached only at the brightest crests. Higher than the dark theme
+ * needed: blue tinting near-white paper is a much weaker visual move than white
+ * lifting near-black, so it takes more alpha to read as anything at all.
  */
-const PEAK_ALPHA = 0.07
+const PEAK_ALPHA = 0.16
 /**
  * Gamma on the normalised amplitude. Above 1 it pushes the mid-range down while
  * leaving crests alone, so bands read as bands against clean paper rather than as an

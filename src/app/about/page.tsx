@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SectionAnimations } from "@/components/animation/SectionAnimations";
 import { AboutStats } from "@/components/about/AboutStats";
 import { SocietiesGrid } from "@/components/about/SocietiesGrid";
+import { CircuitTimeline } from "@/components/about/CircuitTimeline";
 
 export const metadata: Metadata = {
   description:
@@ -29,39 +30,7 @@ export default function AboutPage() {
             </p>
           </header>
 
-          <div className='about__timeline-wrap'>
-            <svg
-              className='about__timeline'
-              viewBox='0 0 1200 64'
-              preserveAspectRatio='none'
-              aria-hidden='true'
-            >
-              <line
-                className='about__timeline-rail'
-                x1='0'
-                y1='40'
-                x2='1200'
-                y2='40'
-              />
-              <line
-                className='about__timeline-progress'
-                x1='0'
-                y1='40'
-                x2='1200'
-                y2='40'
-              />
-              <g className='about__timeline-marks'>
-                <line x1='60' y1='28' x2='60' y2='52' />
-                <line x1='480' y1='28' x2='480' y2='52' />
-                <line x1='1140' y1='28' x2='1140' y2='52' />
-              </g>
-            </svg>
-            <div className='about__timeline-labels' aria-hidden='true'>
-              <span style={{ left: "5%" }}>1961</span>
-              <span style={{ left: "40%" }}>1988</span>
-              <span style={{ left: "95%" }}>TODAY</span>
-            </div>
-          </div>
+          <CircuitTimeline />
 
           <div className='about__blocks'>
             <article className='sheet sheet--tilt-l' data-reveal>
