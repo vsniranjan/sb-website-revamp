@@ -66,7 +66,7 @@ button {
   pointer-events: none;
 }
 
-#smooth-content {
+#content {
   position: relative;
   z-index: var(--z-content);
 }
@@ -101,6 +101,12 @@ button {
 .section {
   position: relative;
   padding-block: var(--section-pad);
+}
+
+main section[id] {
+  /* Clears the fixed navbar on a same-page anchor jump — replaces the 'top 72px'
+     offset ScrollSmoother used to apply before it was dropped. */
+  scroll-margin-top: 96px;
 }
 
 .section + .section::before {
@@ -542,7 +548,10 @@ button {
   background: var(--bg);
   display: grid;
   align-content: center;
-  justify-items: start;
+  /* Right-aligned: on a one-handed grip the thumb sweeps the right edge of the
+     screen, not the left, so links sit where the thumb already is. */
+  justify-items: end;
+  text-align: right;
   gap: var(--space-7);
   padding: var(--gutter);
   visibility: hidden;
@@ -557,6 +566,7 @@ button {
 .menu__links {
   display: grid;
   gap: var(--space-4);
+  justify-items: end;
 }
 
 .menu__link {
@@ -583,9 +593,18 @@ button {
 
 .footer__layout {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-8);
   margin-bottom: var(--space-8);
+}
+
+.footer__logo {
+  width: 44px;
+  height: 44px;
+  margin-bottom: var(--space-3);
+  /* Same reversed-white treatment as .navbar__logo — the source asset is IEEE
+     Blue, which all but disappears on this near-black background. */
+  filter: brightness(0) invert(1);
 }
 
 .footer__wordmark {

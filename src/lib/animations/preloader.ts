@@ -17,7 +17,13 @@ export function runPreloader(): Promise<void> {
     const tl = gsap.timeline({
       defaults: { ease: 'power2.inOut' },
       onComplete: () => {
-        root.remove()
+        // Not root.remove(): the preloader is owned by React's persistent root
+        // layout, which never re-renders to learn the node is gone. A later
+        // client-side navigation touching a sibling then throws trying to
+        // reference it. The autoAlpha tween below already leaves it fully
+        // invisible and non-interactive, so hiding is enough — no need to
+        // detach it from the DOM.
+        root.style.pointerEvents = 'none'
         resolve()
       },
     })
@@ -42,5 +48,8 @@ export function runPreloader(): Promise<void> {
 
 /** Reduced-motion path: drop the preloader instantly. */
 export function skipPreloader(): void {
-  document.getElementById('preloader')?.remove()
+  const root = document.getElementById('preloader')
+  if (!root) return
+  gsap.set(root, { autoAlpha: 0 })
+  root.style.pointerEvents = 'none'
 }

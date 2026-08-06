@@ -1,22 +1,15 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import type { ScrollSmoother } from 'gsap/ScrollSmoother'
 
-type Smoother = ScrollSmoother | null
-
-/** Anchor navigation that plays nice with ScrollSmoother (or falls back to native). */
-function scrollToTarget(smoother: Smoother, hash: string): void {
+/** Anchor navigation for same-page hash links (e.g. About's #societies jump). */
+function scrollToTarget(hash: string): void {
   const el = hash === '#top' ? 0 : document.querySelector(hash)
   if (el === null) return
-  if (smoother) {
-    smoother.scrollTo(el as Element | number, true, 'top 72px')
-  } else {
-    if (typeof el === 'number') window.scrollTo({ top: 0 })
-    else (el as Element).scrollIntoView()
-  }
+  if (typeof el === 'number') window.scrollTo({ top: 0 })
+  else (el as Element).scrollIntoView({ behavior: 'smooth' })
 }
 
-export function initNavigation(smoother: Smoother): void {
+export function initNavigation(): void {
   const navbar = document.getElementById('navbar')
   const burger = document.getElementById('nav-burger')
   const menu = document.getElementById('mobile-menu')
@@ -28,37 +21,20 @@ export function initNavigation(smoother: Smoother): void {
     onUpdate: (self) => navbar?.classList.toggle('is-scrolled', self.scroll() > 40),
   })
 
-  // active link tracking per anchored section
-  const links = gsap.utils.toArray<HTMLAnchorElement>('.navbar__link')
-  const byHash = new Map(links.map((l) => [l.getAttribute('href'), l]))
-  gsap.utils.toArray<HTMLElement>('main section[id]').forEach((section) => {
-    ScrollTrigger.create({
-      trigger: section,
-      start: 'top 55%',
-      end: 'bottom 55%',
-      onToggle: (self) => {
-        if (!self.isActive) return
-        links.forEach((l) => l.classList.remove('is-active'))
-        byHash.get(`#${section.id}`)?.classList.add('is-active')
-      },
-    })
-  })
-
-  // smooth anchor jumps
+  // smooth same-page anchor jumps (cross-page links are plain next/link hrefs by now)
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const hash = a.getAttribute('href')
       if (!hash || hash === '#') return
       e.preventDefault()
       closeMenu()
-      scrollToTarget(smoother, hash)
+      scrollToTarget(hash)
       history.replaceState(null, '', hash)
     })
   })
 
   document.getElementById('back-to-top')?.addEventListener('click', () => {
-    if (smoother) smoother.scrollTo(0, true)
-    else window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   })
 
   // mobile menu
@@ -68,7 +44,6 @@ export function initNavigation(smoother: Smoother): void {
     menu.setAttribute('aria-hidden', 'true')
     burger?.setAttribute('aria-expanded', 'false')
     burger?.setAttribute('aria-label', 'Open menu')
-    if (smoother) smoother.paused(false)
   }
 
   burger?.addEventListener('click', () => {
@@ -76,7 +51,6 @@ export function initNavigation(smoother: Smoother): void {
     menu?.setAttribute('aria-hidden', String(!open))
     burger.setAttribute('aria-expanded', String(open))
     burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
-    if (smoother) smoother.paused(open)
     if (open && menu) {
       gsap.from(menu.querySelectorAll('.menu__link, .menu__cta'), {
         y: 26,
@@ -88,6 +62,10 @@ export function initNavigation(smoother: Smoother): void {
       })
     }
   })
+
+  document.querySelectorAll<HTMLAnchorElement>('.menu__link, .menu__cta').forEach((a) =>
+    a.addEventListener('click', closeMenu),
+  )
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeMenu()

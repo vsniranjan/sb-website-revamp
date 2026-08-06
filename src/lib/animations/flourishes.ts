@@ -113,7 +113,12 @@ export function applyStaticFlourishes(): void {
   })
 }
 
-/** Crosshair cursor follower (fine pointers only). */
+/**
+ * Crosshair cursor follower (fine pointers only). Positioned with a direct
+ * style write on every pointermove, not a tween — any eased/duration-based
+ * follow reads as lag behind the real cursor, which is the opposite of what
+ * a cursor replacement should feel like.
+ */
 export function initReticle(): void {
   const reticle = document.getElementById('reticle')
   if (!reticle) return
@@ -122,8 +127,6 @@ export function initReticle(): void {
   // reticle is live — hide the native cursor site-wide
   document.body.classList.add('has-reticle')
 
-  const toX = gsap.quickTo(reticle, 'x', { duration: 0.35, ease: 'power3.out' })
-  const toY = gsap.quickTo(reticle, 'y', { duration: 0.35, ease: 'power3.out' })
   let shown = false
 
   window.addEventListener('pointermove', (e) => {
@@ -131,8 +134,7 @@ export function initReticle(): void {
       shown = true
       gsap.to(reticle, { opacity: 1, duration: 0.4 })
     }
-    toX(e.clientX)
-    toY(e.clientY)
+    reticle.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`
   })
 
   document.addEventListener('mouseover', (e) => {
