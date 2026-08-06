@@ -593,7 +593,7 @@ main section[id] {
 
 .footer__layout {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: var(--space-8);
   margin-bottom: var(--space-8);
 }
