@@ -15,13 +15,13 @@ import { mkdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { POSTER_WIDTH, galleryPosters } from '../src/content.ts'
-import type { GalleryPoster } from '../src/content.ts'
+import { POSTER_WIDTH, galleryPosters } from '../src/lib/content.ts'
+import type { GalleryPoster } from '../src/lib/content.ts'
 
 const root = resolve(fileURLToPath(import.meta.url), '../..')
 const sourceDir = join(root, 'images')
 const outDir = join(root, 'public', 'gallery')
-const manifestPath = join(root, 'src', 'gallery-manifest.generated.ts')
+const manifestPath = join(root, 'src', 'lib', 'gallery-manifest.generated.ts')
 
 /** WebP quality — 80 is the usual sweet spot for photographic posters. */
 const WEBP_QUALITY = 80
@@ -111,7 +111,7 @@ function main(): void {
   }
 
   writeManifest(entries)
-  console.log(`Wrote ${entries.size} entries to src/gallery-manifest.generated.ts`)
+  console.log(`Wrote ${entries.size} entries to src/lib/gallery-manifest.generated.ts`)
 }
 
 main()

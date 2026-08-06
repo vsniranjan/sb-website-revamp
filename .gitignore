@@ -2,8 +2,12 @@
 node_modules/
 
 # Build output
-dist/
+.next/
+out/
 
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
 images/
 docs/
